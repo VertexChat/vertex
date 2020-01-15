@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:vertex_ui/src/pages/settings/constants.dart';
-import 'package:vertex_ui/src/pages/settings/settings.dart';
+import 'package:vertex_ui/src/pages/settings/settings_page.dart';
+import 'package:vertex_ui/src/pages/settings/audio_settings_model.dart';
+import 'package:vertex_ui/src/pages/settings/audio_settings_card.dart';
 
 /// Call to run App Root (App starts here)
 void main() => runApp(UI()); // Vertex_UI -> App root call to
@@ -11,14 +13,8 @@ class UI extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Vertex',
-      theme: ThemeData(
-        /// App theme-ing here
-        primarySwatch: Colors.green,
-      ),
-      home: VertexLanding(landingTitle: 'Vertex Landing Page'),
-
-      /// Change this to splash-screen
-      /// Landing screen should come later after Login
+      theme: ThemeData(brightness: Brightness.dark),
+      home: VertexLanding(title: 'Vertex Landing Page'),
     );
   }
 }
@@ -31,9 +27,9 @@ class VertexLanding extends StatefulWidget {
   /// Home page of application.
   /// Fields in Widget subclass always marked final
 
-  VertexLanding({Key key, this.landingTitle}) : super(key: key);
+  VertexLanding({Key key, this.title}) : super(key: key);
 
-  final String landingTitle;
+  final String title;
 
   @override
   _VertexLandingState createState() => _VertexLandingState();
@@ -41,7 +37,6 @@ class VertexLanding extends StatefulWidget {
 
 /// Stateless class
 class _VertexLandingState extends State<VertexLanding> {
-
   /// Build is run and rerun every time above method, setState, is called
   @override
   Widget build(BuildContext context) {
@@ -50,29 +45,49 @@ class _VertexLandingState extends State<VertexLanding> {
     return Scaffold(
       appBar: AppBar(
         /// Setting AppBar title here
-        title: Text(widget.landingTitle),
+        title: Text(widget.title),
         actions: <Widget>[
-          PopupMenuButton<String>(
-            onSelected: choiceAction,
-            itemBuilder: (BuildContext context) {
-              // loop through objects (map) and apply function
-              return Constants.choices.map((String choice) {
-                return PopupMenuItem<String>(
-                    value: choice, child: Text(choice));
-              }).toList();
-            },
+          IconButton(
+            icon: Icon(Icons.build),
+            onPressed: _showSettingsPage,
           )
         ],
       ),
-
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => SettingsRoute()));
-        },
-        tooltip: 'Settings',
-        child: Icon(Icons.settings),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            stops: [0.1, 0.5, 0.7, 0.9],
+            colors: [
+              Colors.lightGreen[900],
+              Colors.lightGreen[700],
+              Colors.lightGreen[500],
+              Colors.lightGreen[300],
+            ],
+          ),
+        ),
+        child: Center(
+          child: Text("Fill me with widgets!"),
+        ),
       ),
+    );
+  }
+
+  // Any time you're pushing a new route and expect that route
+  // to return something back to you,
+  // you need to use an async function.
+  // In this case, the function will create a form page
+  // which the user can fill out and submit.
+  // On submission, the information in that form page
+  // will be passed back to this function.
+  Future _showSettingsPage() async {
+    AudioSettings audioSettings = await Navigator.of(context).push(
+     MaterialPageRoute(
+       builder: (BuildContext context){
+         return SettingsPage("Settings Page");
+       }
+     ),
     );
   }
 }
