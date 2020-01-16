@@ -11,37 +11,37 @@ void main() => runApp(UI()); // Vertex_UI -> App root call to
 class UI extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    /// MaterialApp is the base Widget for your Flutter Application
+    /// Gives us access to routing, context, and meta info functionality.
     return MaterialApp(
       title: 'Vertex',
       theme: ThemeData(brightness: Brightness.dark),
-      home: VertexLanding(title: 'Vertex Landing Page'),
+      home: VertexHomePage(title: 'Vertex Home'),
     );
   }
 }
 
-/// Each class defined below here is now a part of the App Root node
-/// VertexLanding is currently main landing page, meaning the App will
-/// load to that page.
-/// Stateful class --> Stateful widget.
-class VertexLanding extends StatefulWidget {
+/// Public --> StatefulWidget
+class VertexHomePage extends StatefulWidget {
   /// Home page of application.
   /// Fields in Widget subclass always marked final
 
-  VertexLanding({Key key, this.title}) : super(key: key);
+  VertexHomePage({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _VertexLandingState createState() => _VertexLandingState();
+  _VertexHomePageState createState() => _VertexHomePageState();
 }
 
 /// Stateless class
-class _VertexLandingState extends State<VertexLanding> {
+class _VertexHomePageState extends State<VertexHomePage> {
   /// Build is run and rerun every time above method, setState, is called
   @override
   Widget build(BuildContext context) {
     /// Scaffold: framework which implements the basic material
     /// design visual layout structure of the flutter app.
+    /// Need one every time we build a new page
     return Scaffold(
       appBar: AppBar(
         /// Setting AppBar title here
@@ -83,11 +83,9 @@ class _VertexLandingState extends State<VertexLanding> {
   // will be passed back to this function.
   Future _showSettingsPage() async {
     AudioSettings audioSettings = await Navigator.of(context).push(
-     MaterialPageRoute(
-       builder: (BuildContext context){
-         return SettingsPage("Settings Page");
-       }
-     ),
+      MaterialPageRoute(builder: (BuildContext context) {
+        return SettingsPage("Settings Page");
+      }),
     );
   }
 }

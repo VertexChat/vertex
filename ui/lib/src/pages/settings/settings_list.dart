@@ -11,15 +11,15 @@ class SettingsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _buildList(context);
+    return null;
   }
 
-  ListView _buildList(context) {
-    return ListView.builder(
-      itemCount: audioSettings.length,
-      itemBuilder: (context, int) {
-        return AudioSettingsCard(audioSettings[int]);
-      },
-    );
-  }
+//  ListView _buildList(context) {
+//    return ListView.builder(
+//      itemCount: audioSettings.length,
+//      itemBuilder: (context, int) {
+//        return AudioSettingsCard(audioSettings);
+//      },
+//    );
+//  }
 }
