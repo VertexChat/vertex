@@ -16,27 +16,51 @@ class _SettingsCardState extends State<SettingsCard> {
 
   _SettingsCardState(this.settings);
 
+  double _sliderValue = 10.0;
+
   /// Need a few widgets
   /// First being a text widget
+  /// TODO: Rather than display all text in one widget
+  /// TODO: Have a text header, then slider value in the one widget
   Widget get displayInputDeviceText {
     return Container(
-      // Can explicitly set heights and widths on containers
-      width: 100.0,
-      height: 100.0,
-
       child: Card(
           color: Colors.lightGreen[800],
           child: Padding(
             padding: const EdgeInsets.only(
-              top: 8.0,
+              top: 10.0,
               bottom: 8.0,
-              left: 64.0,
+              left: 20.0,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
+                Text("Input Device",
+                    style: Theme.of(context).textTheme.headline),
                 Text(widget.settings.inputDevice,
+                    style: Theme.of(context).textTheme.subhead),
+              ],
+            ),
+          )),
+    );
+  }
+
+  Widget get displayOutputDeviceText {
+    return Container(
+      child: Card(
+          color: Colors.lightGreen[800],
+          child: Padding(
+            padding: const EdgeInsets.only(
+              top: 10.0,
+              bottom: 8.0,
+              left: 20.0,
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Text("Output Device:",
                     style: Theme.of(context).textTheme.headline),
                 Text(widget.settings.outputDevice,
                     style: Theme.of(context).textTheme.subhead),
@@ -46,32 +70,79 @@ class _SettingsCardState extends State<SettingsCard> {
     );
   }
 
-  /// Secondly need a widget to handle the slider
-  Widget get displayInputDeviceDropBox {
+  Widget get displayInputSensitivityText {
     return Container(
-      // Can explicitly set heights and widths on containers
-      width: 100.0,
-      height: 100.0,
-
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: Colors.white,
-      ),
+      child: Card(
+          color: Colors.lightGreen[800],
+          child: Padding(
+            padding: const EdgeInsets.only(
+              top: 10.0,
+              bottom: 8.0,
+              left: 20.0,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Text("Input Sensitivity",
+                    style: Theme.of(context).textTheme.headline),
+                Text(widget.settings.inputSensitivity.toString(),
+                    style: Theme.of(context).textTheme.subhead),
+              ],
+            ),
+          )),
     );
   }
+
+//  /// Secondly need a widget to handle the input sensitivity
+//  Widget get displayInputSensitivitySlider {
+//    return Column(
+//      children: <Widget>[
+//        Container(
+//          padding: EdgeInsets.symmetric(
+//            vertical: 16.0,
+//            horizontal: 16.0,
+//          ),
+//          child: Row(
+//            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//            children: <Widget>[
+//              Flexible(
+//                flex: 1,
+//                child: Slider(
+//                  activeColor: Colors.lightGreen,
+//                  min: 0.0,
+//                  max: 100.0,
+//                  onChanged: (newInputSensitivity) {
+//                    setState(() => _sliderValue = newInputSensitivity);
+//                  },
+//                  value: _sliderValue,
+//                ),
+//              ),
+//
+//              // This displays the slider value
+//              Container(
+//                width: 50.0,
+//                alignment: Alignment.center,
+//                child: Text('${_sliderValue.toInt()}', style: Theme.of(context).textTheme.display1,),
+//              )
+//            ],
+//          )
+//        ),
+//      ],
+//    );
+//  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 115.0,
-      child: Stack(
+      alignment: Alignment.topLeft,
+//      color: Colors.white,
+      height: 800.0,
+      child: ListView(
         children: <Widget>[
-          Positioned(
-            child: displayInputDeviceText,
-          ),
-          Positioned(
-            child: displayInputDeviceDropBox,
-          ),
+          displayInputDeviceText,
+          displayOutputDeviceText,
+          displayInputSensitivityText,
         ],
       ),
     );
