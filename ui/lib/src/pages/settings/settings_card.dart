@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'settings_model.dart';
 
+/// Controller ? -- MVC Pattern
 class SettingsCard extends StatefulWidget {
   final Settings settings;
 
@@ -16,7 +17,10 @@ class _SettingsCardState extends State<SettingsCard> {
 
   _SettingsCardState(this.settings);
 
-  double _sliderValue = 10.0;
+  // Set some default values
+  String _inputDeviceValue = 'None Selected';
+  String _outputDeviceValue = 'None Selected';
+  double _inputSensitivityValue = 50.0;
 
   /// Need a few widgets
   /// First being a text widget
@@ -32,17 +36,59 @@ class _SettingsCardState extends State<SettingsCard> {
               bottom: 8.0,
               left: 20.0,
             ),
-            child: Column(
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                Text("Input Device",
+                Text("Input Device: " + widget.settings.inputDevice,
                     style: Theme.of(context).textTheme.headline),
-                Text(widget.settings.inputDevice,
-                    style: Theme.of(context).textTheme.subhead),
               ],
             ),
           )),
+    );
+  }
+
+  Widget get displayInputDeviceDropBox {
+    return Column(
+      children: <Widget>[
+        Container(
+            padding: EdgeInsets.symmetric(
+              vertical: 16.0,
+              horizontal: 16.0,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Flexible(
+                  flex: 1,
+                  child: DropdownButton<String>(
+                    value: _inputDeviceValue,
+                    icon: Icon(Icons.arrow_downward),
+                    iconSize: 24,
+                    elevation: 16,
+                    style: TextStyle(color: Colors.lightGreen[800]),
+                    underline: Container(
+                      height: 2,
+                      color: Colors.lightGreen,
+                    ),
+                    onChanged: (String newOutputDeviceValue) {
+                      setState(() {
+                        _inputDeviceValue = newOutputDeviceValue;
+                      });
+                    },
+                    // TODO: Look at getting audio options here
+                    items: <String>['None Selected', 'Integrated Microphone', 'External Microphone']
+                        .map((String value) {
+                      return new DropdownMenuItem<String>(
+                        value: value,
+                        child: new Text(value),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
+            )),
+      ],
     );
   }
 
@@ -60,13 +106,55 @@ class _SettingsCardState extends State<SettingsCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Text("Output Device:",
+                Text("Output Device: " + widget.settings.outputDevice,
                     style: Theme.of(context).textTheme.headline),
-                Text(widget.settings.outputDevice,
-                    style: Theme.of(context).textTheme.subhead),
               ],
             ),
           )),
+    );
+  }
+
+  Widget get displayOutputDeviceDropBox {
+    return Column(
+      children: <Widget>[
+        Container(
+            padding: EdgeInsets.symmetric(
+              vertical: 16.0,
+              horizontal: 16.0,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Flexible(
+                  flex: 1,
+                  child: DropdownButton<String>(
+                    value: _outputDeviceValue,
+                    icon: Icon(Icons.arrow_downward),
+                    iconSize: 24,
+                    elevation: 16,
+                    style: TextStyle(color: Colors.lightGreen[800]),
+                    underline: Container(
+                      height: 2,
+                      color: Colors.lightGreen,
+                    ),
+                    onChanged: (String newOutputDeviceValue) {
+                      setState(() {
+                        _outputDeviceValue = newOutputDeviceValue;
+                      });
+                    },
+                    // TODO: Look at getting audio options here
+                    items: <String>['None Selected', 'Speakers', 'Headphones']
+                        .map((String value) {
+                      return new DropdownMenuItem<String>(
+                        value: value,
+                        child: new Text(value),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
+            )),
+      ],
     );
   }
 
@@ -80,14 +168,12 @@ class _SettingsCardState extends State<SettingsCard> {
               bottom: 8.0,
               left: 20.0,
             ),
-            child: Column(
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                Text("Input Sensitivity",
+                Text("Input Sensitivity: " + widget.settings.inputSensitivity.toString(),
                     style: Theme.of(context).textTheme.headline),
-                Text(widget.settings.inputSensitivity.toString(),
-                    style: Theme.of(context).textTheme.subhead),
               ],
             ),
           )),
@@ -95,54 +181,62 @@ class _SettingsCardState extends State<SettingsCard> {
   }
 
 //  /// Secondly need a widget to handle the input sensitivity
-//  Widget get displayInputSensitivitySlider {
-//    return Column(
-//      children: <Widget>[
-//        Container(
-//          padding: EdgeInsets.symmetric(
-//            vertical: 16.0,
-//            horizontal: 16.0,
-//          ),
-//          child: Row(
-//            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//            children: <Widget>[
-//              Flexible(
-//                flex: 1,
-//                child: Slider(
-//                  activeColor: Colors.lightGreen,
-//                  min: 0.0,
-//                  max: 100.0,
-//                  onChanged: (newInputSensitivity) {
-//                    setState(() => _sliderValue = newInputSensitivity);
-//                  },
-//                  value: _sliderValue,
-//                ),
-//              ),
-//
-//              // This displays the slider value
-//              Container(
-//                width: 50.0,
-//                alignment: Alignment.center,
-//                child: Text('${_sliderValue.toInt()}', style: Theme.of(context).textTheme.display1,),
-//              )
-//            ],
-//          )
-//        ),
-//      ],
-//    );
-//  }
+  Widget get displayInputSensitivitySlider {
+    return Column(
+      children: <Widget>[
+        Container(
+            padding: EdgeInsets.symmetric(
+              vertical: 16.0,
+              horizontal: 16.0,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Flexible(
+                  flex: 1,
+                  child: Slider(
+                    activeColor: Colors.lightGreen,
+                    min: 0.0,
+                    max: 100.0,
+                    onChanged: (newInputSensitivity) {
+                      setState(
+                          () => _inputSensitivityValue = newInputSensitivity);
+                    },
+                    value: _inputSensitivityValue,
+                  ),
+                ),
+
+                // This displays the slider value
+                Container(
+                  width: 50.0,
+                  alignment: Alignment.center,
+                  child: Text(
+                    '${_inputSensitivityValue.toInt()}',
+                    style: Theme.of(context).textTheme.display1,
+                  ),
+                )
+              ],
+            )),
+      ],
+    );
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.topLeft,
-//      color: Colors.white,
+      color: Colors.white12,
       height: 800.0,
       child: ListView(
         children: <Widget>[
           displayInputDeviceText,
+          displayInputDeviceDropBox,
           displayOutputDeviceText,
+          displayOutputDeviceDropBox,
           displayInputSensitivityText,
+          displayInputSensitivitySlider,
         ],
       ),
     );

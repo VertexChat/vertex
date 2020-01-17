@@ -1,5 +1,6 @@
 /// Data model for Settings
-
+///
+/// Model -- MVC Pattern
 class Settings {
   // Audio Settings
   String inputDevice;

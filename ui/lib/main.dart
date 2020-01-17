@@ -8,6 +8,7 @@ import 'package:vertex_ui/src/pages/settings/audio_settings_card.dart';
 void main() => runApp(UI()); // Vertex_UI -> App root call to
 
 /// App Root
+/// TODO: Change title to something more user meaningful
 class UI extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class UI extends StatelessWidget {
     return MaterialApp(
       title: 'Vertex',
       theme: ThemeData(brightness: Brightness.dark),
-      home: VertexHomePage(title: 'Vertex Home'),
+      home: VertexHomePage(title: 'Welcome Home' + '{username}'), // TODO: ${username}
     );
   }
 }
