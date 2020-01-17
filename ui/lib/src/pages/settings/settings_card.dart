@@ -42,7 +42,7 @@ class _SettingsCardState extends State<SettingsCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Text("Input Device: " + widget.settings.inputDevice,
+                Text("Input Device: " + _inputDeviceValue,
                     style: Theme.of(context).textTheme.headline),
               ],
             ),
@@ -79,6 +79,7 @@ class _SettingsCardState extends State<SettingsCard> {
                     onChanged: (String newOutputDeviceValue) {
                       setState(() {
                         _inputDeviceValue = newOutputDeviceValue;
+                        widget.settings.inputDevice = _inputDeviceValue;
                       });
                     },
                     // TODO: Look at getting audio options here
@@ -117,7 +118,7 @@ class _SettingsCardState extends State<SettingsCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Text("Output Device: " + widget.settings.outputDevice,
+                Text("Output Device: " + _outputDeviceValue,
                     style: Theme.of(context).textTheme.headline),
               ],
             ),
@@ -152,6 +153,7 @@ class _SettingsCardState extends State<SettingsCard> {
                     onChanged: (String newOutputDeviceValue) {
                       setState(() {
                         _outputDeviceValue = newOutputDeviceValue;
+                        widget.settings.outputDevice = _outputDeviceValue;
                       });
                     },
                     // TODO: Look at getting audio options here
@@ -186,7 +188,7 @@ class _SettingsCardState extends State<SettingsCard> {
               children: <Widget>[
                 Text(
                     "Input Sensitivity: " +
-                        widget.settings.inputSensitivity.toString(),
+                        _inputSensitivityValue.floor().toString(),
                     style: Theme.of(context).textTheme.headline),
               ],
             ),
@@ -215,6 +217,8 @@ class _SettingsCardState extends State<SettingsCard> {
                     onChanged: (newInputSensitivity) {
                       setState(
                           () => _inputSensitivityValue = newInputSensitivity);
+                      widget.settings.inputSensitivity =
+                          _inputSensitivityValue.toDouble();
                     },
                     value: _inputSensitivityValue,
                   ),
@@ -247,13 +251,87 @@ class _SettingsCardState extends State<SettingsCard> {
     setState(() {
       widget.settings.inputDevice = _inputDeviceValue;
       widget.settings.outputDevice = _outputDeviceValue;
-      widget.settings.inputSensitivity = _inputSensitivityValue.toInt();
+      widget.settings.inputSensitivity = _inputSensitivityValue.toDouble();
     });
 
     print('inputDevice: ' + widget.settings.inputDevice);
     print('outputDevice: ' + widget.settings.inputDevice);
     print('inputSensitivity: ' + widget.settings.inputSensitivity.toString());
   }
+
+  /// Language Text
+  ///
+  ///
+  Widget get displayLanguageText {
+    Locale myLocale = Localizations.localeOf(context);
+    return Container(
+      child: Card(
+          color: Colors.lightGreen[800],
+          child: Padding(
+            padding: const EdgeInsets.only(
+              top: 10.0,
+              bottom: 8.0,
+              left: 20.0,
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Text("Language: " + myLocale.toString(),
+                    style: Theme.of(context).textTheme.headline),
+              ],
+            ),
+          )),
+    );
+  }
+
+  /// Output Device Drop box
+  Widget get displayLanguageDropBox {
+    Locale myLocale = Localizations.localeOf(context);
+    return Column(
+      children: <Widget>[
+        Container(
+            padding: EdgeInsets.symmetric(
+              vertical: 16.0,
+              horizontal: 16.0,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Flexible(
+                  flex: 1,
+                  child: DropdownButton<String>(
+                    value: _outputDeviceValue,
+                    icon: Icon(Icons.arrow_downward),
+                    iconSize: 24,
+                    elevation: 16,
+                    style: TextStyle(color: Colors.lightGreen[800]),
+                    underline: Container(
+                      height: 2,
+                      color: Colors.lightGreen,
+                    ),
+                    onChanged: (String newLocale) {
+                      setState(() {
+                        Locale locale = newLocale as Locale;
+                      });
+                    },
+                    // TODO: Look at getting audio options here
+                    items: <String>['None Selected','en', 'he']
+                        .map((String value) {
+                      return new DropdownMenuItem<String>(
+                        value: value,
+                        child: new Text(value),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
+            )),
+      ],
+    );
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -269,6 +347,8 @@ class _SettingsCardState extends State<SettingsCard> {
           displayOutputDeviceDropBox,
           displayInputSensitivityText,
           displayInputSensitivitySlider,
+          displayLanguageText,
+          displayLanguageDropBox,
           updateSettingsButton,
         ],
       ),

@@ -5,7 +5,7 @@ class Settings {
   // Audio Settings
   String inputDevice;
   String outputDevice;
-  int inputSensitivity; // Start with 5, modify later
+  double inputSensitivity;
 
   // 3 Param Constructor
   Settings(this.inputDevice, this.outputDevice, this.inputSensitivity);

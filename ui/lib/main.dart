@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:vertex_ui/src/pages/settings/constants.dart';
 import 'package:vertex_ui/src/pages/settings/settings_page.dart';
 import 'package:vertex_ui/src/pages/settings/audio_settings_model.dart';
-import 'package:vertex_ui/src/pages/settings/audio_settings_card.dart';
+
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 /// Call to run App Root (App starts here)
 void main() => runApp(UI()); // Vertex_UI -> App root call to
@@ -18,6 +18,17 @@ class UI extends StatelessWidget {
       title: 'Vertex',
       theme: ThemeData(brightness: Brightness.dark),
       home: VertexHomePage(title: 'Welcome Home'), // TODO: ${username}
+
+      // Accessibility Code -- Languages
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en'), // English
+        const Locale('he'), // Hebrew
+        const Locale.fromSubtags(languageCode: 'zh'), // Chinese *See Advanced Locales below*
+      ],
     );
   }
 }
@@ -51,7 +62,7 @@ class _VertexHomePageState extends State<VertexHomePage> {
           IconButton(
             icon: Icon(Icons.build),
             onPressed: _showSettingsPage,
-          )
+          ),
         ],
       ),
       body: Container(

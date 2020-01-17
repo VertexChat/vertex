@@ -17,8 +17,7 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   List<Settings> initialSettings = []
-  ..add(Settings('Microphone', 'Speakers', 10))
-  ..add(Settings('Microphone', 'Headphones', 5));
+  ..add(Settings('None Selected', 'None Selected', 5));
 
 
   @override
@@ -28,7 +27,7 @@ class _SettingsPageState extends State<SettingsPage> {
           title: Text(widget.title),
         ),
         body: Center(
-          child: SettingsCard(initialSettings[1]),
+          child: SettingsCard(initialSettings[0]),
         ));
   }
 }
