@@ -17,7 +17,7 @@ class UI extends StatelessWidget {
     return MaterialApp(
       title: 'Vertex',
       theme: ThemeData(brightness: Brightness.dark),
-      home: VertexHomePage(title: 'Welcome Home' + '{username}'), // TODO: ${username}
+      home: VertexHomePage(title: 'Welcome Home'), // TODO: ${username}
     );
   }
 }

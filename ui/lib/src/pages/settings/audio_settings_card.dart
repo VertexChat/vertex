@@ -24,30 +24,10 @@ class _AudioSettingsCardState extends State<AudioSettingsCard> {
 
   _AudioSettingsCardState(this.audioSettings);
 
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: showAudioDetailPage,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        child: Container(
-            height: 200.0,
-            width: 600.0,
-            child: Stack(
-              children: <Widget>[
-                Positioned(left: 50.0, child: audioSettingsCard),
-              ],
-            )),
-      ),
-    );
-  }
-
   showAudioDetailPage() {
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) {
-       return AudioDetailPage(audioSettings);
-      }
-    ));
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return AudioDetailPage(audioSettings);
+    }));
   }
 
   Widget get audioSettingsCard {
@@ -80,6 +60,24 @@ class _AudioSettingsCardState extends State<AudioSettingsCard> {
               ],
             ),
           )),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: showAudioDetailPage,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        child: Container(
+            height: 200.0,
+            width: 600.0,
+            child: Stack(
+              children: <Widget>[
+                Positioned(left: 50.0, child: audioSettingsCard),
+              ],
+            )),
+      ),
     );
   }
 }

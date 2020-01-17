@@ -22,6 +22,8 @@ class _SettingsCardState extends State<SettingsCard> {
   String _outputDeviceValue = 'None Selected';
   double _inputSensitivityValue = 50.0;
 
+  /// -- Input Device --
+  ///
   /// Need a few widgets
   /// First being a text widget
   /// TODO: Rather than display all text in one widget
@@ -38,7 +40,7 @@ class _SettingsCardState extends State<SettingsCard> {
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Text("Input Device: " + widget.settings.inputDevice,
                     style: Theme.of(context).textTheme.headline),
@@ -48,6 +50,9 @@ class _SettingsCardState extends State<SettingsCard> {
     );
   }
 
+  /// Input Device Dropbox
+  ///
+  /// TODO: Manipulate for systems hardware
   Widget get displayInputDeviceDropBox {
     return Column(
       children: <Widget>[
@@ -57,7 +62,7 @@ class _SettingsCardState extends State<SettingsCard> {
               horizontal: 16.0,
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Flexible(
                   flex: 1,
@@ -77,8 +82,11 @@ class _SettingsCardState extends State<SettingsCard> {
                       });
                     },
                     // TODO: Look at getting audio options here
-                    items: <String>['None Selected', 'Integrated Microphone', 'External Microphone']
-                        .map((String value) {
+                    items: <String>[
+                      'None Selected',
+                      'Integrated Microphone',
+                      'External Microphone'
+                    ].map((String value) {
                       return new DropdownMenuItem<String>(
                         value: value,
                         child: new Text(value),
@@ -92,6 +100,9 @@ class _SettingsCardState extends State<SettingsCard> {
     );
   }
 
+  /// Output Device Text
+  ///
+  ///
   Widget get displayOutputDeviceText {
     return Container(
       child: Card(
@@ -114,6 +125,7 @@ class _SettingsCardState extends State<SettingsCard> {
     );
   }
 
+  /// Output Device Drop box
   Widget get displayOutputDeviceDropBox {
     return Column(
       children: <Widget>[
@@ -123,7 +135,7 @@ class _SettingsCardState extends State<SettingsCard> {
               horizontal: 16.0,
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Flexible(
                   flex: 1,
@@ -170,9 +182,11 @@ class _SettingsCardState extends State<SettingsCard> {
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Text("Input Sensitivity: " + widget.settings.inputSensitivity.toString(),
+                Text(
+                    "Input Sensitivity: " +
+                        widget.settings.inputSensitivity.toString(),
                     style: Theme.of(context).textTheme.headline),
               ],
             ),
@@ -221,13 +235,31 @@ class _SettingsCardState extends State<SettingsCard> {
     );
   }
 
+  Widget get updateSettingsButton {
+    return RaisedButton(
+      onPressed: () => updateSettings(),
+      child: Text('Save Settings'),
+      color: Colors.lightGreen[700],
+    );
+  }
 
+  void updateSettings() {
+    setState(() {
+      widget.settings.inputDevice = _inputDeviceValue;
+      widget.settings.outputDevice = _outputDeviceValue;
+      widget.settings.inputSensitivity = _inputSensitivityValue.toInt();
+    });
+
+    print('inputDevice: ' + widget.settings.inputDevice);
+    print('outputDevice: ' + widget.settings.inputDevice);
+    print('inputSensitivity: ' + widget.settings.inputSensitivity.toString());
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.topLeft,
-      color: Colors.white12,
+//      color: Colors.white12,
       height: 800.0,
       child: ListView(
         children: <Widget>[
@@ -237,6 +269,7 @@ class _SettingsCardState extends State<SettingsCard> {
           displayOutputDeviceDropBox,
           displayInputSensitivityText,
           displayInputSensitivitySlider,
+          updateSettingsButton,
         ],
       ),
     );
