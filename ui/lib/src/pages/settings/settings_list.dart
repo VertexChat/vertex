@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'audio_settings_card.dart';
 import 'audio_settings_model.dart';
 
 /// Class builds the list of settings on settings page
