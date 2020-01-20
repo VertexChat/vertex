@@ -1,89 +1,118 @@
 import 'package:flutter/material.dart';
+import 'package:vertex_ui/src/pages/settings/settings_page.dart';
+import 'package:vertex_ui/src/pages/settings/audio_settings_model.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:vertex_ui/src/pages/video_call/connect_call_page.dart';
 
 /// Call to run App Root (App starts here)
-void main() => runApp(Vertex_UI()); // Vertex_UI -> App root call to
+void main() => runApp(UI()); // Vertex_UI -> App root call to
 
 /// App Root
-class Vertex_UI extends StatelessWidget {
+/// TODO: Change title to something more user meaningful
+class UI extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    /// MaterialApp is the base Widget for your Flutter Application
+    /// Gives us access to routing, context, and meta info functionality.
     return MaterialApp(
       title: 'Vertex',
-      theme: ThemeData(
-        /// App theme-ing here
-        primarySwatch: Colors.blue,
-      ),
-      home: VertexLanding(landingTitle: 'Vertex Landing Page'),
+      theme: ThemeData(brightness: Brightness.dark),
+      home: VertexHomePage(title: 'Welcome Home'),
+      // TODO: ${username}
 
-      /// Change this to splash-screen
-      /// Landing screen should come later after Login
+      // Accessibility Code -- Languages
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en'),
+        // English
+        const Locale('he'),
+        // Hebrew
+        const Locale.fromSubtags(languageCode: 'zh'),
+        // Chinese *See Advanced Locales below*
+      ],
     );
   }
 }
 
-/// Each class defined below here is now a part of the App Root node
-/// VertexLanding is currently main landing page, meaning the App will
-/// load to that page.
-/// Stateful class --> Stateful widget.
-class VertexLanding extends StatefulWidget {
+/// Public --> StatefulWidget
+class VertexHomePage extends StatefulWidget {
   /// Home page of application.
   /// Fields in Widget subclass always marked final
 
-  VertexLanding({Key key, this.landingTitle}) : super(key: key);
+  VertexHomePage({Key key, this.title}) : super(key: key);
 
-  final String landingTitle;
+  final String title;
 
   @override
-  _VertexLandingState createState() => _VertexLandingState();
+  _VertexHomePageState createState() => _VertexHomePageState();
 }
 
 /// Stateless class
-class _VertexLandingState extends State<VertexLanding> {
-  int _counter = 0;
-
-  /// Debugging variable used for counter
-
-  /// Debugging method used for initial setup of Flutter
-  void _incrementCounter() {
-    /// setState calls build method below
-    setState(() {
-      _counter++;
-    });
-  }
-
+class _VertexHomePageState extends State<VertexHomePage> {
   /// Build is run and rerun every time above method, setState, is called
   @override
   Widget build(BuildContext context) {
     /// Scaffold: framework which implements the basic material
     /// design visual layout structure of the flutter app.
+    /// Need one every time we build a new page
     return Scaffold(
       appBar: AppBar(
         /// Setting AppBar title here
-        title: Text(widget.landingTitle),
+        title: Text(widget.title),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.build),
+            onPressed: _showSettingsPage,
+          ),
+          IconButton(
+            icon: Icon(Icons.video_call),
+            onPressed: _showConnectCallPage,
+          )
+        ],
       ),
-
-      /// Center: A widget that centers its child within itself
-      body: Center(
-        /// Column: A Column is a widget used to display child widgets in a vertical manner.
-        /// We can update this to be whatever we like.
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            stops: [0.1, 0.5, 0.7, 0.9],
+            colors: [
+              Colors.lightGreen[900],
+              Colors.lightGreen[700],
+              Colors.lightGreen[500],
+              Colors.lightGreen[300],
+            ],
+          ),
+        ),
+        child: Center(
+          child: Text("Fill me with widgets!"),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),
+    );
+  }
+
+  Future _showConnectCallPage() async {
+    await Navigator.of(context)
+        .push(MaterialPageRoute(builder: (BuildContext context) {
+      return ConnectCallPage("Connect to Video Call");
+    }));
+  } //End _showConnectCallPage()
+
+  // Any time you're pushing a new route and expect that route
+  // to return something back to you,
+  // you need to use an async function.
+  // In this case, the function will create a form page
+  // which the user can fill out and submit.
+  // On submission, the information in that form page
+  // will be passed back to this function.
+  Future _showSettingsPage() async {
+    AudioSettings audioSettings = await Navigator.of(context).push(
+      MaterialPageRoute(builder: (BuildContext context) {
+        return SettingsPage("Settings Page");
+      }),
     );
   }
 }
