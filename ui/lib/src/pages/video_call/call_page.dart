@@ -68,6 +68,24 @@ class _CallPageState extends State<CallPage> {
                             textAlign: TextAlign.center,
                             style: TextStyle(color: Colors.white)),
                       ))),
+              new Container(
+                //Container for the icons
+                margin: const EdgeInsets.all(30.0),
+                alignment: Alignment.bottomCenter,
+                child: new Row(
+                  //Row on icons inside the container
+                  //Container for call fanatically buttons
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Icon(
+                      Icons.call_end,
+                      size: 24.0,
+                    ),
+                    Icon(Icons.mic, size: 24.0),
+                    Icon(Icons.headset, size: 24.0)
+                  ],
+                ),
+              )
             ],
           ),
         ));
