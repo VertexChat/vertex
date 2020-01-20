@@ -94,6 +94,7 @@ class _VertexHomePageState extends State<VertexHomePage> {
     );
   }
 
+  //Display connect call page
   Future _showConnectCallPage() async {
     await Navigator.of(context)
         .push(MaterialPageRoute(builder: (BuildContext context) {

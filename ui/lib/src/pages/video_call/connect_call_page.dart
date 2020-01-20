@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vertex_ui/src/pages/video_call/call_page.dart';
 
 //TODO: This page is currently temp till we discuses how we want it to look. It will prob be integrated somewhere down the line in the home page.
 
@@ -59,6 +60,7 @@ class _ConnectCallPageState extends State<ConnectCallPage> {
                         children: <Widget>[
                           Expanded(
                             child: RaisedButton(
+                              onPressed: () => onJoin(),
                               child: Text("Join"),
                               color: Colors.blueAccent,
                               textColor: Colors.white,
@@ -70,4 +72,24 @@ class _ConnectCallPageState extends State<ConnectCallPage> {
               )),
         ));
   } // End widget builder
+
+//  // Function to allow connection to a call once a channel name has been
+//  // entered in the input dialog box
+  onJoin() async {
+    // update input validation
+    setState(() {
+      _channelNameController.text.isEmpty
+          ? _validateError = true
+          : _validateError = false;
+    });
+    if (_channelNameController.text.isNotEmpty) {
+      //Navigate to another page
+      Navigator.push(
+          context,
+          //Build mew page:
+          MaterialPageRoute(
+              builder: (context) =>
+                  new CallPage(pageTitle: _channelNameController.text)));
+    } //End function
+  } //End if
 } //End class
