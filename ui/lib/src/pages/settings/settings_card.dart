@@ -24,7 +24,8 @@ class _SettingsCardState extends State<SettingsCard> {
   String _videoInput = 'None Selected';
   bool _audioInputIsMute = false;
   bool _audioOutputIsMute = false;
-  List<bool> _isSelected = [true, false];
+  List<bool> _audioInputIsSelected = [true, false];
+  List<bool> _audioOutputIsSelected = [true, false];
 
 //  List<bool> _audioOutputIsMute = [true, false];
 
@@ -333,7 +334,7 @@ class _SettingsCardState extends State<SettingsCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Text("Mute Audio Input",
+                Text("Mute Audio Input: " + _audioInputIsMute.toString(),
                     style: Theme.of(context).textTheme.headline),
               ],
             ),
@@ -362,16 +363,17 @@ class _SettingsCardState extends State<SettingsCard> {
 //                  // Need mutually exclusive check
                   onPressed: (int index) {
                     setState(() {
-                      for (int i = 0; i < _isSelected.length; i++) {
+                      for (int i = 0; i < _audioInputIsSelected.length; i++) {
                         if (i == index) {
-                          _isSelected[i] = true;
+                          _audioInputIsSelected[i] = true;
                         } else {
-                          _isSelected[i] = false;
+                          _audioInputIsSelected[i] = false;
                         }
+                        _audioInputIsMute = _audioInputIsSelected[i];
                       }
                     });
                   },
-                  isSelected: _isSelected,
+                  isSelected: _audioInputIsSelected,
                 ),
               ],
             )),
@@ -395,7 +397,7 @@ class _SettingsCardState extends State<SettingsCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Text("Mute Audio Output",
+                Text("Mute Audio Output: " + _audioOutputIsMute.toString(),
                     style: Theme.of(context).textTheme.headline),
               ],
             ),
@@ -424,18 +426,17 @@ class _SettingsCardState extends State<SettingsCard> {
 //                  // Need mutually exclusive check
                   onPressed: (int index) {
                     setState(() {
-                      for (int i = 0; i < _isSelected.length; i++) {
+                      for (int i = 0; i < _audioOutputIsSelected.length; i++) {
                         if (i == index) {
-                          _isSelected[i] = true;
-                          _audioOutputIsMute = _isSelected[i];
+                          _audioOutputIsSelected[i] = true;
                         } else {
-                          _isSelected[i] = false;
-                          _audioOutputIsMute = _isSelected[i];
+                          _audioOutputIsSelected[i] = false;
                         }
+                        _audioOutputIsMute = _audioOutputIsSelected[i];
                       }
                     });
                   },
-                  isSelected: _isSelected,
+                  isSelected: _audioOutputIsSelected,
                 ),
               ],
             )),
