@@ -62,7 +62,7 @@ class _ConnectCallPageState extends State<ConnectCallPage> {
                             child: RaisedButton(
                               onPressed: () => onJoin(),
                               child: Text("Join"),
-                              color: Colors.blueAccent,
+                              color: Colors.lightGreen[800],
                               textColor: Colors.white,
                             ),
                           )
@@ -91,5 +91,5 @@ class _ConnectCallPageState extends State<ConnectCallPage> {
               builder: (context) =>
                   new CallPage(pageTitle: _channelNameController.text)));
     } //End function
-  } //End if
+  } //End ify
 } //End class

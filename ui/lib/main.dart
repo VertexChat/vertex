@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vertex_ui/src/pages/login_register/login_page.dart';
 import 'package:vertex_ui/src/pages/settings/settings_page.dart';
 import 'package:vertex_ui/src/pages/settings/audio_settings_model.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -19,6 +20,14 @@ class UI extends StatelessWidget {
       theme: ThemeData(brightness: Brightness.dark),
       home: VertexHomePage(title: 'Welcome Home'),
       // TODO: ${username}
+      //Remove debug banner
+      debugShowCheckedModeBanner: false,
+      //Login route
+      routes: <String, WidgetBuilder>{
+        '/login': (BuildContext context) => new LoginPage(),
+        //'/signup': (BuildContext context) => new
+      },
+
 
       // Accessibility Code -- Languages
       localizationsDelegates: [
@@ -41,7 +50,6 @@ class UI extends StatelessWidget {
 class VertexHomePage extends StatefulWidget {
   /// Home page of application.
   /// Fields in Widget subclass always marked final
-
   VertexHomePage({Key key, this.title}) : super(key: key);
 
   final String title;
@@ -60,6 +68,7 @@ class _VertexHomePageState extends State<VertexHomePage> {
     /// Need one every time we build a new page
     return Scaffold(
       appBar: AppBar(
+
         /// Setting AppBar title here
         title: Text(widget.title),
         actions: <Widget>[

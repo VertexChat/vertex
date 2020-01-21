@@ -26,12 +26,19 @@ class _CallPageState extends State<CallPage> {
     /// design visual layout structure of the flutter app.
     return Scaffold(
         appBar: AppBar(
-
-            /// Setting AppBar title here
-            title: Text(
-          widget.pageTitle,
-          style: TextStyle(color: Colors.white),
-        )),
+          /// Setting AppBar title here
+          /// Add in process class duration in appbar so user can see the duration of the current class
+          title: Text(
+            widget.pageTitle,
+            style: TextStyle(color: Colors.white),
+          ),
+          actions: <Widget>[
+            IconButton(
+              //TODO: Add support for appBar action buttons across all page views in some sort of a class
+              icon: Icon(Icons.settings),
+            )
+          ],
+        ),
 
         /// Center: A widget that centers all children within it
         body: Center(
