@@ -17,8 +17,14 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  List<Settings> initialSettings = []
-  ..add(Settings('None Selected', 'None Selected', 5, 'None Selected', true, false));
+  // TODO: Add null check here: Check for file
+  // If null --> Load blank list
+  // Else --> Load file
+  List<Settings> initialSettings = []..add(Settings(
+      'None Selected', 'None Selected', 5, 'None Selected', true, false));
+
+  Settings settings = new Settings(
+      'None Selected', 'None Selected', 5, 'None Selected', true, false);
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +34,11 @@ class _SettingsPageState extends State<SettingsPage> {
           title: Text(AppLocalizations.of(context).title),
         ),
         body: Center(
-          child: ListView(
-              children: <Widget>[
-                SettingsCard(initialSettings[0]),
-            ],
-          )
-        ));
+            child: ListView(
+          children: <Widget>[
+            SettingsCard(settings),
+          ],
+        )));
   }
 }
 

@@ -457,6 +457,7 @@ class _SettingsCardState extends State<SettingsCard> {
   /// -- Update Settings --
   /// Button Functionality
   void updateSettings() {
+    // TODO: Save to file here ?
     // Update the state of the values
     setState(() {
       widget.settings.audioInput = _audioInput;
@@ -465,6 +466,7 @@ class _SettingsCardState extends State<SettingsCard> {
       widget.settings.videoInput = _videoInput;
       widget.settings.audioInputIsMute = _audioInputIsMute;
       widget.settings.audioOutputIsMute = _audioOutputIsMute;
+//      Settings settings = new Settings(_audioInput, _audioOutput, _audioInputSensitivity, _videoInput, _audioInputIsMute, _audioOutputIsMute);
     });
 
     // Print values to console
