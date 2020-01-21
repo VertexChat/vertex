@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../localizations.dart';
 import 'settings_model.dart';
 import 'settings_card.dart';
 
@@ -17,17 +18,21 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   List<Settings> initialSettings = []
-  ..add(Settings('None Selected', 'None Selected', 5));
-
+  ..add(Settings('None Selected', 'None Selected', 5, 'None Selected', true, false));
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+//      backgroundColor: Colors.white12,
         appBar: AppBar(
-          title: Text(widget.title),
+          title: Text(AppLocalizations.of(context).title),
         ),
         body: Center(
-          child: SettingsCard(initialSettings[0]),
+          child: ListView(
+              children: <Widget>[
+                SettingsCard(initialSettings[0]),
+            ],
+          )
         ));
   }
 }

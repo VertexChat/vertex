@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vertex_ui/localizations.dart';
 
 import 'settings_model.dart';
 
@@ -17,18 +18,19 @@ class _SettingsCardState extends State<SettingsCard> {
 
   _SettingsCardState(this.settings);
 
-  // Set some default values
-  String _inputDeviceValue = 'None Selected';
-  String _outputDeviceValue = 'None Selected';
-  double _inputSensitivityValue = 50.0;
+  String _audioInput = 'None Selected';
+  String _audioOutput = 'None Selected';
+  double _audioInputSensitivity = 50.0;
+  String _videoInput = 'None Selected';
+  bool _audioInputIsMute = false;
+  bool _audioOutputIsMute = false;
+  List<bool> _isSelected = [true, false];
 
-  /// -- Input Device --
-  ///
-  /// Need a few widgets
-  /// First being a text widget
-  /// TODO: Rather than display all text in one widget
-  /// TODO: Have a text header, then slider value in the one widget
-  Widget get displayInputDeviceText {
+//  List<bool> _audioOutputIsMute = [true, false];
+
+  /// -- Audio Input--
+  /// Text Display
+  Widget get audioInputText {
     return Container(
       child: Card(
           color: Colors.lightGreen[800],
@@ -42,7 +44,7 @@ class _SettingsCardState extends State<SettingsCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Text("Input Device: " + _inputDeviceValue,
+                Text("Audio In: " + _audioInput,
                     style: Theme.of(context).textTheme.headline),
               ],
             ),
@@ -50,10 +52,11 @@ class _SettingsCardState extends State<SettingsCard> {
     );
   }
 
-  /// Input Device Dropbox
+  /// -- Audio Input --
+  /// DropBox Display
   ///
   /// TODO: Manipulate for systems hardware
-  Widget get displayInputDeviceDropBox {
+  Widget get audioInputDropBox {
     return Column(
       children: <Widget>[
         Container(
@@ -67,7 +70,7 @@ class _SettingsCardState extends State<SettingsCard> {
                 Flexible(
                   flex: 1,
                   child: DropdownButton<String>(
-                    value: _inputDeviceValue,
+                    value: _audioInput,
                     icon: Icon(Icons.arrow_downward),
                     iconSize: 24,
                     elevation: 16,
@@ -78,8 +81,8 @@ class _SettingsCardState extends State<SettingsCard> {
                     ),
                     onChanged: (String newOutputDeviceValue) {
                       setState(() {
-                        _inputDeviceValue = newOutputDeviceValue;
-                        widget.settings.inputDevice = _inputDeviceValue;
+                        _audioInput = newOutputDeviceValue;
+                        widget.settings.audioInput = _audioInput;
                       });
                     },
                     // TODO: Look at getting audio options here
@@ -101,10 +104,9 @@ class _SettingsCardState extends State<SettingsCard> {
     );
   }
 
-  /// Output Device Text
-  ///
-  ///
-  Widget get displayOutputDeviceText {
+  /// -- Audio Output --
+  /// Text Display
+  Widget get audioOutputText {
     return Container(
       child: Card(
           color: Colors.lightGreen[800],
@@ -118,7 +120,7 @@ class _SettingsCardState extends State<SettingsCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Text("Output Device: " + _outputDeviceValue,
+                Text("Audio Out: " + _audioOutput,
                     style: Theme.of(context).textTheme.headline),
               ],
             ),
@@ -126,8 +128,9 @@ class _SettingsCardState extends State<SettingsCard> {
     );
   }
 
-  /// Output Device Drop box
-  Widget get displayOutputDeviceDropBox {
+  /// -- Audio Output --
+  /// DropBox Display
+  Widget get audioOutputDropBox {
     return Column(
       children: <Widget>[
         Container(
@@ -141,7 +144,7 @@ class _SettingsCardState extends State<SettingsCard> {
                 Flexible(
                   flex: 1,
                   child: DropdownButton<String>(
-                    value: _outputDeviceValue,
+                    value: _audioOutput,
                     icon: Icon(Icons.arrow_downward),
                     iconSize: 24,
                     elevation: 16,
@@ -152,8 +155,8 @@ class _SettingsCardState extends State<SettingsCard> {
                     ),
                     onChanged: (String newOutputDeviceValue) {
                       setState(() {
-                        _outputDeviceValue = newOutputDeviceValue;
-                        widget.settings.outputDevice = _outputDeviceValue;
+                        _audioOutput = newOutputDeviceValue;
+                        widget.settings.audioOutput = _audioOutput;
                       });
                     },
                     // TODO: Look at getting audio options here
@@ -172,7 +175,9 @@ class _SettingsCardState extends State<SettingsCard> {
     );
   }
 
-  Widget get displayInputSensitivityText {
+  /// -- Audio Input Sensitivity --
+  /// Text Display
+  Widget get audioInputSensitivityText {
     return Container(
       child: Card(
           color: Colors.lightGreen[800],
@@ -187,8 +192,8 @@ class _SettingsCardState extends State<SettingsCard> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Text(
-                    "Input Sensitivity: " +
-                        _inputSensitivityValue.floor().toString(),
+                    "Audio Input Sensitivity: " +
+                        _audioInputSensitivity.floor().toString(),
                     style: Theme.of(context).textTheme.headline),
               ],
             ),
@@ -196,8 +201,9 @@ class _SettingsCardState extends State<SettingsCard> {
     );
   }
 
-//  /// Secondly need a widget to handle the input sensitivity
-  Widget get displayInputSensitivitySlider {
+  /// -- Audio Input Sensitivity --
+  /// Slider Display
+  Widget get audioInputSensitivitySlider {
     return Column(
       children: <Widget>[
         Container(
@@ -216,11 +222,11 @@ class _SettingsCardState extends State<SettingsCard> {
                     max: 100.0,
                     onChanged: (newInputSensitivity) {
                       setState(
-                          () => _inputSensitivityValue = newInputSensitivity);
-                      widget.settings.inputSensitivity =
-                          _inputSensitivityValue.toDouble();
+                          () => _audioInputSensitivity = newInputSensitivity);
+                      widget.settings.audioInputSensitivity =
+                          _audioInputSensitivity.toDouble();
                     },
-                    value: _inputSensitivityValue,
+                    value: _audioInputSensitivity,
                   ),
                 ),
 
@@ -229,7 +235,7 @@ class _SettingsCardState extends State<SettingsCard> {
                   width: 50.0,
                   alignment: Alignment.center,
                   child: Text(
-                    '${_inputSensitivityValue.toInt()}',
+                    '${_audioInputSensitivity.toInt()}',
                     style: Theme.of(context).textTheme.display1,
                   ),
                 )
@@ -239,31 +245,9 @@ class _SettingsCardState extends State<SettingsCard> {
     );
   }
 
-  Widget get updateSettingsButton {
-    return RaisedButton(
-      onPressed: () => updateSettings(),
-      child: Text('Save Settings'),
-      color: Colors.lightGreen[700],
-    );
-  }
-
-  void updateSettings() {
-    setState(() {
-      widget.settings.inputDevice = _inputDeviceValue;
-      widget.settings.outputDevice = _outputDeviceValue;
-      widget.settings.inputSensitivity = _inputSensitivityValue.toDouble();
-    });
-
-    print('inputDevice: ' + widget.settings.inputDevice);
-    print('outputDevice: ' + widget.settings.inputDevice);
-    print('inputSensitivity: ' + widget.settings.inputSensitivity.toString());
-  }
-
-  /// Language Text
-  ///
-  ///
-  Widget get displayLanguageText {
-    Locale myLocale = Localizations.localeOf(context);
+  /// -- WebCam Input --
+  /// Text Widget
+  Widget get videoInputText {
     return Container(
       child: Card(
           color: Colors.lightGreen[800],
@@ -277,7 +261,7 @@ class _SettingsCardState extends State<SettingsCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Text("Language: " + myLocale.toString(),
+                Text("Webcam In: " + _videoInput,
                     style: Theme.of(context).textTheme.headline),
               ],
             ),
@@ -285,9 +269,9 @@ class _SettingsCardState extends State<SettingsCard> {
     );
   }
 
-  /// Output Device Drop box
-  Widget get displayLanguageDropBox {
-    Locale myLocale = Localizations.localeOf(context);
+  /// -- WebCam Input --
+  /// DropBox Widget
+  Widget get videoInputDropBox {
     return Column(
       children: <Widget>[
         Container(
@@ -301,7 +285,7 @@ class _SettingsCardState extends State<SettingsCard> {
                 Flexible(
                   flex: 1,
                   child: DropdownButton<String>(
-                    value: _outputDeviceValue,
+                    value: _videoInput,
                     icon: Icon(Icons.arrow_downward),
                     iconSize: 24,
                     elevation: 16,
@@ -310,14 +294,16 @@ class _SettingsCardState extends State<SettingsCard> {
                       height: 2,
                       color: Colors.lightGreen,
                     ),
-                    onChanged: (String newLocale) {
+                    onChanged: (String newVideoDeviceValue) {
                       setState(() {
-                        Locale locale = newLocale as Locale;
+                        _videoInput = newVideoDeviceValue;
+                        widget.settings.videoInput = _videoInput;
                       });
                     },
-                    // TODO: Look at getting audio options here
-                    items: <String>['None Selected','en', 'he']
-                        .map((String value) {
+                    items: <String>[
+                      'None Selected',
+                      'Webcam',
+                    ].map((String value) {
                       return new DropdownMenuItem<String>(
                         value: value,
                         child: new Text(value),
@@ -331,24 +317,251 @@ class _SettingsCardState extends State<SettingsCard> {
     );
   }
 
+  /// -- Mute Microphone --
+  /// Text Widget
+  Widget get audioInputIsMuteText {
+    return Container(
+      child: Card(
+          color: Colors.lightGreen[800],
+          child: Padding(
+            padding: const EdgeInsets.only(
+              top: 10.0,
+              bottom: 8.0,
+              left: 20.0,
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Text("Mute Audio Input",
+                    style: Theme.of(context).textTheme.headline),
+              ],
+            ),
+          )),
+    );
+  }
 
+  /// -- Mute Microphone --
+  /// ToggleButton Widget
+  Widget get audioInputIsMuteToggle {
+    return Column(
+      children: <Widget>[
+        Container(
+            padding: EdgeInsets.symmetric(
+              vertical: 16.0,
+              horizontal: 16.0,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                ToggleButtons(
+                  children: <Widget>[
+                    Icon(Icons.do_not_disturb_alt),
+                    Icon(Icons.check),
+                  ],
+//                  // Need mutually exclusive check
+                  onPressed: (int index) {
+                    setState(() {
+                      for (int i = 0; i < _isSelected.length; i++) {
+                        if (i == index) {
+                          _isSelected[i] = true;
+                        } else {
+                          _isSelected[i] = false;
+                        }
+                      }
+                    });
+                  },
+                  isSelected: _isSelected,
+                ),
+              ],
+            )),
+      ],
+    );
+  }
 
+  /// -- Mute Headphone --
+  /// Text Widget
+  Widget get audioOutputIsMuteText {
+    return Container(
+      child: Card(
+          color: Colors.lightGreen[800],
+          child: Padding(
+            padding: const EdgeInsets.only(
+              top: 10.0,
+              bottom: 8.0,
+              left: 20.0,
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Text("Mute Audio Output",
+                    style: Theme.of(context).textTheme.headline),
+              ],
+            ),
+          )),
+    );
+  }
+
+  /// -- Mute Headphone --
+  /// ToggleButton Widget
+  Widget get audioOutputIsMuteToggle {
+    return Column(
+      children: <Widget>[
+        Container(
+            padding: EdgeInsets.symmetric(
+              vertical: 16.0,
+              horizontal: 16.0,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                ToggleButtons(
+                  children: <Widget>[
+                    Icon(Icons.do_not_disturb_alt),
+                    Icon(Icons.check),
+                  ],
+//                  // Need mutually exclusive check
+                  onPressed: (int index) {
+                    setState(() {
+                      for (int i = 0; i < _isSelected.length; i++) {
+                        if (i == index) {
+                          _isSelected[i] = true;
+                          _audioOutputIsMute = _isSelected[i];
+                        } else {
+                          _isSelected[i] = false;
+                          _audioOutputIsMute = _isSelected[i];
+                        }
+                      }
+                    });
+                  },
+                  isSelected: _isSelected,
+                ),
+              ],
+            )),
+      ],
+    );
+  }
+
+  /// -- Update Settings --
+  /// Button Display
+  Widget get updateSettingsButton {
+    return RaisedButton(
+      onPressed: () => updateSettings(),
+      child: Text('Save Settings'),
+      color: Colors.lightGreen[700],
+    );
+  }
+
+  /// -- Update Settings --
+  /// Button Functionality
+  void updateSettings() {
+    // Update the state of the values
+    setState(() {
+      widget.settings.audioInput = _audioInput;
+      widget.settings.audioOutput = _audioOutput;
+      widget.settings.audioInputSensitivity = _audioInputSensitivity.toDouble();
+      widget.settings.videoInput = _videoInput;
+      widget.settings.audioInputIsMute = _audioInputIsMute;
+      widget.settings.audioOutputIsMute = _audioOutputIsMute;
+    });
+
+    // Print values to console
+    print('audioInput: ' + widget.settings.audioInput);
+    print('audioOutput: ' + widget.settings.audioInput);
+    print('audioInputSensitivity: ' +
+        widget.settings.audioInputSensitivity.toString());
+    print('videoInput: ' + widget.settings.videoInput);
+    print('audioInputIsMute: ' + widget.settings.audioInputIsMute.toString());
+    print('audioOutputIsMute: ' + widget.settings.audioOutputIsMute.toString());
+  }
+
+  /// Language Text
+  ///
+  ///TODO: Move to main page ?
+//  Widget get displayLanguageText {
+//    Locale myLocale = Localizations.localeOf(context);
+//    return Container(
+//      child: Card(
+//          color: Colors.lightGreen[800],
+//          child: Padding(
+//            padding: const EdgeInsets.only(
+//              top: 10.0,
+//              bottom: 8.0,
+//              left: 20.0,
+//            ),
+//            child: Row(
+//              crossAxisAlignment: CrossAxisAlignment.start,
+//              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//              children: <Widget>[
+//                Text("Language: " + myLocale.toString(),
+//                    style: Theme.of(context).textTheme.headline),
+//              ],
+//            ),
+//          )),
+//    );
+//  }
+
+//  /// Output Device Drop box
+//  Widget get displayLanguageDropBox {
+//    Locale myLocale = Localizations.localeOf(context);
+//    return Column(
+//      children: <Widget>[
+//        Container(
+//            padding: EdgeInsets.symmetric(
+//              vertical: 16.0,
+//              horizontal: 16.0,
+//            ),
+//            child: Row(
+//              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//              children: <Widget>[
+//                new FlatButton(
+//                  child: new Text("English"),
+//                  color: AppLocalizations.of(context).locale == "en"
+//                      ? Colors.lightGreen
+//                      : Colors.white12,
+//                  onPressed: () {
+//                    this.setState(() {
+//                      widget.callback(new Locale("en"));
+//                    });
+//                  },
+//                ),
+//                new FlatButton(
+//                  child: new Text("عربى"),
+//                  color: AppLocalizations.of(context).locale == "ar"
+//                      ? Colors.lightGreen
+//                      : Colors.white12,
+//                  onPressed: () {
+//                    widget.callback(new Locale("ar"));
+//                  },
+//                ),
+//              ],
+//            )),
+//      ],
+//    );
+//  }
+
+  /// -- Build Widget --
   @override
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.topLeft,
-//      color: Colors.white12,
-      height: 800.0,
+//      color: Colors.black87, // TODO: Comment me out when all is built
+      height: 1000.0,
       child: ListView(
         children: <Widget>[
-          displayInputDeviceText,
-          displayInputDeviceDropBox,
-          displayOutputDeviceText,
-          displayOutputDeviceDropBox,
-          displayInputSensitivityText,
-          displayInputSensitivitySlider,
-          displayLanguageText,
-          displayLanguageDropBox,
+          audioInputText,
+          audioInputDropBox,
+          audioOutputText,
+          audioOutputDropBox,
+          audioInputSensitivityText,
+          audioInputSensitivitySlider,
+          videoInputText,
+          videoInputDropBox,
+          audioInputIsMuteText,
+          audioInputIsMuteToggle,
+          audioOutputIsMuteText,
+          audioOutputIsMuteToggle,
           updateSettingsButton,
         ],
       ),

@@ -2,11 +2,13 @@
 ///
 /// Model -- MVC Pattern
 class Settings {
-  // Audio Settings
-  String inputDevice;
-  String outputDevice;
-  double inputSensitivity;
+  String audioInput; // Microphone
+  String audioOutput; // Headphone
+  double audioInputSensitivity; // Microphone sensitivity
+  String videoInput; // Web cam
+  bool audioInputIsMute; // Microphone mute?
+  bool audioOutputIsMute; // Headphone mute?
 
-  // 3 Param Constructor
-  Settings(this.inputDevice, this.outputDevice, this.inputSensitivity);
+  Settings(this.audioInput, this.audioOutput, this.audioInputSensitivity,
+      this.videoInput, this.audioInputIsMute, this.audioOutputIsMute);
 }

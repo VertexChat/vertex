@@ -1,15 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:vertex_ui/localizations.dart';
 import 'package:vertex_ui/src/pages/settings/settings_page.dart';
-import 'package:vertex_ui/src/pages/settings/audio_settings_model.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'localizations.dart';
 
 /// Call to run App Root (App starts here)
 void main() => runApp(UI()); // Vertex_UI -> App root call to
 
+typedef void LocalChangedCallback(Locale locale);
+
+class UI extends StatefulWidget {
+  @override
+  _UIState createState() => new _UIState();
+
+}
+
 /// App Root
-/// TODO: Change title to something more user meaningful
-class UI extends StatelessWidget {
+class _UIState extends State<UI> {
+  SpecificLocalizationDelegate _specificLocalizationDelegate;
+
+  @override
+  void initState(){
+    super.initState();
+    _specificLocalizationDelegate = SpecificLocalizationDelegate(new Locale("en"));
+  }
+
+  onLocaleChange(Locale locale){
+    setState(() {
+      _specificLocalizationDelegate = new SpecificLocalizationDelegate(locale);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     /// MaterialApp is the base Widget for your Flutter Application
@@ -17,18 +39,19 @@ class UI extends StatelessWidget {
     return MaterialApp(
       title: 'Vertex',
       theme: ThemeData(brightness: Brightness.dark),
-      home: VertexHomePage(title: 'Welcome Home'), // TODO: ${username}
+      home: VertexHomePage(onLocaleChange, title: 'Welcome Home'), // TODO: ${username}
 
       // Accessibility Code -- Languages
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
+        _specificLocalizationDelegate
       ],
       supportedLocales: [
         const Locale('en'), // English
-        const Locale('he'), // Hebrew
-        const Locale.fromSubtags(languageCode: 'zh'), // Chinese *See Advanced Locales below*
+        const Locale('ar'), // Arabic
       ],
+      locale: _specificLocalizationDelegate.overriddenLocale,
     );
   }
 }
@@ -38,8 +61,9 @@ class VertexHomePage extends StatefulWidget {
   /// Home page of application.
   /// Fields in Widget subclass always marked final
 
-  VertexHomePage({Key key, this.title}) : super(key: key);
+  VertexHomePage(this.callback, {Key key, this.title}) : super(key: key);
 
+  LocalChangedCallback callback;
   final String title;
 
   @override
@@ -57,7 +81,7 @@ class _VertexHomePageState extends State<VertexHomePage> {
     return Scaffold(
       appBar: AppBar(
         /// Setting AppBar title here
-        title: Text(widget.title),
+        title: Text(AppLocalizations.of(context).title),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.build),
@@ -94,7 +118,7 @@ class _VertexHomePageState extends State<VertexHomePage> {
   // On submission, the information in that form page
   // will be passed back to this function.
   Future _showSettingsPage() async {
-    AudioSettings audioSettings = await Navigator.of(context).push(
+    SettingsPage settingsPage = await Navigator.of(context).push(
       MaterialPageRoute(builder: (BuildContext context) {
         return SettingsPage("Settings Page");
       }),

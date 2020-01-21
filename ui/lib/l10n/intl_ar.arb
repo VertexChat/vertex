@@ -1,0 +1,13 @@
+{
+  "@@last_modified": "2020-01-18T00:05:13.301288",
+  "title": "Welcome Home",
+  "@title": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "locale": "en",
+  "@locale": {
+    "type": "text",
+    "placeholders": {}
+  }
+}
