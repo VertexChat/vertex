@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vertex_ui/src/pages/login_register/login_page.dart';
+import 'package:vertex_ui/src/pages/login_register/register_page.dart';
 import 'package:vertex_ui/src/pages/settings/settings_page.dart';
 import 'package:vertex_ui/src/pages/settings/audio_settings_model.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -25,9 +26,8 @@ class UI extends StatelessWidget {
       //Login route
       routes: <String, WidgetBuilder>{
         '/login': (BuildContext context) => new LoginPage(),
-        //'/signup': (BuildContext context) => new
+        '/register': (BuildContext context) => new RegisterPage()
       },
-
 
       // Accessibility Code -- Languages
       localizationsDelegates: [

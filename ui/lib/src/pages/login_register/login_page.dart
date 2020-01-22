@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:vertex_ui/src/pages/login_register/icon_card.dart';
+import 'package:vertex_ui/src/pages/login_register/register_page.dart';
 
 class LoginPage extends StatefulWidget {
   //Member Variables
@@ -121,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
                         shadowColor: Colors.greenAccent,
                         color: Colors.green,
                         elevation: 5.0,
-                        child: GestureDetector(
+                        child: InkWell(
                           onTap: () {
                             //TODO: Add login check
                           },
@@ -149,17 +151,21 @@ class _LoginPageState extends State<LoginPage> {
                                 width: 1.0),
                             color: Colors.transparent,
                             borderRadius: BorderRadius.circular(20.0)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            SizedBox(width: 10.0),
-                            Center(
-                              child: Text('Register',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'Montserrat')),
-                            )
-                          ],
+                        child: InkWell(
+                          onTap: () {
+                            //Navigate ot register page
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RegisterPage()),
+                            );
+                          },
+                          child: Center(
+                            child: Text('Register',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Montserrat')),
+                          ),
                         ),
                       ),
                     )
@@ -183,40 +189,9 @@ class _LoginPageState extends State<LoginPage> {
                 // child: Container(height: 1.5, color: Colors.grey),
                 ),
             SizedBox(height: 50.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                IconButton(
-                  icon: Image.asset('assets/icons/steam_icon.png'),
-                  iconSize: 42,
-                  onPressed: () {
-                    //TODO:
-                  },
-                ),
-                IconButton(
-                  icon: Image.asset('assets/icons/reddit_icon.png'),
-                  iconSize: 42,
-                  onPressed: () {
-                    //TODO:
-                  },
-                ),
-                IconButton(
-                  icon: Image.asset('assets/icons/twitch_icon.png'),
-                  iconSize: 42,
-                  onPressed: () {
-                    //TODO:
-                  },
-                ),
-                IconButton(
-                  icon: Image.asset('assets/icons/google_icon.png'),
-                  iconSize: 42,
-                  onPressed: () {
-                    //TODO:
-                  },
-                )
-              ],
-            )
+            //Call IconCard Widget
+            new IconCard()
           ],
         ));
-  }
-}
+  } //End builder
+} //end class
