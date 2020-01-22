@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:vertex_ui/src/pages/login_register/icon_card.dart';
 
@@ -24,11 +25,12 @@ class _RegisterPageState extends State<RegisterPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
+                height: data.size.height / 4,
                 child: Stack(
                   children: <Widget>[
                     Container(
-                      padding: EdgeInsets.fromLTRB(15.0, 110.0, 0.0, 0.0),
-                      child: Text(
+                      padding: EdgeInsets.fromLTRB(15.0, 100.0, 0.0, 0.0),
+                      child: AutoSizeText(
                         'Register',
                         style: TextStyle(
                             fontSize: 80.0, fontWeight: FontWeight.bold),
@@ -37,21 +39,24 @@ class _RegisterPageState extends State<RegisterPage> {
                   ],
                 ),
               ),
+              //Main register form container
               Container(
-                padding: EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
+                padding: EdgeInsets.only(top: 30.0, left: 20.0, right: 20.0),
                 child: new Form(
                   key: _key,
                   autovalidate: _validate,
                   child: FormUI(),
                 ),
               ),
-              SizedBox(height: 50.00),
+              SizedBox(height: data.size.height / 30.00),
               //Call IconCard Widget
               new IconCard()
             ]));
   } //end builder
 
   Widget FormUI() {
+    //Data about the device the application is running on
+    final data = MediaQuery.of(context);
     return new Column(
       children: <Widget>[
         new TextFormField(
@@ -68,7 +73,7 @@ class _RegisterPageState extends State<RegisterPage> {
             _email = val;
           },
         ),
-        SizedBox(height: 10.0),
+        SizedBox(height: data.size.height / 90),
         new TextFormField(
           decoration: InputDecoration(
               labelText: 'PASSWORD ',
@@ -84,7 +89,7 @@ class _RegisterPageState extends State<RegisterPage> {
             _password = val;
           },
         ),
-        SizedBox(height: 10.0),
+        SizedBox(height: data.size.height / 90),
         new TextFormField(
           decoration: InputDecoration(
               labelText: 'USERNAME ',
@@ -99,9 +104,10 @@ class _RegisterPageState extends State<RegisterPage> {
             _uname = val;
           },
         ),
-        SizedBox(height: 50.0),
+        //Register button container
+        SizedBox(height: data.size.height / 20.0),
         Container(
-            height: 40.0,
+            height: data.size.height / 20.0,
             child: Material(
               borderRadius: BorderRadius.circular(20.0),
               shadowColor: Colors.greenAccent,
@@ -128,9 +134,10 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
               ),
             )),
-        SizedBox(height: 20.0),
+        SizedBox(height: data.size.height / 30.0),
+        //Return button container
         Container(
-          height: 40.0,
+          height: data.size.height / 20.0,
           color: Colors.transparent,
           child: Container(
             decoration: BoxDecoration(

@@ -22,6 +22,9 @@ class _CallPageState extends State<CallPage> {
   /// Build is run and rerun every time above method, setState, is called
   @override
   Widget build(BuildContext context) {
+    //Data about the device the application is running on
+    final data = MediaQuery.of(context);
+
     /// Scaffold: framework which implements the basic material
     /// design visual layout structure of the flutter app.
     return Scaffold(
@@ -42,10 +45,7 @@ class _CallPageState extends State<CallPage> {
 
         /// Center: A widget that centers all children within it
         body: Center(
-          //TODO: Have everything below scale correctly on mobile devicesq
           child: Stack(
-            //crossAxisAlignment: CrossAxisAlignment.center,
-            //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               // Right video box
               // Added widgets to display video call will be added here
@@ -65,7 +65,6 @@ class _CallPageState extends State<CallPage> {
                     ),
                   ),
                   //Setting percentage amount of height & width
-                  height: MediaQuery.of(context).size.height * 0.95,
                   child: Center(
                     // Center all content 'Center'
                     child: Text('External Camera',
@@ -77,15 +76,14 @@ class _CallPageState extends State<CallPage> {
               new Container(
                   alignment: Alignment.topRight,
                   padding:
-                      new EdgeInsets.only(top: 10, right: 20.0, left: 20.0),
+                      new EdgeInsets.only(top: 10, right: 10.0, left: 10.0),
                   child: new Container(
                       margin: const EdgeInsets.all(10.0),
                       color: Colors.black,
-                      width: 500,
-                      height: 300,
+                      width: data.size.width / 2.5,
+                      height: data.size.height / 4.5,
                       child: Center(
                         // Center all content 'Center'
-                        //TODO: Check for camera on local system, that it is set correctly in settings
                         child: Text('Local Camera',
                             textAlign: TextAlign.center,
                             style: TextStyle(color: Colors.white)),

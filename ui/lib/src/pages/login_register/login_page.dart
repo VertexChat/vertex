@@ -120,9 +120,10 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ]),
                     ),
-                    SizedBox(height: data.size.height / 45),
+                    SizedBox(height: data.size.height / 80),
+                    //Login container
                     Container(
-                      height: data.size.height / 30.0,
+                      height: data.size.height / 20.0,
                       child: Material(
                         borderRadius: BorderRadius.circular(20.0),
                         shadowColor: Colors.greenAccent,
@@ -144,9 +145,10 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ),
-                    SizedBox(height: data.size.height / 30.0),
+                    SizedBox(height: data.size.height / 40.0),
+                    //Main register container
                     Container(
-                      height: data.size.height / 30.0,
+                      height: data.size.height / 20.0,
                       color: Colors.transparent,
                       child: Container(
                         decoration: BoxDecoration(
@@ -176,6 +178,7 @@ class _LoginPageState extends State<LoginPage> {
                     )
                   ],
                 )),
+            //Connect with text container
             Container(
                 //https://github.com/flutter/flutter/issues/10156
                 padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0, bottom: 15.0),
@@ -192,7 +195,7 @@ class _LoginPageState extends State<LoginPage> {
                 )
                 // child: Container(height: 1.5, color: Colors.grey),
                 ),
-            //SizedBox(height: 5.0),
+            SizedBox(height: 5.0),
             //Call IconCard Widget
             new IconCard()
           ],
