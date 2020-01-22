@@ -68,7 +68,6 @@ class _VertexHomePageState extends State<VertexHomePage> {
     /// Need one every time we build a new page
     return Scaffold(
       appBar: AppBar(
-
         /// Setting AppBar title here
         title: Text(widget.title),
         actions: <Widget>[
@@ -79,7 +78,7 @@ class _VertexHomePageState extends State<VertexHomePage> {
           IconButton(
             icon: Icon(Icons.video_call),
             onPressed: _showConnectCallPage,
-          )
+          ),
         ],
       ),
       body: Container(
@@ -97,8 +96,29 @@ class _VertexHomePageState extends State<VertexHomePage> {
           ),
         ),
         child: Center(
-          child: Text("Fill me with widgets!"),
-        ),
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            InkWell(
+              onTap: () {
+                //TODO: Add login check
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                );
+              },
+              child: Center(
+                child: Text(
+                  'LOGIN',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Montserrat'),
+                ),
+              ),
+            ),
+          ],
+        )),
       ),
     );
   }

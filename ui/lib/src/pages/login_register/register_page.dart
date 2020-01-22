@@ -12,10 +12,12 @@ class _RegisterPageState extends State<RegisterPage> {
   // and allows validation of the form.
   final _key = GlobalKey<FormState>();
   bool _validate = false;
-  String uname, email, password;
+  String _uname, _email, _password;
 
   @override
   Widget build(BuildContext context) {
+    //Data about the device the application is running on
+    final data = MediaQuery.of(context);
     return new Scaffold(
         resizeToAvoidBottomPadding: false,
         body: Column(
@@ -63,7 +65,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   borderSide: BorderSide(color: Colors.green))),
           validator: validateEmail,
           onSaved: (String val) {
-            email = val;
+            _email = val;
           },
         ),
         SizedBox(height: 10.0),
@@ -79,7 +81,7 @@ class _RegisterPageState extends State<RegisterPage> {
           obscureText: true,
           validator: validatePassword,
           onSaved: (String val) {
-            password = val;
+            _password = val;
           },
         ),
         SizedBox(height: 10.0),
@@ -94,7 +96,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   borderSide: BorderSide(color: Colors.green))),
           validator: validateUname,
           onSaved: (String val) {
-            uname = val;
+            _uname = val;
           },
         ),
         SizedBox(height: 50.0),
@@ -157,7 +159,7 @@ class _RegisterPageState extends State<RegisterPage> {
     String patttern = r'(^[a-zA-Z ]*$)';
     RegExp regExp = new RegExp(patttern);
     if (value.length == 0) {
-      return "Name is Required";
+      return "Username is Required";
     } else if (!regExp.hasMatch(value)) {
       return "Name must be a-z and A-Z";
     }

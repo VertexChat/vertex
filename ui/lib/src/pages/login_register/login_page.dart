@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:vertex_ui/src/pages/login_register/icon_card.dart';
 import 'package:vertex_ui/src/pages/login_register/register_page.dart';
@@ -20,6 +21,9 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    //Data about the device the application is running on
+    final data = MediaQuery.of(context);
+
     return new Scaffold(
         resizeToAvoidBottomPadding: false,
         body: Column(
@@ -27,23 +31,25 @@ class _LoginPageState extends State<LoginPage> {
           children: <Widget>[
             //Main Container heading
             Container(
+              height: data.size.height / 2.5,
               child: Stack(
                 children: <Widget>[
                   Container(
+                    padding: EdgeInsets.fromLTRB(15.0, 45.0, 0.0, 0.0),
+                    //height: data.size.height / 1.5,
+                    child: AutoSizeText('Welcome',
+                        style: TextStyle(
+                            fontSize: 80.0, fontWeight: FontWeight.bold)),
+                  ),
+                  Container(
                     padding: EdgeInsets.fromLTRB(15.0, 110.0, 0.0, 0.0),
-                    child: Text('Welcome',
+                    child: AutoSizeText('To',
                         style: TextStyle(
                             fontSize: 80.0, fontWeight: FontWeight.bold)),
                   ),
                   Container(
-                    padding: EdgeInsets.fromLTRB(16.0, 175.0, 0.0, 0.0),
-                    child: Text('To',
-                        style: TextStyle(
-                            fontSize: 80.0, fontWeight: FontWeight.bold)),
-                  ),
-                  Container(
-                    padding: EdgeInsets.fromLTRB(16.0, 240.0, 0.0, 0.0),
-                    child: Text('Vertex',
+                    padding: EdgeInsets.fromLTRB(15.0, 175.0, 0.0, 0.0),
+                    child: AutoSizeText('Vertex',
                         style: TextStyle(
                             fontSize: 80.0, fontWeight: FontWeight.bold)),
                   ),
@@ -52,7 +58,8 @@ class _LoginPageState extends State<LoginPage> {
             ),
             //Input fields for email & password container
             Container(
-                padding: EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
+                height: data.size.height / 2.4,
+                padding: EdgeInsets.only(top: 5.0, left: 20.0, right: 20.0),
                 child: Column(
                   children: <Widget>[
                     TextField(
@@ -65,7 +72,6 @@ class _LoginPageState extends State<LoginPage> {
                           focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.green))),
                     ),
-                    SizedBox(height: 20.0),
                     TextField(
                       decoration: InputDecoration(
                           labelText: 'PASSWORD',
@@ -78,10 +84,9 @@ class _LoginPageState extends State<LoginPage> {
                       obscureText: true,
                     ),
                     //Forgot Password container
-                    SizedBox(height: 5.0),
                     Container(
                       alignment: Alignment.centerRight,
-                      padding: EdgeInsets.only(top: 15.0, left: 0.0),
+                      padding: EdgeInsets.only(top: 10.0, left: 0.0),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
@@ -115,9 +120,9 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ]),
                     ),
-                    SizedBox(height: 40.0),
+                    SizedBox(height: data.size.height / 45),
                     Container(
-                      height: 40.0,
+                      height: data.size.height / 30.0,
                       child: Material(
                         borderRadius: BorderRadius.circular(20.0),
                         shadowColor: Colors.greenAccent,
@@ -139,9 +144,9 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20.0),
+                    SizedBox(height: data.size.height / 30.0),
                     Container(
-                      height: 40.0,
+                      height: data.size.height / 30.0,
                       color: Colors.transparent,
                       child: Container(
                         decoration: BoxDecoration(
@@ -171,10 +176,9 @@ class _LoginPageState extends State<LoginPage> {
                     )
                   ],
                 )),
-            SizedBox(height: 15.0),
             Container(
                 //https://github.com/flutter/flutter/issues/10156
-                padding: EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
+                padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0, bottom: 15.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -188,7 +192,7 @@ class _LoginPageState extends State<LoginPage> {
                 )
                 // child: Container(height: 1.5, color: Colors.grey),
                 ),
-            SizedBox(height: 50.0),
+            //SizedBox(height: 5.0),
             //Call IconCard Widget
             new IconCard()
           ],
