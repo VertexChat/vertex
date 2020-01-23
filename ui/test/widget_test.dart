@@ -13,7 +13,7 @@ import 'package:vertex_ui/main.dart';
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(Vertex_UI());
+    await tester.pumpWidget(UI());
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
