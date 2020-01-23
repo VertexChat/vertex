@@ -58,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             //Input fields for email & password container
             Container(
-                height: data.size.height / 2.4,
+                height: data.size.height / 2.3,
                 padding: EdgeInsets.only(top: 5.0, left: 20.0, right: 20.0),
                 child: Column(
                   children: <Widget>[
@@ -115,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
                                   });
                                 },
                                 controlAffinity:
-                                    ListTileControlAffinity.leading,
+                                ListTileControlAffinity.leading,
                               ),
                             ),
                           ]),
@@ -178,10 +178,12 @@ class _LoginPageState extends State<LoginPage> {
                     )
                   ],
                 )),
-            //Connect with text container
+            //"Connect with" with text container
+            //SizedBox(height: data.size.height / 1.0),
             Container(
-                //https://github.com/flutter/flutter/issues/10156
-                padding: EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0, bottom: 15.0),
+              //https://github.com/flutter/flutter/issues/10156
+                padding: EdgeInsets.only(
+                    top: 10.0, left: 20.0, right: 20.0, bottom: 10.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -193,9 +195,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ],
                 )
-                // child: Container(height: 1.5, color: Colors.grey),
-                ),
-            SizedBox(height: 5.0),
+            ),
             //Call IconCard Widget
             new IconCard()
           ],

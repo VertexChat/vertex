@@ -101,7 +101,6 @@ class _VertexHomePageState extends State<VertexHomePage> {
           children: <Widget>[
             InkWell(
               onTap: () {
-                //TODO: Add login check
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => LoginPage()),

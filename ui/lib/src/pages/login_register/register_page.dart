@@ -29,7 +29,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 child: Stack(
                   children: <Widget>[
                     Container(
-                      padding: EdgeInsets.fromLTRB(15.0, 100.0, 0.0, 0.0),
+                      padding: EdgeInsets.fromLTRB(15.0, 80.0, 0.0, 0.0),
                       child: AutoSizeText(
                         'Register',
                         style: TextStyle(
@@ -41,7 +41,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               //Main register form container
               Container(
-                padding: EdgeInsets.only(top: 30.0, left: 20.0, right: 20.0),
+                padding: EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
                 child: new Form(
                   key: _key,
                   autovalidate: _validate,
@@ -163,8 +163,8 @@ class _RegisterPageState extends State<RegisterPage> {
   } //End widget
 
   String validateName(String value) {
-    String patttern = r'(^[a-zA-Z ]*$)';
-    RegExp regExp = new RegExp(patttern);
+    String pattern = r'(^[a-zA-Z ]*$)';
+    RegExp regExp = new RegExp(pattern);
     if (value.length == 0) {
       return "Username is Required";
     } else if (!regExp.hasMatch(value)) {
@@ -174,22 +174,31 @@ class _RegisterPageState extends State<RegisterPage> {
   } //end validate Name
 
   String validateUname(String value) {
-    String patttern = r'(^[a-zA-Z ]*$)';
-    RegExp regExp = new RegExp(patttern);
+    String pattern = r'(^[a-zA-Z ]*$)';
+    RegExp regExp = new RegExp(pattern);
     if (value.length == 0) {
-      return "Name is Required";
+      return "Username is Required";
     } else if (!regExp.hasMatch(value)) {
       return "Name must be a-z and A-Z";
     }
     return null;
   } //end validate Name
 
+  //https://stackoverflow.com/questions/56253787/how-to-handle-textfield-validation-in-password-in-flutter
   String validatePassword(String value) {
-    if (value.length <= 8)
-      return 'Password must be entered';
-    else
-      return null;
-  } //End validate password
+    Pattern pattern =
+        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+    RegExp regex = new RegExp(pattern);
+    print(value);
+    if (value.isEmpty) {
+      return 'Please enter password';
+    } else {
+      if (!regex.hasMatch(value))
+        return 'Enter valid password.\nMust contain at least one upper case,\nOne lower case,\nOne digit and one special character';
+      else
+        return null;
+    } //End if else
+  } //End validate password function
 
   String validateEmail(String value) {
     Pattern pattern =
