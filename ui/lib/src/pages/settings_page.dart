@@ -1,48 +1,77 @@
-import 'dart:async';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/physics.dart';
-import 'package:vertex_ui/src/pages/settings/settings_card.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vertex_ui/src/models/settings_model.dart';
+import 'package:vertex_ui/src/widgets/drop_box_widget.dart';
 import 'package:vertex_ui/src/widgets/text_widget.dart';
-import '../../../localizations.dart';
-import 'settings_model.dart';
 
-/// Want this page to be able to display and modify all settings
-/// Could sub page later on ?
-///
-/// View -- MVC Pattern
+/// Passing settings in from main.dart
+/// Stateful widget receives data
+/// It hands off data to Stateless widget
+/// Stateless widget creates the widget from the data
+/// It then passes it back to Stateful, who return the built widget
 class SettingsPage extends StatefulWidget {
+  // Immutable data -- Sort of.. this is the hand over, essentially just a temp ?
+  final String title;
   final Settings settings;
-  SettingsPage(this.settings);
+
+  // Constructor
+  SettingsPage(this.title, this.settings,{Key key}) : super(key: key);
 
   @override
   _SettingsPageState createState() => _SettingsPageState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
-  _SettingsPageState();
+class _SettingsPageState extends State<SettingsPage>{
+  String _audioInput;
+  String _audioOutput;
+  double _audioInputSensitivity;
+  String _videoInput;
+  bool _audioInputIsMute;
+  bool _audioOutputIsMute;
 
-  // Initial values for fields
-  String _audioInput = 'None Selected';
-  String _audioOutput = 'None Selected';
-  double _audioInputSensitivity = 50.0;
-  String _videoInput = 'None Selected';
-  bool _audioInputIsMute = false;
-  bool _audioOutputIsMute = false;
-
-  // True / False list for toggle buttons
   List<bool> _audioInputIsSelected = [true, false];
   List<bool> _audioOutputIsSelected = [true, false];
 
+  /// -- Init State --
   @override
   void initState() {
     super.initState();
+    restore();
   }
 
+  /// -- Dispose --
   @override
   void dispose() {
     super.dispose();
+  }
+
+  // https://codingwithjoe.com/flutter-saving-and-restoring-with-sharedpreferences/
+  save(String key, dynamic value) async {
+    final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+    if (value is bool) {
+      sharedPrefs.setBool(key, value);
+    } else if (value is String) {
+      sharedPrefs.setString(key, value);
+    } else if (value is int) {
+      sharedPrefs.setInt(key, value);
+    } else if (value is double) {
+      sharedPrefs.setDouble(key, value);
+    } else if (value is List<String>) {
+      sharedPrefs.setStringList(key, value);
+    }
+  }
+
+  // https://codingwithjoe.com/flutter-saving-and-restoring-with-sharedpreferences/
+  restore() async {
+    final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+    setState(() {
+      _audioInput = (sharedPrefs.getString('audioInput') ?? 'None Selected');
+      _audioOutput = (sharedPrefs.getString('audioOutput') ?? 'None Selected');
+      _audioInputSensitivity = (sharedPrefs.getDouble('audioInputSensitivity') ?? 0.0);
+      _videoInput = (sharedPrefs.getString('videoInput') ?? 'None Selected');
+      _audioInputIsMute = (sharedPrefs.getBool('audioInputIsMute') ?? false);
+      _audioOutputIsMute = (sharedPrefs.getBool('audioOutputIsMute') ?? false);
+    });
   }
 
   /// -- Audio Input--
@@ -96,10 +125,11 @@ class _SettingsPageState extends State<SettingsPage> {
                       height: 2,
                       color: Colors.lightGreen,
                     ),
-                    onChanged: (String newOutputDeviceValue) {
+                    onChanged: (String value) {
                       setState(() {
-                        _audioInput = newOutputDeviceValue;
+                        _audioInput = value;
                       });
+                      save('audioInput', value);
                     },
                     // TODO: Look at getting audio options here
                     items: <String>[
@@ -169,11 +199,13 @@ class _SettingsPageState extends State<SettingsPage> {
                       height: 2,
                       color: Colors.lightGreen,
                     ),
-                    onChanged: (String newOutputDeviceValue) {
+                    onChanged: (String value) {
                       setState(() {
-                        _audioOutput = newOutputDeviceValue;
+                        _audioOutput = value;
                       });
+                      save('audioOutput', value);
                     },
+
                     // TODO: Look at getting audio options here
                     items: <String>['None Selected', 'Speakers', 'Headphones']
                         .map((String value) {
@@ -235,9 +267,11 @@ class _SettingsPageState extends State<SettingsPage> {
                     activeColor: Colors.lightGreen,
                     min: 0.0,
                     max: 100.0,
-                    onChanged: (newInputSensitivity) {
-                      setState(
-                          () => _audioInputSensitivity = newInputSensitivity);
+                    onChanged: (value) {
+                     setState(() {
+                       _audioInputSensitivity = value;
+                     });
+                     save('audioInputSensitivity', value);
                     },
                     value: _audioInputSensitivity,
                   ),
@@ -307,10 +341,11 @@ class _SettingsPageState extends State<SettingsPage> {
                       height: 2,
                       color: Colors.lightGreen,
                     ),
-                    onChanged: (String newVideoDeviceValue) {
+                    onChanged: (String value) {
                       setState(() {
-                        _videoInput = newVideoDeviceValue;
+                        _videoInput = value;
                       });
+                      save('videoInput', value);
                     },
                     items: <String>[
                       'None Selected',
@@ -381,6 +416,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           _audioInputIsSelected[i] = false;
                         }
                         _audioInputIsMute = _audioInputIsSelected[i];
+                        save('audioInputIsMute', _audioInputIsSelected[i]);
                       }
                     });
                   },
@@ -444,6 +480,8 @@ class _SettingsPageState extends State<SettingsPage> {
                           _audioOutputIsSelected[i] = false;
                         }
                         _audioOutputIsMute = _audioOutputIsSelected[i];
+                        save('audioOutputIsMute', _audioOutputIsSelected[i]);
+
                       }
                     });
                   },
@@ -455,112 +493,31 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  /// -- Update Settings --
-  /// Button Display
-  Widget get updateSettingsButton {
-    return RaisedButton(
-      onPressed: () => updateSettings(),
-      child: Text('Save Settings'),
-      color: Colors.lightGreen[700],
-    );
-  }
-
-  /// -- Update Settings --
-  /// Button Functionality
-  void updateSettings() {
-//    Settings settings;
-    setState(() {
-//      settings = new Settings(_audioInput, _audioOutput, _audioInputSensitivity,
-//          _videoInput, _audioInputIsMute, _audioOutputIsMute);
-      widget.settings.audioInput = _audioInput;
-    });
-
-    // Print values to console
-    print('audioInput: ' + widget.settings.audioInput);
-//    print('audioOutput: ' + settings.audioInput);
-//    print(
-//        'audioInputSensitivity: ' + settings.audioInputSensitivity.toString());
-//    print('videoInput: ' + settings.videoInput);
-//    print('audioInputIsMute: ' + settings.audioInputIsMute.toString());
-//    print('audioOutputIsMute: ' + settings.audioOutputIsMute.toString());
-
-//    return widget.storage.writeSettings(
-//        settings.audioInput,
-//        settings.audioOutput,
-//        settings.audioInputSensitivity,
-//        settings.videoInput,
-//        settings.audioInputIsMute,
-//        settings.audioOutputIsMute);
-  }
-
-//  Widget settingsCard(BuildContext context) {
-//    return Container(
-////      color: Colors.black87, // TODO: Comment me out when all is built
-//      height: 1000.0,
-//      child: ListView(
-//        children: <Widget>[
-//          audioInputText,
-//          audioInputDropBox,
-//          audioOutputText,
-//          audioOutputDropBox,
-//          audioInputSensitivityText,
-//          audioInputSensitivitySlider,
-//          videoInputText,
-//          videoInputDropBox,
-//          audioInputIsMuteText,
-//          audioInputIsMuteToggle,
-//          audioOutputIsMuteText,
-//          audioOutputIsMuteToggle,
-//          updateSettingsButton,
-//        ],
-//      ),
-//    );
-//  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
 //      backgroundColor: Colors.white12,
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).title),
+        title: Text("Settings"),
       ),
       body: Center(
         child: ListView(
           children: <Widget>[
+            audioInputText,
+            audioInputDropBox,
+            audioOutputText,
+            audioOutputDropBox,
+            audioInputSensitivityText,
+            audioInputSensitivitySlider,
+            videoInputText,
+            videoInputDropBox,
+            audioInputIsMuteText,
+            audioInputIsMuteToggle,
+            audioOutputIsMuteText,
+            audioOutputIsMuteToggle,
           ],
         ),
       ),
     );
   }
 }
-
-//class SaveToFile {
-//  /// -- Data Persistence --
-//  // Step 1 - Find correct local path
-//  // Adapted from: https://flutter.dev/docs/cookbook/persistence/reading-writing-files
-//  Future<String> get _localPath async {
-//    // Storing on platforms Documents Directory
-//    final directory = await getApplicationDocumentsDirectory();
-//
-//    print('Directory located: ' + directory.toString());
-//    return directory.path;
-//  }
-//
-//  /// -- Data Persistence --
-//  // Step 2 - Create reference to file location
-//  // TODO: Rename to settings
-//  Future<File> get _localFile async {
-//    final path = await _localPath;
-//    return File('$path/settings.txt');
-//  }
-//
-//  /// -- Data Persistence --
-//  // Step 3 - Write data to file
-//  Future<File> writeSettings(
-//      String aI, String aO, double aIS, String vI, bool aIIM, aOIM) async {
-//    final file = await _localFile;
-//
-//    // Write to file
-//    return file.writeAsString('$aIS');
-//  }
-//}

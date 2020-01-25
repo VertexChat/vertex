@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:vertex_ui/localizations.dart';
-import 'package:vertex_ui/src/pages/settings/settings_model.dart';
+import 'package:vertex_ui/src/models/settings_model.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:vertex_ui/src/pages/settings/settings_page.dart';
+import 'package:vertex_ui/src/pages/settings_page.dart';
 import 'localizations.dart';
 
 /// Call to run App Root (App starts here)
