@@ -1,23 +1,29 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
+import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:flutter/physics.dart';
+import 'package:vertex_ui/src/pages/settings/settings_card.dart';
+import 'package:vertex_ui/src/widgets/text_widget.dart';
+import '../../../localizations.dart';
 import 'settings_model.dart';
 
-/// Controller ? -- MVC Pattern
-class SettingsCard extends StatefulWidget {
+/// Want this page to be able to display and modify all settings
+/// Could sub page later on ?
+///
+/// View -- MVC Pattern
+class SettingsPage extends StatefulWidget {
   final Settings settings;
-
-  SettingsCard(this.settings);
+  SettingsPage(this.settings);
 
   @override
-  _SettingsCardState createState() => _SettingsCardState(settings);
+  _SettingsPageState createState() => _SettingsPageState();
 }
 
-class _SettingsCardState extends State<SettingsCard> {
-  Settings settings = new Settings();
+class _SettingsPageState extends State<SettingsPage> {
+  _SettingsPageState();
 
-  /// Constructor
-  _SettingsCardState(this.settings);
-
+  // Initial values for fields
   String _audioInput = 'None Selected';
   String _audioOutput = 'None Selected';
   double _audioInputSensitivity = 50.0;
@@ -25,12 +31,20 @@ class _SettingsCardState extends State<SettingsCard> {
   bool _audioInputIsMute = false;
   bool _audioOutputIsMute = false;
 
+  // True / False list for toggle buttons
   List<bool> _audioInputIsSelected = [true, false];
   List<bool> _audioOutputIsSelected = [true, false];
 
+  @override
   void initState() {
     super.initState();
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   /// -- Audio Input--
   /// Text Display
   Widget get audioInputText {
@@ -47,7 +61,7 @@ class _SettingsCardState extends State<SettingsCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Text("Audio In: " + widget.settings.audioInput,
+                Text("Audio In: " + _audioInput,
                     style: Theme.of(context).textTheme.headline),
               ],
             ),
@@ -73,7 +87,7 @@ class _SettingsCardState extends State<SettingsCard> {
                 Flexible(
                   flex: 1,
                   child: DropdownButton<String>(
-                    value: widget.settings.audioInput,
+                    value: _audioInput,
                     icon: Icon(Icons.arrow_downward),
                     iconSize: 24,
                     elevation: 16,
@@ -122,7 +136,7 @@ class _SettingsCardState extends State<SettingsCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Text("Audio Out: " + widget.settings.audioOutput,
+                Text("Audio Out: " + _audioOutput,
                     style: Theme.of(context).textTheme.headline),
               ],
             ),
@@ -146,7 +160,7 @@ class _SettingsCardState extends State<SettingsCard> {
                 Flexible(
                   flex: 1,
                   child: DropdownButton<String>(
-                    value: widget.settings.audioOutput,
+                    value: _audioOutput,
                     icon: Icon(Icons.arrow_downward),
                     iconSize: 24,
                     elevation: 16,
@@ -194,7 +208,7 @@ class _SettingsCardState extends State<SettingsCard> {
               children: <Widget>[
                 Text(
                     "Audio Input Sensitivity: " +
-                        widget.settings.audioInputSensitivity.floor().toString(),
+                        _audioInputSensitivity.floor().toString(),
                     style: Theme.of(context).textTheme.headline),
               ],
             ),
@@ -260,7 +274,7 @@ class _SettingsCardState extends State<SettingsCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Text("Webcam In: " + widget.settings.videoInput,
+                Text("Webcam In: " + _videoInput,
                     style: Theme.of(context).textTheme.headline),
               ],
             ),
@@ -331,7 +345,7 @@ class _SettingsCardState extends State<SettingsCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Text("Mute Audio Input: " + widget.settings.audioInputIsMute.toString(),
+                Text("Mute Audio Input: " + _audioInputIsMute.toString(),
                     style: Theme.of(context).textTheme.headline),
               ],
             ),
@@ -394,7 +408,7 @@ class _SettingsCardState extends State<SettingsCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Text("Mute Audio Output: " + widget.settings.audioOutputIsMute.toString(),
+                Text("Mute Audio Output: " + _audioOutputIsMute.toString(),
                     style: Theme.of(context).textTheme.headline),
               ],
             ),
@@ -445,7 +459,7 @@ class _SettingsCardState extends State<SettingsCard> {
   /// Button Display
   Widget get updateSettingsButton {
     return RaisedButton(
-      onPressed: () => print('Yessir Mr Burns, sir.'),
+      onPressed: () => updateSettings(),
       child: Text('Save Settings'),
       color: Colors.lightGreen[700],
     );
@@ -453,119 +467,100 @@ class _SettingsCardState extends State<SettingsCard> {
 
   /// -- Update Settings --
   /// Button Functionality
-//  void updateSettings() {
-//    // TODO: Save to file here ?
-//    // Update the state of the values
-//    setState(() {
-//      widget.settings.audioInput = _audioInput;
-//      widget.settings.audioOutput = _audioOutput;
-//      widget.settings.audioInputSensitivity = _audioInputSensitivity.toDouble();
-//      widget.settings.videoInput = _videoInput;
-//      widget.settings.audioInputIsMute = _audioInputIsMute;
-//      widget.settings.audioOutputIsMute = _audioOutputIsMute;
-////      Settings settings = new Settings(_audioInput, _audioOutput, _audioInputSensitivity, _videoInput, _audioInputIsMute, _audioOutputIsMute);
-//    });
-//
-//    // Print values to console
-//    print('audioInput: ' + widget.settings.audioInput);
-//    print('audioOutput: ' + widget.settings.audioInput);
-//    print('audioInputSensitivity: ' +
-//        widget.settings.audioInputSensitivity.toString());
-//    print('videoInput: ' + widget.settings.videoInput);
-//    print('audioInputIsMute: ' + widget.settings.audioInputIsMute.toString());
-//    print('audioOutputIsMute: ' + widget.settings.audioOutputIsMute.toString());
-////    writeSettings(widget.settings.audioInput , widget.settings.audioOutput, widget.settings.audioInputSensitivity, widget.settings.videoInput, widget.settings.audioInputIsMute, widget.settings.audioOutputIsMute);
-//  }
+  void updateSettings() {
+//    Settings settings;
+    setState(() {
+//      settings = new Settings(_audioInput, _audioOutput, _audioInputSensitivity,
+//          _videoInput, _audioInputIsMute, _audioOutputIsMute);
+      widget.settings.audioInput = _audioInput;
+    });
 
-  /// Language Text
-  ///
-  ///TODO: Move to main page ?
-//  Widget get displayLanguageText {
-//    Locale myLocale = Localizations.localeOf(context);
+    // Print values to console
+    print('audioInput: ' + widget.settings.audioInput);
+//    print('audioOutput: ' + settings.audioInput);
+//    print(
+//        'audioInputSensitivity: ' + settings.audioInputSensitivity.toString());
+//    print('videoInput: ' + settings.videoInput);
+//    print('audioInputIsMute: ' + settings.audioInputIsMute.toString());
+//    print('audioOutputIsMute: ' + settings.audioOutputIsMute.toString());
+
+//    return widget.storage.writeSettings(
+//        settings.audioInput,
+//        settings.audioOutput,
+//        settings.audioInputSensitivity,
+//        settings.videoInput,
+//        settings.audioInputIsMute,
+//        settings.audioOutputIsMute);
+  }
+
+//  Widget settingsCard(BuildContext context) {
 //    return Container(
-//      child: Card(
-//          color: Colors.lightGreen[800],
-//          child: Padding(
-//            padding: const EdgeInsets.only(
-//              top: 10.0,
-//              bottom: 8.0,
-//              left: 20.0,
-//            ),
-//            child: Row(
-//              crossAxisAlignment: CrossAxisAlignment.start,
-//              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//              children: <Widget>[
-//                Text("Language: " + myLocale.toString(),
-//                    style: Theme.of(context).textTheme.headline),
-//              ],
-//            ),
-//          )),
+////      color: Colors.black87, // TODO: Comment me out when all is built
+//      height: 1000.0,
+//      child: ListView(
+//        children: <Widget>[
+//          audioInputText,
+//          audioInputDropBox,
+//          audioOutputText,
+//          audioOutputDropBox,
+//          audioInputSensitivityText,
+//          audioInputSensitivitySlider,
+//          videoInputText,
+//          videoInputDropBox,
+//          audioInputIsMuteText,
+//          audioInputIsMuteToggle,
+//          audioOutputIsMuteText,
+//          audioOutputIsMuteToggle,
+//          updateSettingsButton,
+//        ],
+//      ),
 //    );
 //  }
 
-//  /// Output Device Drop box
-//  Widget get displayLanguageDropBox {
-//    Locale myLocale = Localizations.localeOf(context);
-//    return Column(
-//      children: <Widget>[
-//        Container(
-//            padding: EdgeInsets.symmetric(
-//              vertical: 16.0,
-//              horizontal: 16.0,
-//            ),
-//            child: Row(
-//              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//              children: <Widget>[
-//                new FlatButton(
-//                  child: new Text("English"),
-//                  color: AppLocalizations.of(context).locale == "en"
-//                      ? Colors.lightGreen
-//                      : Colors.white12,
-//                  onPressed: () {
-//                    this.setState(() {
-//                      widget.callback(new Locale("en"));
-//                    });
-//                  },
-//                ),
-//                new FlatButton(
-//                  child: new Text("عربى"),
-//                  color: AppLocalizations.of(context).locale == "ar"
-//                      ? Colors.lightGreen
-//                      : Colors.white12,
-//                  onPressed: () {
-//                    widget.callback(new Locale("ar"));
-//                  },
-//                ),
-//              ],
-//            )),
-//      ],
-//    );
-//  }
-
-  /// -- Build Widget --
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.topLeft,
-//      color: Colors.black87, // TODO: Comment me out when all is built
-      height: 1000.0,
-      child: ListView(
-        children: <Widget>[
-          audioInputText,
-          audioInputDropBox,
-          audioOutputText,
-          audioOutputDropBox,
-          audioInputSensitivityText,
-          audioInputSensitivitySlider,
-          videoInputText,
-          videoInputDropBox,
-          audioInputIsMuteText,
-          audioInputIsMuteToggle,
-          audioOutputIsMuteText,
-          audioOutputIsMuteToggle,
-          updateSettingsButton,
-        ],
+    return Scaffold(
+//      backgroundColor: Colors.white12,
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context).title),
+      ),
+      body: Center(
+        child: ListView(
+          children: <Widget>[
+          ],
+        ),
       ),
     );
   }
 }
+
+//class SaveToFile {
+//  /// -- Data Persistence --
+//  // Step 1 - Find correct local path
+//  // Adapted from: https://flutter.dev/docs/cookbook/persistence/reading-writing-files
+//  Future<String> get _localPath async {
+//    // Storing on platforms Documents Directory
+//    final directory = await getApplicationDocumentsDirectory();
+//
+//    print('Directory located: ' + directory.toString());
+//    return directory.path;
+//  }
+//
+//  /// -- Data Persistence --
+//  // Step 2 - Create reference to file location
+//  // TODO: Rename to settings
+//  Future<File> get _localFile async {
+//    final path = await _localPath;
+//    return File('$path/settings.txt');
+//  }
+//
+//  /// -- Data Persistence --
+//  // Step 3 - Write data to file
+//  Future<File> writeSettings(
+//      String aI, String aO, double aIS, String vI, bool aIIM, aOIM) async {
+//    final file = await _localFile;
+//
+//    // Write to file
+//    return file.writeAsString('$aIS');
+//  }
+//}

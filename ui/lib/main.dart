@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:vertex_ui/localizations.dart';
-import 'package:vertex_ui/src/pages/settings/settings_page.dart';
+import 'package:vertex_ui/src/pages/settings/settings_model.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:vertex_ui/src/pages/settings/settings_page.dart';
 import 'localizations.dart';
 
 /// Call to run App Root (App starts here)
@@ -40,7 +41,7 @@ class _UIState extends State<UI> {
       title: 'Vertex',
       theme: ThemeData(brightness: Brightness.dark),
       home: VertexHomePage(onLocaleChange, title: 'Welcome Home'), // TODO: ${username}
-
+      debugShowCheckedModeBanner: false,
       // Accessibility Code -- Languages
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
@@ -58,13 +59,14 @@ class _UIState extends State<UI> {
 
 /// Public --> StatefulWidget
 class VertexHomePage extends StatefulWidget {
+  final LocalChangedCallback callback;
+  final String title;
+  final Settings settings; //TODO: Load from file in main.dart
+
   /// Home page of application.
   /// Fields in Widget subclass always marked final
 
-  VertexHomePage(this.callback, {Key key, this.title}) : super(key: key);
-
-  LocalChangedCallback callback;
-  final String title;
+  VertexHomePage(this.callback, {Key key, this.title, this.settings}) : super(key: key);
 
   @override
   _VertexHomePageState createState() => _VertexHomePageState();
@@ -72,6 +74,9 @@ class VertexHomePage extends StatefulWidget {
 
 /// Stateless class
 class _VertexHomePageState extends State<VertexHomePage> {
+  Settings settings;
+
+  String title = "Welcome Home";
   /// Build is run and rerun every time above method, setState, is called
   @override
   Widget build(BuildContext context) {
@@ -121,7 +126,7 @@ class _VertexHomePageState extends State<VertexHomePage> {
   Future _showSettingsPage() async {
     SettingsPage settingsPage = await Navigator.of(context).push(
       MaterialPageRoute(builder: (BuildContext context) {
-        return SettingsPage("Title");
+        return SettingsPage("Settings", widget.settings);
       }),
     );
   }

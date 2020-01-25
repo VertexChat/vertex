@@ -9,6 +9,6 @@ class Settings {
   bool audioInputIsMute; // Microphone mute?
   bool audioOutputIsMute; // Headphone mute?
 
-  Settings(this.audioInput, this.audioOutput, this.audioInputSensitivity,
-      this.videoInput, this.audioInputIsMute, this.audioOutputIsMute);
+  Settings({this.audioInput, this.audioOutput, this.audioInputSensitivity,
+      this.videoInput, this.audioInputIsMute, this.audioOutputIsMute});
 }
