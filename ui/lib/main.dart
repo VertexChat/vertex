@@ -1,36 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:vertex_ui/localizations.dart';
 import 'package:vertex_ui/src/models/settings_model.dart';
-
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:vertex_ui/src/pages/settings_page.dart';
-import 'localizations.dart';
+import 'package:vertex_ui/src/pages/video_call/connect_call_page.dart';
+import 'package:vertex_ui/src/pages/login_page.dart';
+import 'package:vertex_ui/src/pages/register_page.dart';
 
 /// Call to run App Root (App starts here)
 void main() => runApp(UI()); // Vertex_UI -> App root call to
 
-typedef void LocalChangedCallback(Locale locale);
-
 class UI extends StatefulWidget {
   @override
   _UIState createState() => new _UIState();
-
 }
 
 /// App Root
 class _UIState extends State<UI> {
-  SpecificLocalizationDelegate _specificLocalizationDelegate;
 
   @override
   void initState(){
     super.initState();
-    _specificLocalizationDelegate = SpecificLocalizationDelegate(new Locale("en"));
-  }
-
-  onLocaleChange(Locale locale){
-    setState(() {
-      _specificLocalizationDelegate = new SpecificLocalizationDelegate(locale);
-    });
   }
 
   @override
@@ -40,33 +28,26 @@ class _UIState extends State<UI> {
     return MaterialApp(
       title: 'Vertex',
       theme: ThemeData(brightness: Brightness.dark),
-      home: VertexHomePage(onLocaleChange, title: 'Welcome Home'), // TODO: ${username}
-      debugShowCheckedModeBanner: false,
-      // Accessibility Code -- Languages
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        _specificLocalizationDelegate
-      ],
-      supportedLocales: [
-        const Locale('en'), // English
-        const Locale('ar'), // Arabic
-      ],
-      locale: _specificLocalizationDelegate.overriddenLocale,
+      home: VertexHomePage(title: 'Welcome Home'), // TODO: ${username}
+      debugShowCheckedModeBanner: false, // Remove debug banner
+      //Login route
+      routes: <String, WidgetBuilder>{
+        '/login': (BuildContext context) => new LoginPage(),
+        '/register': (BuildContext context) => new RegisterPage()
+      },
     );
   }
 }
 
 /// Public --> StatefulWidget
 class VertexHomePage extends StatefulWidget {
-  final LocalChangedCallback callback;
   final String title;
   final Settings settings; //TODO: Load from file in main.dart
 
   /// Home page of application.
   /// Fields in Widget subclass always marked final
 
-  VertexHomePage(this.callback, {Key key, this.title, this.settings}) : super(key: key);
+  VertexHomePage({Key key, this.title, this.settings}) : super(key: key);
 
   @override
   _VertexHomePageState createState() => _VertexHomePageState();
@@ -86,8 +67,12 @@ class _VertexHomePageState extends State<VertexHomePage> {
     return Scaffold(
       appBar: AppBar(
         /// Setting AppBar title here
-        title: Text(AppLocalizations.of(context).title),
+        title: Text(widget.title),
         actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.video_call),
+            onPressed: _showConnectCallPage,
+          ),
           IconButton(
             icon: Icon(Icons.build),
             onPressed: _showSettingsPage,
@@ -110,11 +95,39 @@ class _VertexHomePageState extends State<VertexHomePage> {
           ),
         ),
         child: Center(
-          child: Text("Fill me with widgets!"),
-        ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginPage()),
+                    );
+                  },
+                  child: Center(
+                    child: Text(
+                      'LOGIN',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Montserrat'),
+                    ),
+                  ),
+                ),
+              ],
+            )),
       ),
     );
   }
+
+  //Display connect call page
+  Future _showConnectCallPage() async {
+    await Navigator.of(context)
+        .push(MaterialPageRoute(builder: (BuildContext context) {
+      return ConnectCallPage("Connect to Video Call");
+    }));
+  } //End _showConnectCallPage()
 
   // Any time you're pushing a new route and expect that route
   // to return something back to you,
@@ -126,7 +139,7 @@ class _VertexHomePageState extends State<VertexHomePage> {
   Future _showSettingsPage() async {
     SettingsPage settingsPage = await Navigator.of(context).push(
       MaterialPageRoute(builder: (BuildContext context) {
-        return SettingsPage("Settings", widget.settings);
+        return SettingsPage();
       }),
     );
   }

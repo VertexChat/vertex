@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vertex_ui/src/models/settings_model.dart';
-import 'package:vertex_ui/src/widgets/drop_box_widget.dart';
-import 'package:vertex_ui/src/widgets/text_widget.dart';
 
 /// Passing settings in from main.dart
 /// Stateful widget receives data
@@ -15,7 +13,7 @@ class SettingsPage extends StatefulWidget {
   final Settings settings;
 
   // Constructor
-  SettingsPage(this.title, this.settings,{Key key}) : super(key: key);
+  SettingsPage({this.title, this.settings});
 
   @override
   _SettingsPageState createState() => _SettingsPageState();
