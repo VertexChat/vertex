@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:vertex_ui/src/pages/login_register/login_page.dart';
-import 'package:vertex_ui/src/pages/login_register/register_page.dart';
-import 'package:vertex_ui/src/pages/settings/settings_page.dart';
-import 'package:vertex_ui/src/pages/settings/audio_settings_model.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:vertex_ui/src/models/settings_model.dart';
+import 'package:vertex_ui/src/pages/settings_page.dart';
 import 'package:vertex_ui/src/pages/video_call/connect_call_page.dart';
+import 'package:vertex_ui/src/pages/login_page.dart';
+import 'package:vertex_ui/src/pages/register_page.dart';
 
 /// Call to run App Root (App starts here)
 void main() => runApp(UI()); // Vertex_UI -> App root call to
 
+class UI extends StatefulWidget {
+  @override
+  _UIState createState() => new _UIState();
+}
+
 /// App Root
-/// TODO: Change title to something more user meaningful
-class UI extends StatelessWidget {
+class _UIState extends State<UI> {
+
+  @override
+  void initState(){
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     /// MaterialApp is the base Widget for your Flutter Application
@@ -19,40 +28,26 @@ class UI extends StatelessWidget {
     return MaterialApp(
       title: 'Vertex',
       theme: ThemeData(brightness: Brightness.dark),
-      home: VertexHomePage(title: 'Welcome Home'),
-      // TODO: ${username}
-      //Remove debug banner
-      debugShowCheckedModeBanner: false,
+      home: VertexHomePage(title: 'Welcome Home'), // TODO: ${username}
+      debugShowCheckedModeBanner: false, // Remove debug banner
       //Login route
       routes: <String, WidgetBuilder>{
         '/login': (BuildContext context) => new LoginPage(),
         '/register': (BuildContext context) => new RegisterPage()
       },
-
-      // Accessibility Code -- Languages
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-      supportedLocales: [
-        const Locale('en'),
-        // English
-        const Locale('he'),
-        // Hebrew
-        const Locale.fromSubtags(languageCode: 'zh'),
-        // Chinese *See Advanced Locales below*
-      ],
     );
   }
 }
 
 /// Public --> StatefulWidget
 class VertexHomePage extends StatefulWidget {
+  final String title;
+  final Settings settings; //TODO: Load from file in main.dart
+
   /// Home page of application.
   /// Fields in Widget subclass always marked final
-  VertexHomePage({Key key, this.title}) : super(key: key);
 
-  final String title;
+  VertexHomePage({Key key, this.title, this.settings}) : super(key: key);
 
   @override
   _VertexHomePageState createState() => _VertexHomePageState();
@@ -60,6 +55,9 @@ class VertexHomePage extends StatefulWidget {
 
 /// Stateless class
 class _VertexHomePageState extends State<VertexHomePage> {
+  Settings settings;
+
+  String title = "Welcome Home";
   /// Build is run and rerun every time above method, setState, is called
   @override
   Widget build(BuildContext context) {
@@ -72,23 +70,24 @@ class _VertexHomePageState extends State<VertexHomePage> {
         title: Text(widget.title),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.build),
-            onPressed: _showSettingsPage,
-          ),
-          IconButton(
             icon: Icon(Icons.video_call),
             onPressed: _showConnectCallPage,
+          ),
+          IconButton(
+            icon: Icon(Icons.build),
+            onPressed: _showSettingsPage,
           ),
         ],
       ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            stops: [0.1, 0.5, 0.7, 0.9],
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
+            stops: [0.1,0.3, 0.5, 0.7, 0.9],
             colors: [
               Colors.lightGreen[900],
+              Colors.lightGreen[800],
               Colors.lightGreen[700],
               Colors.lightGreen[500],
               Colors.lightGreen[300],
@@ -97,27 +96,27 @@ class _VertexHomePageState extends State<VertexHomePage> {
         ),
         child: Center(
             child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginPage()),
-                );
-              },
-              child: Center(
-                child: Text(
-                  'LOGIN',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Montserrat'),
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginPage()),
+                    );
+                  },
+                  child: Center(
+                    child: Text(
+                      'LOGIN',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Montserrat'),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ],
-        )),
+              ],
+            )),
       ),
     );
   }
@@ -138,9 +137,9 @@ class _VertexHomePageState extends State<VertexHomePage> {
   // On submission, the information in that form page
   // will be passed back to this function.
   Future _showSettingsPage() async {
-    AudioSettings audioSettings = await Navigator.of(context).push(
+    SettingsPage settingsPage = await Navigator.of(context).push(
       MaterialPageRoute(builder: (BuildContext context) {
-        return SettingsPage("Settings Page");
+        return SettingsPage();
       }),
     );
   }
