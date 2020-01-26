@@ -40,19 +40,19 @@ class _ConnectCallPageState extends State<ConnectCallPage> {
                   Row(children: <Widget>[
                     Expanded(
                         child: TextField(
-                      // https://flutter.dev/docs/cookbook/forms/text-field-changes#2-use-a-texteditingcontroller
-                      controller: _channelNameController,
-                      decoration: InputDecoration(
-                          errorText: _validateError
+                          // https://flutter.dev/docs/cookbook/forms/text-field-changes#2-use-a-texteditingcontroller
+                          controller: _channelNameController,
+                          decoration: InputDecoration(
+                              errorText: _validateError
                               // If no name is entered
-                              ? "Channel name is mandatory"
+                                  ? "Channel name is mandatory"
                               // else return null
-                              : null,
-                          // Hint message that displays in text dialog box
-                          border: UnderlineInputBorder(
-                              borderSide: BorderSide(width: 1)),
-                          hintText: 'Channel name'),
-                    ))
+                                  : null,
+                              // Hint message that displays in text dialog box
+                              border: UnderlineInputBorder(
+                                  borderSide: BorderSide(width: 1)),
+                              hintText: 'Channel name'),
+                        ))
                   ]),
                   Padding(
                       padding: EdgeInsets.symmetric(vertical: 20),
@@ -89,7 +89,7 @@ class _ConnectCallPageState extends State<ConnectCallPage> {
           //Build mew page:
           MaterialPageRoute(
               builder: (context) =>
-                  new CallPage(pageTitle: _channelNameController.text)));
+              new CallPage(pageTitle: _channelNameController.text)));
     } //End function
   } //End ify
 } //End class

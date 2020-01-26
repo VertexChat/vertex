@@ -76,7 +76,7 @@ class _CallPageState extends State<CallPage> {
               new Container(
                   alignment: Alignment.topRight,
                   padding:
-                      new EdgeInsets.only(top: 10, right: 10.0, left: 10.0),
+                  new EdgeInsets.only(top: 10, right: 10.0, left: 10.0),
                   child: new Container(
                       margin: const EdgeInsets.all(10.0),
                       color: Colors.black,
