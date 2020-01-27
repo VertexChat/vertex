@@ -29,6 +29,9 @@ dependencies:
   # Flutter widget that automatically resizes text to fit perfectly within its bounds.
   auto_size_text: ^2.1.0
 
+  #Dynamic theme for light and dark mode
+  dynamic_theme: ^1.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
