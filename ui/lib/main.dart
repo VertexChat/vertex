@@ -15,9 +15,8 @@ class UI extends StatefulWidget {
 
 /// App Root
 class _UIState extends State<UI> {
-
   @override
-  void initState(){
+  void initState() {
     super.initState();
   }
 
@@ -28,8 +27,10 @@ class _UIState extends State<UI> {
     return MaterialApp(
       title: 'Vertex',
       theme: ThemeData(brightness: Brightness.dark),
-      home: VertexHomePage(title: 'Welcome Home'), // TODO: ${username}
-      debugShowCheckedModeBanner: false, // Remove debug banner
+      home: VertexHomePage(title: 'Welcome Home'),
+      // TODO: ${username}
+      debugShowCheckedModeBanner: false,
+      // Remove debug banner
       //Login route
       routes: <String, WidgetBuilder>{
         '/login': (BuildContext context) => new LoginPage(),
@@ -58,6 +59,7 @@ class _VertexHomePageState extends State<VertexHomePage> {
   Settings settings;
 
   String title = "Welcome Home";
+
   /// Build is run and rerun every time above method, setState, is called
   @override
   Widget build(BuildContext context) {
@@ -84,7 +86,7 @@ class _VertexHomePageState extends State<VertexHomePage> {
           gradient: LinearGradient(
             begin: Alignment.bottomCenter,
             end: Alignment.topCenter,
-            stops: [0.1,0.3, 0.5, 0.7, 0.9],
+            stops: [0.1, 0.3, 0.5, 0.7, 0.9],
             colors: [
               Colors.lightGreen[900],
               Colors.lightGreen[800],
@@ -96,27 +98,27 @@ class _VertexHomePageState extends State<VertexHomePage> {
         ),
         child: Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginPage()),
-                    );
-                  },
-                  child: Center(
-                    child: Text(
-                      'LOGIN',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Montserrat'),
-                    ),
-                  ),
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                );
+              },
+              child: Center(
+                child: Text(
+                  'LOGIN',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Montserrat'),
                 ),
-              ],
-            )),
+              ),
+            ),
+          ],
+        )),
       ),
     );
   }
