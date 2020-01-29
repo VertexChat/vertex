@@ -2,14 +2,14 @@ openapi: 3.0.0
 
 servers:
   - description: Nero
-    url: 167.99.197.106
+    url: /167.99.197.106
   - description: Localhost API URL
     url: https://localhost/api/v1
     
 info:
   title: Norton API
   description: Backend API server for Vertex's Norton backend
-  version: "0.1"
+  version: "1.0.0"
   
 tags:
   - name: User
@@ -163,8 +163,12 @@ paths:
       
       responses:
         '200':
-          $ref: '#/components/schemas/Channel'
-          description: The channel has been found 
+         description: The channel has been found 
+         content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Channel'
+         
           
         '404':
             $ref: '#/components/responses/NotFound'
@@ -229,7 +233,10 @@ paths:
       responses:
           '200':
             description: returns the information about the server
-            $ref: '#/components/schemas/Server'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Server'
           
           default:
             $ref: '#/components/responses/Unexpected'
@@ -324,7 +331,7 @@ components:
           
         type:
           type: string
-          description: Type determines what whether the channel is voice, text, or some specialised char e.g. direct message N.B. This will be updated in future once the appropiate ENUM values have been finalised.
+          description: 'Type determines what whether the channel is voice, text, or some specialised char e.g. direct                message N.B. This will be updated in future once the appropiate ENUM values have been finalised.'
           example: TEXT_CHANNEL
           
         position:
@@ -341,4 +348,3 @@ components:
         appVersion:
           type: string
           example: Norton 1.0.0
-
