@@ -1,0 +1,344 @@
+openapi: 3.0.0
+
+servers:
+  - description: Nero
+    url: 167.99.197.106
+  - description: Localhost API URL
+    url: https://localhost/api/v1
+    
+info:
+  title: Norton API
+  description: Backend API server for Vertex's Norton backend
+  version: "0.1"
+  
+tags:
+  - name: User
+    description: Operations available for user accounts
+    
+  - name: Channel
+    description: Operation available for channels
+    
+  - name: Server
+    description: Operation available for server info
+
+paths:
+ /users:
+    post:
+      tags:
+        - User
+      summary: User has been created
+      operationId: addUser
+      description: User has been created
+      responses:
+        '201':
+          description: User has been created
+          headers:
+            Location:
+              schema:
+                type: string
+                format: uri
+        default:
+          $ref: '#/components/responses/Unexpected'
+          
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        description: User to be added
+
+
+ /users/{id}:
+    parameters:
+      - name: id
+        in: path 
+        required: true
+        schema:
+          type: integer
+        description: The User ID
+        
+    get:
+      tags:
+        - User
+      summary: Returns a single User if it exists
+      operationId: getUserByID
+      description: 'Returns a single User if it exists'
+      responses:
+        '200':
+          description: The user has been found 
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/User'
+        
+        '404':
+          $ref: '#/components/responses/NotFound'
+          
+        default:
+          $ref: '#/components/responses/Unexpected'
+          
+    put:
+      tags:
+        - User
+      
+      summary: Updates an existing User
+      operationId: updateUserByID
+      description: Updates an existing User
+      
+      responses:
+        '204':
+          description: User sucessfully updated
+          
+        '404':
+          $ref: '#/components/responses/NotFound' 
+          
+        default:
+          $ref: '#/components/responses/Unexpected'
+          
+      requestBody:
+        description: User entity to be created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          
+          
+    delete:
+      tags:
+        - User
+      summary: Deletes an existing User
+      operationId: deleteUserByID
+      description: Deletes a user from the database
+      responses:
+        '204':
+          description: User has been deleted
+          
+        '404':
+            $ref: '#/components/responses/NotFound'
+            
+        default:
+            $ref: '#/components/responses/Unexpected'
+          
+ /channels:
+    post:
+      tags:
+        - Channel
+      summary: Channel has been created
+      operationId: addChannel
+      description: Channel has been created
+      responses:
+        '201':
+          description: Channel has been created
+          headers:
+            Location:
+              schema:
+                type: string
+                format: uri
+        default:
+          $ref: '#/components/responses/Unexpected'
+          
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Channel'
+        description: The Channel to be created
+
+ /channels/{id}:
+    parameters:
+      - in: path 
+        name: id
+        required: true
+        schema:
+          type: integer
+        description: The channel ID
+        
+    get:
+      tags:
+        - Channel
+        
+      summary: Get a channel by its ID
+      operationId: getChannelByID
+      description: 'Returns a single Channel if it exists'
+      
+      responses:
+        '200':
+          $ref: '#/components/schemas/Channel'
+          description: The channel has been found 
+          
+        '404':
+            $ref: '#/components/responses/NotFound'
+            
+        default:
+            $ref: '#/components/responses/Unexpected'
+          
+    put:
+      tags:
+        - Channel
+        
+      summary: Updates an existing channel
+      operationId: updateChannelByID
+      description: Updates an existing channel
+      
+      responses:
+        '204':
+          description: Channel sucessfully updated
+          
+        '404':
+          $ref: '#/components/responses/NotFound' 
+          
+        default:
+          $ref: '#/components/responses/Unexpected'
+          
+      requestBody:
+        description: Channel to be added
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Channel'
+              
+    delete:
+      tags:
+        - Channel
+      
+      summary: Deletes an existing channel
+      operationId: deleteChannelByID
+      description: Deletes an existing channel
+      
+      responses:
+        '204':
+          description: Channel has been deleted
+          
+        '404':
+            $ref: '#/components/responses/NotFound'
+            
+        default:
+            $ref: '#/components/responses/Unexpected'
+
+ /server:
+    get:
+      tags:
+        - Server
+      summary: Returns information about the server
+      
+      operationId: searchServer
+      description: | 
+        Returns information about the server like the version its on and
+        amount of users on the server
+  
+      responses:
+          '200':
+            description: returns the information about the server
+            $ref: '#/components/schemas/Server'
+          
+          default:
+            $ref: '#/components/responses/Unexpected'
+          
+components:
+
+  responses:
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+            
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  
+  schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+        - code
+        - message
+        
+    User:
+      type: object
+      required:
+        - id
+        - username
+        - password
+        - displayName
+        
+      properties:
+        id:
+          type: number
+          format: int
+          example: 1
+        
+        username:
+          type: string
+          example: JohnD2005
+        
+        password:
+          description: 'In the case of user creation the password field will be
+                        the plaintext password in all other instances where the
+                        server returns a User object it will be a combination of
+                        the hash of the users password and associated salt'
+          type: string
+          example: Monkey123
+          
+        displayName:
+          type: string
+          example: John Doe
+      
+    Channel:
+      type: object
+      required:
+        - id
+        - name  # The name of the channel 
+        - capacity  # Id of the DM creator  
+        - type # the user limit of the voice channel
+        - position  # the recipients of the DM
+        
+      properties:
+        id:
+          type: integer
+          example: 1
+        
+        name:
+          type: string
+          example: General
+          
+        capacity:
+          type: integer
+          example: 20
+          
+        type:
+          type: string
+          description: Type determines what whether the channel is voice, text, or some specialised char e.g. direct message N.B. This will be updated in future once the appropiate ENUM values have been finalised.
+          example: TEXT_CHANNEL
+          
+        position:
+          type: integer
+          example: 3
+          
+          
+    Server: 
+      type: object
+      properties:
+        userCount:
+          type: integer
+          example: 100
+        appVersion:
+          type: string
+          example: Norton 1.0.0
+
