@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:vertex_ui/src/services/api.dart';
 import 'package:vertex_ui/src/widgets/icon_card.dart';
+import '../utils/validator.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -12,12 +13,27 @@ class _RegisterPageState extends State<RegisterPage> {
   //Member Variables
   // Create a global key that uniquely identifies the Form widget
   // and allows validation of the form.
-  final _key = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
+  final scaffoldKey = new GlobalKey<ScaffoldState>();
   bool _validate = false;
-  String _uname, _displayName, _password;
+
+  //bool _isLoading = false;
+  User user = User();
+
+  void _submit() {
+    final form = formKey.currentState;
+    if (form.validate()) {
+      //setState(() => _isLoading = true);
+      form.save();
+      print(user.toString());
+      onRegister(user);
+    }
+  } //End function
 
   @override
   Widget build(BuildContext context) {
+    //Default value
+    user.id = 1;
     //Data about the device the application is running on
     final data = MediaQuery.of(context);
     return new Scaffold(
@@ -44,7 +60,7 @@ class _RegisterPageState extends State<RegisterPage> {
               Container(
                 padding: EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
                 child: new Form(
-                  key: _key,
+                  key: formKey,
                   autovalidate: _validate,
                   child: FormUI(),
                 ),
@@ -61,18 +77,15 @@ class _RegisterPageState extends State<RegisterPage> {
     return new Column(
       children: <Widget>[
         new TextFormField(
-          decoration: InputDecoration(
-              labelText: 'USERNAME',
-              labelStyle: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey),
-              focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.green))),
-          onSaved: (String val) {
-            _uname = val;
-          },
-        ),
+            decoration: InputDecoration(
+                labelText: 'USERNAME',
+                labelStyle: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey),
+                focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.green))),
+            onSaved: (String val) => this.user.username = val),
         SizedBox(height: data.size.height / 90),
         new TextFormField(
           decoration: InputDecoration(
@@ -85,25 +98,20 @@ class _RegisterPageState extends State<RegisterPage> {
                   borderSide: BorderSide(color: Colors.green))),
           obscureText: true,
           validator: validatePassword,
-          onSaved: (String val) {
-            _password = val;
-          },
+          onSaved: (String val) => this.user.password = val,
         ),
         SizedBox(height: data.size.height / 90),
         new TextFormField(
-          decoration: InputDecoration(
-              labelText: 'DISPLAY NAME ',
-              labelStyle: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey),
-              focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.green))),
-          validator: validateUname,
-          onSaved: (String val) {
-            _displayName = val;
-          },
-        ),
+            decoration: InputDecoration(
+                labelText: 'DISPLAY NAME ',
+                labelStyle: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey),
+                focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.green))),
+            validator: validateUname,
+            onSaved: (String val) => this.user.displayName = val),
         //Register button container
         SizedBox(height: data.size.height / 20.0),
         Container(
@@ -114,16 +122,7 @@ class _RegisterPageState extends State<RegisterPage> {
               color: Colors.green,
               elevation: 7.0,
               child: new GestureDetector(
-                onTap: () {
-                  if (_key.currentState.validate()) {
-                    print("form accepted");
-                    onRegister();
-                  } else {
-                    setState(() {
-                      _validate = true;
-                    });
-                  }
-                },
+                onTap: () => _submit(),
                 child: Center(
                   child: Text(
                     'REGISTER',
@@ -147,10 +146,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 color: Colors.transparent,
                 borderRadius: BorderRadius.circular(20.0)),
             child: InkWell(
-              onTap: () {
-                //Return back to login page
-                Navigator.of(context).pop();
-              },
+              onTap: () => Navigator.of(context).pop(),
               child: Center(
                 child: Text('Go Back',
                     style: TextStyle(
@@ -163,59 +159,12 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   } //End widget
 
-  void onRegister() async {
-    var api_instance = AuthApi();
-
-    User user = new User();
-
-    user.id = 1;
-    user.username = _uname;
-    user.password = _password;
-    user.displayName = _displayName;
-
+  void onRegister(User user) async {
+    var apiInstance = AuthApi();
     try {
-      print(user.toString());
-      api_instance.register(user: user);
+      apiInstance.register(user: user);
     } catch (e) {
       print("Exception $e");
     }
   } //End function
-
-  String validateName(String value) {
-    String pattern = r'(^[a-zA-Z ]*$)';
-    RegExp regExp = new RegExp(pattern);
-    if (value.length == 0) {
-      return "Username is Required";
-    } else if (!regExp.hasMatch(value)) {
-      return "Name must be a-z and A-Z";
-    }
-    return null;
-  } //end validate Name
-
-  String validateUname(String value) {
-    String pattern = r'(^[a-zA-Z ]*$)';
-    RegExp regExp = new RegExp(pattern);
-    if (value.length == 0) {
-      return "Username is Required";
-    } else if (!regExp.hasMatch(value)) {
-      return "Name must be a-z and A-Z";
-    }
-    return null;
-  } //end validate Name
-
-  //https://stackoverflow.com/questions/56253787/how-to-handle-textfield-validation-in-password-in-flutter
-  String validatePassword(String value) {
-    Pattern pattern =
-        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
-    RegExp regex = new RegExp(pattern);
-    print(value);
-    if (value.isEmpty) {
-      return 'Please enter password';
-    } else {
-      if (!regex.hasMatch(value))
-        return 'Enter valid password.\nMust contain at least one upper case,\nOne lower case,\nOne digit and one special character';
-      else
-        return null;
-    } //End if else
-  } //End validate password function
 } //end class

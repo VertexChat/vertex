@@ -1,6 +1,8 @@
 part of openapi.api;
 
 class User {
+  //Default to 1. This value will be updated by the database. This is by design
+  //choice to allow for the user model in more then one place
   num id;
 
   String username;
@@ -10,7 +12,8 @@ class User {
 
   String displayName;
 
-  User();
+  //Constructor
+  User({this.id, this.username, this.password, this.displayName});
 
   @override
   String toString() {

@@ -18,7 +18,6 @@ class ApiClient {
   final _regMap = RegExp(r'^Map<String,(.*)>$');
 
   ApiClient({this.basePath = "http://localhost:8080/api/v1"}) {
-    print(this.basePath);
     // Setup authentications (key: authentication name, value: authentication).
   }
 

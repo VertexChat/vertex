@@ -88,7 +88,6 @@ class AuthApi {
   ///
   /// Allow a user register a new account with the server
   Future register({User user}) async {
-    print(user.toString());
     Response response = await registerWithHttpInfo(user: user);
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, _decodeBodyBytes(response));
