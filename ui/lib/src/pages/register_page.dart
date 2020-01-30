@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:vertex_ui/src/services/api.dart';
 import 'package:vertex_ui/src/widgets/icon_card.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -13,7 +14,7 @@ class _RegisterPageState extends State<RegisterPage> {
   // and allows validation of the form.
   final _key = GlobalKey<FormState>();
   bool _validate = false;
-  String _uname, _email, _password;
+  String _uname, _displayName, _password;
 
   @override
   Widget build(BuildContext context) {
@@ -61,16 +62,15 @@ class _RegisterPageState extends State<RegisterPage> {
       children: <Widget>[
         new TextFormField(
           decoration: InputDecoration(
-              labelText: 'EMAIL',
+              labelText: 'USERNAME',
               labelStyle: TextStyle(
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.bold,
                   color: Colors.grey),
               focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.green))),
-          validator: validateEmail,
           onSaved: (String val) {
-            _email = val;
+            _uname = val;
           },
         ),
         SizedBox(height: data.size.height / 90),
@@ -92,7 +92,7 @@ class _RegisterPageState extends State<RegisterPage> {
         SizedBox(height: data.size.height / 90),
         new TextFormField(
           decoration: InputDecoration(
-              labelText: 'USERNAME ',
+              labelText: 'DISPLAY NAME ',
               labelStyle: TextStyle(
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.bold,
@@ -101,7 +101,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   borderSide: BorderSide(color: Colors.green))),
           validator: validateUname,
           onSaved: (String val) {
-            _uname = val;
+            _displayName = val;
           },
         ),
         //Register button container
@@ -117,6 +117,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 onTap: () {
                   if (_key.currentState.validate()) {
                     print("form accepted");
+                    onRegister();
                   } else {
                     setState(() {
                       _validate = true;
@@ -162,6 +163,24 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   } //End widget
 
+  void onRegister() async {
+    var api_instance = AuthApi();
+
+    User user = new User();
+
+    user.id = 1;
+    user.username = _uname;
+    user.password = _password;
+    user.displayName = _displayName;
+
+    try {
+      print(user.toString());
+      api_instance.register(user: user);
+    } catch (e) {
+      print("Exception $e");
+    }
+  } //End function
+
   String validateName(String value) {
     String pattern = r'(^[a-zA-Z ]*$)';
     RegExp regExp = new RegExp(pattern);
@@ -199,14 +218,4 @@ class _RegisterPageState extends State<RegisterPage> {
         return null;
     } //End if else
   } //End validate password function
-
-  String validateEmail(String value) {
-    Pattern pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regex = new RegExp(pattern);
-    if (!regex.hasMatch(value))
-      return 'Enter Valid Email';
-    else
-      return null;
-  } //End validateEmail
 } //end class

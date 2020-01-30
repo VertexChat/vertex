@@ -5,6 +5,7 @@ import 'package:vertex_ui/src/pages/video_call/connect_call_page.dart';
 import 'package:vertex_ui/src/pages/login_page.dart';
 import 'package:vertex_ui/src/pages/register_page.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
+import 'package:vertex_ui/src/services/api.dart';
 
 /// Call to run App Root (App starts here)
 void main() => runApp(UI()); // Vertex_UI -> App root call to
@@ -16,9 +17,8 @@ class UI extends StatefulWidget {
 
 /// App Root
 class _UIState extends State<UI> {
-
   @override
-  void initState(){
+  void initState() {
     super.initState();
   }
 
@@ -36,11 +36,11 @@ class _UIState extends State<UI> {
       themedWidgetBuilder: (context, theme) {
         return new MaterialApp(
           title: 'Vertex',
-          theme: ThemeData(
-              brightness: Brightness.dark
-          ),
-          home: VertexHomePage(title: 'Welcome Home'), // TODO: ${username}
-          debugShowCheckedModeBanner: false, // Remove debug banner
+          theme: ThemeData(brightness: Brightness.dark),
+          home: VertexHomePage(title: 'Welcome Home'),
+          // TODO: ${username}
+          debugShowCheckedModeBanner: false,
+          // Remove debug banner
           //Login route
           routes: <String, WidgetBuilder>{
             '/login': (BuildContext context) => new LoginPage(),
@@ -129,6 +129,21 @@ class _VertexHomePageState extends State<VertexHomePage> {
                 ),
               ),
             ),
+            SizedBox(height: 20.0),
+            InkWell(
+              onTap: () {
+                _test();
+              },
+              child: Center(
+                child: Text(
+                  'TEST API BUTTON',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Montserrat'),
+                ),
+              ),
+            ),
           ],
         )),
       ),
@@ -156,5 +171,16 @@ class _VertexHomePageState extends State<VertexHomePage> {
         return SettingsPage();
       }),
     );
+  }
+
+  _test() {
+    var api_instance = ServerApi();
+    var server = Server(); //Server model
+
+    try {
+      api_instance.searchServer();
+    } catch (e) {
+      print("Exception $e");
+    }
   }
 }

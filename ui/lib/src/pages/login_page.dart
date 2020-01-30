@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:vertex_ui/src/pages/register_page.dart';
+import 'package:vertex_ui/src/services/api.dart';
 import 'package:vertex_ui/src/widgets/icon_card.dart';
 
 class LoginPage extends StatefulWidget {
@@ -115,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                                   });
                                 },
                                 controlAffinity:
-                                ListTileControlAffinity.leading,
+                                    ListTileControlAffinity.leading,
                               ),
                             ),
                           ]),
@@ -181,7 +182,7 @@ class _LoginPageState extends State<LoginPage> {
             //"Connect with" with text container
             //SizedBox(height: data.size.height / 1.0),
             Container(
-              //https://github.com/flutter/flutter/issues/10156
+                //https://github.com/flutter/flutter/issues/10156
                 padding: EdgeInsets.only(
                     top: 10.0, left: 20.0, right: 20.0, bottom: 10.0),
                 child: Row(
@@ -194,8 +195,7 @@ class _LoginPageState extends State<LoginPage> {
                           fontFamily: 'Montserrat'),
                     ),
                   ],
-                )
-            ),
+                )),
             //Call IconCard Widget
             new IconCard()
           ],
