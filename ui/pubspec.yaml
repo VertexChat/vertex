@@ -46,8 +46,9 @@ dev_dependencies:
 
   # RxDart adds additional capabilities to Dart Streams and StreamControllers.
   # https://pub.dev/packages/rxdart#-readme-tab-
+  # NOTE: https://pub.dev/packages/rxdart_codemod
   rxdart: ^0.23.1
-  observable: ^0.22.2
+
 
 
 

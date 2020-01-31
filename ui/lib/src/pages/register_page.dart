@@ -137,15 +137,19 @@ class _RegisterPageState extends State<RegisterPage> {
               shadowColor: Colors.greenAccent,
               color: Colors.green,
               elevation: 7.0,
-              child: new GestureDetector(
-                onTap: () => _submit(),
-                child: Center(
-                  child: Text(
-                    'REGISTER',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Montserrat'),
+              child: StreamBuilder<bool>(
+                stream: bloc.submitCheck,
+                builder: (context, snapshot) => RaisedButton(
+                  color: Colors.green,
+                  onPressed: snapshot.hasData ? () => _submit() : null,
+                  child: Center(
+                    child: Text(
+                      'REGISTER',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Montserrat'),
+                    ),
                   ),
                 ),
               ),

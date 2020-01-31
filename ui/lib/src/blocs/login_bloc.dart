@@ -17,7 +17,7 @@ class LoginBloc extends Object with Validators implements BaseBloc {
   Stream<String> get password =>
       _passwordController.stream.transform(validatePassword);
 
-  // Stream<bool> get submitCheck => Observable.combineLatest2(username, password, (uname, pass) => true);
+  Stream<bool> get submitCheck => Rx.combineLatest2(username, password, (uname, pass) => true);
 
   submit() {
     // Submits inside a bloc class should not have any information about

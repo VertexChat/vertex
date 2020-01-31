@@ -190,15 +190,19 @@ class _LoginPageState extends State<LoginPage> {
             shadowColor: Colors.greenAccent,
             color: Colors.green,
             elevation: 5.0,
-            child: InkWell(
-              onTap: () => _submit(),
-              child: Center(
-                child: Text(
-                  'LOGIN',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Montserrat'),
+            child: StreamBuilder<bool>(
+              stream: bloc.submitCheck,
+              builder: (context, snapshot) => RaisedButton(
+                color: Colors.green,
+                onPressed: snapshot.hasData ? () => _submit() : null,
+                child: Center(
+                  child: Text(
+                    'LOGIN',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Montserrat'),
+                  ),
                 ),
               ),
             ),

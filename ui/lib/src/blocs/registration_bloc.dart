@@ -23,6 +23,10 @@ class RegistrationBloc extends Object with Validators implements BaseBloc {
   Stream<String> get displayName =>
       _displayNameController.stream.transform(validateName);
 
+  //https://pub.dev/packages/rxdart_codemod
+  Stream<bool> get submitCheck => Rx.combineLatest3(
+      username, password, displayName, (uname, pass, displayName) => true);
+
   @override
   void dispose() {
     _usernameController?.close();
