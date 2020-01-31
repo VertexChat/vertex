@@ -24,6 +24,8 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+
+
   String _audioInput;
   String _audioOutput;
   double _audioInputSensitivity;
@@ -109,13 +111,13 @@ class _SettingsPageState extends State<SettingsPage> {
     return Container(
       padding: EdgeInsets.symmetric(
         vertical: 10.0,
-        horizontal: 100.0,
+        horizontal: 10.0,
       ),
       child: Card(
 //        color: Colors.red,
 //        elevation: 0,
 //        color: Colors.transparent,
-        child: Row(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -174,13 +176,13 @@ class _SettingsPageState extends State<SettingsPage> {
     return Container(
       padding: EdgeInsets.symmetric(
         vertical: 10.0,
-        horizontal: 100.0,
+        horizontal: 10.0,
       ),
       child: Card(
 //        color: Colors.lightGreen[800],
 //        elevation: 0,
 //        color: Colors.transparent,
-        child: Row(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -236,10 +238,10 @@ class _SettingsPageState extends State<SettingsPage> {
     return Container(
       padding: EdgeInsets.symmetric(
         vertical: 10.0,
-        horizontal: 100.0,
+        horizontal: 10.0,
       ),
       child: Card(
-        child: Row(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -273,7 +275,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget get audioInputSensitivitySlider {
     return Container(
 //      color: Colors.black87,
-      child: Row(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -303,10 +305,10 @@ class _SettingsPageState extends State<SettingsPage> {
     return Container(
       padding: EdgeInsets.symmetric(
         vertical: 10.0,
-        horizontal: 100.0,
+        horizontal: 10.0,
       ),
       child: Card(
-        child: Row(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -364,7 +366,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return Container(
       padding: EdgeInsets.symmetric(
         vertical: 10.0,
-        horizontal: 100.0,
+        horizontal: 10.0,
       ),
       child: Card(
         child: Row(
@@ -413,7 +415,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return Container(
       padding: EdgeInsets.symmetric(
         vertical: 10.0,
-        horizontal: 100.0,
+        horizontal: 10.0,
       ),
       child: Card(
         child: Row(
@@ -522,6 +524,10 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    //Data about the device the application is running on
+    final data = MediaQuery.of(context);
+
     return Scaffold(
       backgroundColor: Colors.white12,
       appBar: AppBar(
