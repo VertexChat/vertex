@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:vertex_ui/src/blocs/login_bloc.dart';
 import 'package:vertex_ui/src/pages/register_page.dart';
 import 'package:vertex_ui/src/services/api.dart';
 import 'package:vertex_ui/src/widgets/icon_card.dart';
@@ -19,6 +20,19 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   //Member Variables
   bool rememberMe = false;
+  final formKey = GlobalKey<FormState>();
+  bool _validate = false;
+  Login login = Login();
+
+  void _submit() {
+    final form = formKey.currentState;
+    if (form.validate()) {
+      //setState(() => _isLoading = true);
+      form.save();
+      print(login.toString());
+      onLogin(login);
+    }
+  } //End function
 
   @override
   Widget build(BuildContext context) {
@@ -59,126 +73,14 @@ class _LoginPageState extends State<LoginPage> {
             ),
             //Input fields for email & password container
             Container(
-                height: data.size.height / 2.3,
-                padding: EdgeInsets.only(top: 5.0, left: 20.0, right: 20.0),
-                child: Column(
-                  children: <Widget>[
-                    TextField(
-                      decoration: InputDecoration(
-                          labelText: 'EMAIL',
-                          labelStyle: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey),
-                          focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.green))),
-                    ),
-                    TextField(
-                      decoration: InputDecoration(
-                          labelText: 'PASSWORD',
-                          labelStyle: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey),
-                          focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.green))),
-                      obscureText: true,
-                    ),
-                    //Forgot Password container
-                    Container(
-                      alignment: Alignment.centerRight,
-                      padding: EdgeInsets.only(top: 10.0, left: 0.0),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            InkWell(
-                              child: Text(
-                                'Forgot Password',
-                                style: TextStyle(
-                                    color: Colors.green,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'Montserrat',
-                                    decoration: TextDecoration.underline),
-                              ),
-                            ),
-                            //Remember Me checkbox
-                            //https://stackoverflow.com/questions/45986093/textfield-inside-of-row-causes-layout-exception-unable-to-calculate-size?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
-                            //https://stackoverflow.com/questions/53842697/how-do-you-add-a-label-title-text-to-a-checkbox-in-flutter
-                            Flexible(
-                              //TODO: Needs some work
-                              child: CheckboxListTile(
-                                title: Text("Remember me"),
-                                value: rememberMe,
-                                onChanged: (bool value) {
-                                  setState(() {
-                                    rememberMe = value;
-                                    //TODO:
-                                  });
-                                },
-                                controlAffinity:
-                                    ListTileControlAffinity.leading,
-                              ),
-                            ),
-                          ]),
-                    ),
-                    SizedBox(height: data.size.height / 80),
-                    //Login container
-                    Container(
-                      height: data.size.height / 20.0,
-                      child: Material(
-                        borderRadius: BorderRadius.circular(20.0),
-                        shadowColor: Colors.greenAccent,
-                        color: Colors.green,
-                        elevation: 5.0,
-                        child: InkWell(
-                          onTap: () {
-                            //TODO: Add login check
-                          },
-                          child: Center(
-                            child: Text(
-                              'LOGIN',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Montserrat'),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: data.size.height / 40.0),
-                    //Main register container
-                    Container(
-                      height: data.size.height / 20.0,
-                      color: Colors.transparent,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                color: Colors.black,
-                                style: BorderStyle.solid,
-                                width: 1.0),
-                            color: Colors.transparent,
-                            borderRadius: BorderRadius.circular(20.0)),
-                        child: InkWell(
-                          onTap: () {
-                            //Navigate ot register page
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => RegisterPage()),
-                            );
-                          },
-                          child: Center(
-                            child: Text('Register',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'Montserrat')),
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                )),
+              height: data.size.height / 2.3,
+              padding: EdgeInsets.only(top: 5.0, left: 20.0, right: 20.0),
+              child: new Form(
+                key: formKey,
+                autovalidate: _validate,
+                child: formUi(),
+              ),
+            ),
             //"Connect with" with text container
             //SizedBox(height: data.size.height / 1.0),
             Container(
@@ -200,5 +102,145 @@ class _LoginPageState extends State<LoginPage> {
             new IconCard()
           ],
         ));
+  } //end widget builder
+
+  Widget formUi() {
+    //Data about the device the application is running on
+    final data = MediaQuery.of(context);
+    // Bloc pattern
+    final bloc = LoginBloc();
+
+    return new Column(
+      children: <Widget>[
+        StreamBuilder<String>(
+          stream: bloc.username,
+          builder: (context, snapshot) => TextFormField(
+            onChanged: bloc.usernameChanged,
+            onSaved: (String val) => this.login.userName = val,
+            decoration: InputDecoration(
+              labelText: 'USERNAME',
+              labelStyle: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey),
+              focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.green)),
+              errorText: snapshot.error,
+            ),
+          ),
+        ),
+        StreamBuilder<String>(
+          stream: bloc.password,
+          builder: (context, snapshot) => TextFormField(
+            obscureText: true,
+            onChanged: bloc.passwordChanged,
+            onSaved: (String val) => this.login.password = val,
+            decoration: InputDecoration(
+              labelText: 'PASSWORD',
+              labelStyle: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey),
+              focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.green)),
+              errorText: snapshot.error,
+            ),
+          ),
+        ),
+        //Forgot Password container
+        Container(
+          alignment: Alignment.centerRight,
+          padding: EdgeInsets.only(top: 10.0, left: 0.0),
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                InkWell(
+                  child: Text(
+                    'Forgot Password',
+                    style: TextStyle(
+                        color: Colors.green,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Montserrat',
+                        decoration: TextDecoration.underline),
+                  ),
+                ),
+                //Remember Me checkbox
+                //https://stackoverflow.com/questions/45986093/textfield-inside-of-row-causes-layout-exception-unable-to-calculate-size?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+                //https://stackoverflow.com/questions/53842697/how-do-you-add-a-label-title-text-to-a-checkbox-in-flutter
+                Flexible(
+                  //TODO: Needs some work
+                  child: CheckboxListTile(
+                    title: Text("Remember me"),
+                    value: rememberMe,
+                    onChanged: (bool value) {
+                      //TODO:
+                      setState(() => rememberMe = value);
+                    },
+                    controlAffinity: ListTileControlAffinity.leading,
+                  ),
+                ),
+              ]),
+        ),
+        SizedBox(height: data.size.height / 80),
+        //Login container
+        Container(
+          height: data.size.height / 20.0,
+          child: Material(
+            borderRadius: BorderRadius.circular(20.0),
+            shadowColor: Colors.greenAccent,
+            color: Colors.green,
+            elevation: 5.0,
+            child: InkWell(
+              onTap: () => _submit(),
+              child: Center(
+                child: Text(
+                  'LOGIN',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Montserrat'),
+                ),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(height: data.size.height / 40.0),
+        //Main register container
+        Container(
+          height: data.size.height / 20.0,
+          color: Colors.transparent,
+          child: Container(
+            decoration: BoxDecoration(
+                border: Border.all(
+                    color: Colors.black, style: BorderStyle.solid, width: 1.0),
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(20.0)),
+            child: InkWell(
+              onTap: () {
+                //Navigate ot register page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RegisterPage()),
+                );
+              },
+              child: Center(
+                child: Text('Register',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, fontFamily: 'Montserrat')),
+              ),
+            ),
+          ),
+        )
+      ],
+    );
   } //End builder
+
+  void onLogin(Login login) async {
+    var api = AuthApi();
+    try {
+      api.login(login: login);
+    } catch (e) {
+      print("Exception $e");
+    }
+  } //End onLogin function
 } //end class

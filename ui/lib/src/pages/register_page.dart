@@ -1,9 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:vertex_ui/src/blocs/login_bloc.dart';
+import 'package:vertex_ui/src/blocs/registration_bloc.dart';
 import 'package:vertex_ui/src/services/api.dart';
 import 'package:vertex_ui/src/widgets/icon_card.dart';
-import '../utils/validator.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -35,6 +34,7 @@ class _RegisterPageState extends State<RegisterPage> {
     user.id = 1; //Default value
     //Data about the device the application is running on
     final data = MediaQuery.of(context);
+
     return new Scaffold(
         resizeToAvoidBottomPadding: false,
         body: Column(
@@ -73,9 +73,15 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget formUI() {
     //Data about the device the application is running on
     final data = MediaQuery.of(context);
+    final bloc = RegistrationBloc(); // Bloc pattern
+
     return new Column(
       children: <Widget>[
-        new TextFormField(
+        StreamBuilder<String>(
+          stream: bloc.username,
+          builder: (context, snapshot) => TextFormField(
+            onSaved: (String val) => this.user.username = val,
+            onChanged: bloc.usernameChanged,
             decoration: InputDecoration(
                 labelText: 'USERNAME',
                 labelStyle: TextStyle(
@@ -83,23 +89,34 @@ class _RegisterPageState extends State<RegisterPage> {
                     fontWeight: FontWeight.bold,
                     color: Colors.grey),
                 focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.green))),
-            onSaved: (String val) => this.user.username = val),
-        SizedBox(height: data.size.height / 90),
-        new TextFormField(
-          decoration: InputDecoration(
-              labelText: 'PASSWORD ',
-              labelStyle: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey),
-              focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.green))),
-          obscureText: true,
-          onSaved: (String val) => this.user.password = val,
+                    borderSide: BorderSide(color: Colors.green)),
+                errorText: snapshot.error),
+          ),
         ),
         SizedBox(height: data.size.height / 90),
-        new TextFormField(
+        StreamBuilder<String>(
+          stream: bloc.password,
+          builder: (context, snapshot) => TextFormField(
+            obscureText: true,
+            onSaved: (String val) => this.user.password = val,
+            onChanged: bloc.passwordChanged,
+            decoration: InputDecoration(
+                labelText: 'PASSWORD ',
+                labelStyle: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey),
+                focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.green)),
+                errorText: snapshot.error),
+          ),
+        ),
+        SizedBox(height: data.size.height / 90),
+        StreamBuilder<String>(
+          stream: bloc.displayName,
+          builder: (context, snapshot) => TextFormField(
+            onSaved: (String val) => this.user.displayName = val,
+            onChanged: bloc.displayNameChanged,
             decoration: InputDecoration(
                 labelText: 'DISPLAY NAME ',
                 labelStyle: TextStyle(
@@ -107,8 +124,10 @@ class _RegisterPageState extends State<RegisterPage> {
                     fontWeight: FontWeight.bold,
                     color: Colors.grey),
                 focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.green))),
-            onSaved: (String val) => this.user.displayName = val),
+                    borderSide: BorderSide(color: Colors.green)),
+                errorText: snapshot.error),
+          ),
+        ),
         //Register button container
         SizedBox(height: data.size.height / 20.0),
         Container(

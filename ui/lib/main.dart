@@ -1,11 +1,10 @@
+import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:vertex_ui/src/models/settings_model.dart';
-import 'package:vertex_ui/src/pages/settings_page.dart';
-import 'package:vertex_ui/src/pages/video_call/connect_call_page.dart';
 import 'package:vertex_ui/src/pages/login_page.dart';
 import 'package:vertex_ui/src/pages/register_page.dart';
-import 'package:dynamic_theme/dynamic_theme.dart';
-import 'package:vertex_ui/src/services/api.dart';
+import 'package:vertex_ui/src/pages/settings_page.dart';
+import 'package:vertex_ui/src/pages/video_call/connect_call_page.dart';
 
 /// Call to run App Root (App starts here)
 void main() => runApp(UI()); // Vertex_UI -> App root call to
@@ -129,21 +128,6 @@ class _VertexHomePageState extends State<VertexHomePage> {
                 ),
               ),
             ),
-            SizedBox(height: 20.0),
-            InkWell(
-              onTap: () {
-                _test();
-              },
-              child: Center(
-                child: Text(
-                  'TEST API BUTTON',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Montserrat'),
-                ),
-              ),
-            ),
           ],
         )),
       ),
@@ -152,10 +136,9 @@ class _VertexHomePageState extends State<VertexHomePage> {
 
   //Display connect call page
   Future _showConnectCallPage() async {
-    await Navigator.of(context)
-        .push(MaterialPageRoute(builder: (BuildContext context) {
-      return ConnectCallPage("Connect to Video Call");
-    }));
+    await Navigator.of(context).push(MaterialPageRoute(
+        builder: (BuildContext context) =>
+            ConnectCallPage("Connect to Video Call")));
   } //End _showConnectCallPage()
 
   // Any time you're pushing a new route and expect that route
@@ -171,16 +154,5 @@ class _VertexHomePageState extends State<VertexHomePage> {
         return SettingsPage();
       }),
     );
-  }
-
-  _test() {
-    var api_instance = ServerApi();
-    var server = Server(); //Server model
-
-    try {
-      api_instance.searchServer();
-    } catch (e) {
-      print("Exception $e");
-    }
   }
 }
