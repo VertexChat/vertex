@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:vertex_ui/src/blocs/login_bloc.dart';
 import 'package:vertex_ui/src/services/api.dart';
 import 'package:vertex_ui/src/widgets/icon_card.dart';
 import '../utils/validator.dart';
@@ -14,7 +15,6 @@ class _RegisterPageState extends State<RegisterPage> {
   // Create a global key that uniquely identifies the Form widget
   // and allows validation of the form.
   final formKey = GlobalKey<FormState>();
-  final scaffoldKey = new GlobalKey<ScaffoldState>();
   bool _validate = false;
 
   //bool _isLoading = false;
@@ -32,8 +32,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    //Default value
-    user.id = 1;
+    user.id = 1; //Default value
     //Data about the device the application is running on
     final data = MediaQuery.of(context);
     return new Scaffold(
@@ -62,7 +61,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 child: new Form(
                   key: formKey,
                   autovalidate: _validate,
-                  child: FormUI(),
+                  child: formUI(),
                 ),
               ),
               SizedBox(height: data.size.height / 30.00),
@@ -71,7 +70,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ]));
   } //end builder
 
-  Widget FormUI() {
+  Widget formUI() {
     //Data about the device the application is running on
     final data = MediaQuery.of(context);
     return new Column(
@@ -97,7 +96,6 @@ class _RegisterPageState extends State<RegisterPage> {
               focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.green))),
           obscureText: true,
-          validator: validatePassword,
           onSaved: (String val) => this.user.password = val,
         ),
         SizedBox(height: data.size.height / 90),
@@ -110,7 +108,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     color: Colors.grey),
                 focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.green))),
-            validator: validateUname,
             onSaved: (String val) => this.user.displayName = val),
         //Register button container
         SizedBox(height: data.size.height / 20.0),

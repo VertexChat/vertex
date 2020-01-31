@@ -40,7 +40,7 @@ class AuthApi {
 
   /// Allows a user that is registered to login
   ///
-  /// Allows a user that is register to login to the applcation
+  /// Allows a user that is register to login to the application
   Future login({Login login}) async {
     Response response = await loginWithHttpInfo(login: login);
     if (response.statusCode >= 400) {

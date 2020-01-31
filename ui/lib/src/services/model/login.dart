@@ -1,11 +1,12 @@
 part of openapi.api;
 
 class Login {
-  String password = null;
+  String password;
 
-  String userName = null;
+  String userName;
 
-  Login();
+  //Constructor
+  Login({this.password, this.userName});
 
   @override
   String toString() {
