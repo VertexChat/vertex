@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vertex_ui/src/models/settings_model.dart';
+import 'package:vertex_ui/src/widgets/drop_box_card.dart';
+import 'package:vertex_ui/src/widgets/slider_widget.dart';
 import 'package:vertex_ui/src/widgets/text_widget.dart';
+import 'package:dynamic_theme/dynamic_theme.dart';
 
-// TODO: Verify if this is correct
 /// Passing settings in from main.dart
 /// Stateful widget receives data
 /// It hands off data to Stateless widget
@@ -48,8 +50,6 @@ class _SettingsPageState extends State<SettingsPage> {
     'External Webcam'
   ];
 
-  List<bool> _audioInputIsSelected = [true, false];
-  List<bool> _audioOutputIsSelected = [true, false];
   List<bool> _themeIsSelected = [true, false];
 
   /// -- Init State --
@@ -63,6 +63,13 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  void changeBrightness() {
+    DynamicTheme.of(context).setBrightness(
+        Theme.of(context).brightness == Brightness.dark
+            ? Brightness.light
+            : Brightness.dark);
   }
 
   // https://codingwithjoe.com/flutter-saving-and-restoring-with-sharedpreferences/
@@ -100,15 +107,20 @@ class _SettingsPageState extends State<SettingsPage> {
   /// Displays Dropdown
   Widget get audioInCard {
     return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: 10.0,
+        horizontal: 100.0,
+      ),
       child: Card(
-//        color: Colors.lightGreen[800],
-        elevation: 0,
-        color: Colors.transparent,
-        child: Column(
+//        color: Colors.red,
+//        elevation: 0,
+//        color: Colors.transparent,
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            TextWidget("Audio in", _audioInput),
+            TextWidget('Audio Input'),
+//            TextWidget(_audioInput),
             audioInputDropBox,
           ],
         ),
@@ -120,46 +132,39 @@ class _SettingsPageState extends State<SettingsPage> {
   /// DropBox Display
   /// TODO: Manipulate for systems hardware
   Widget get audioInputDropBox {
-    return Column(
-      children: <Widget>[
-        Container(
-            padding: EdgeInsets.symmetric(
-              vertical: 16.0,
-              horizontal: 16.0,
+    return Container(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            child: DropdownButton<String>(
+              value: _audioInput,
+              icon: Icon(Icons.arrow_downward),
+              iconSize: 24,
+              elevation: 16,
+              style: TextStyle(color: Colors.white),
+              underline: Container(
+                height: 2,
+                color: Colors.white30,
+              ),
+              onChanged: (String value) {
+                setState(() {
+                  _audioInput = value;
+                });
+                // Save as key value pair
+                save('audioInput', value);
+              },
+              items: _defaultAudioInput.map((String value) {
+                return new DropdownMenuItem<String>(
+                  value: value,
+                  child: new Text(value),
+                );
+              }).toList(),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Flexible(
-                  flex: 1,
-                  child: DropdownButton<String>(
-                    value: _audioInput,
-                    icon: Icon(Icons.arrow_downward),
-                    iconSize: 24,
-                    elevation: 16,
-                    style: TextStyle(color: Colors.white),
-                    underline: Container(
-                      height: 2,
-                      color: Colors.white30,
-                    ),
-                    onChanged: (String value) {
-                      setState(() {
-                        _audioInput = value;
-                      });
-                      // Save as key value pair
-                      save('audioInput', value);
-                    },
-                    items: _defaultAudioInput.map((String value) {
-                      return new DropdownMenuItem<String>(
-                        value: value,
-                        child: new Text(value),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
-            )),
-      ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -167,15 +172,19 @@ class _SettingsPageState extends State<SettingsPage> {
   /// Text Display
   Widget get audioOutCard {
     return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: 10.0,
+        horizontal: 100.0,
+      ),
       child: Card(
 //        color: Colors.lightGreen[800],
-        elevation: 0,
-        color: Colors.transparent,
-        child: Column(
+//        elevation: 0,
+//        color: Colors.transparent,
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            TextWidget("Audio Out", _audioOutput),
+            TextWidget("Audio Out"),
             audioOutputDropBox,
           ],
         ),
@@ -186,60 +195,73 @@ class _SettingsPageState extends State<SettingsPage> {
   /// -- Audio Output --
   /// DropBox Display
   Widget get audioOutputDropBox {
-    return Column(
-      children: <Widget>[
-        Container(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Flexible(
-                flex: 1,
-                child: DropdownButton<String>(
-                  value: _audioOutput,
-                  icon: Icon(Icons.arrow_downward),
-                  iconSize: 24,
-                  elevation: 16,
-                  style: TextStyle(color: Colors.white),
-                  underline: Container(
-                    height: 2,
-                    color: Colors.white30,
-                  ),
-                  onChanged: (String value) {
-                    setState(() {
-                      _audioOutput = value;
-                    });
-                    save('audioOutput', value);
-                  },
-                  // TODO: Look at getting audio options here
-                  items: _defaultAudioOutput.map((String value) {
-                    return new DropdownMenuItem<String>(
-                      value: value,
-                      child: new Text(value),
-                    );
-                  }).toList(),
-                ),
+    return Container(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            child: DropdownButton<String>(
+              value: _audioOutput,
+              icon: Icon(Icons.arrow_downward),
+              iconSize: 24,
+              elevation: 16,
+              style: TextStyle(color: Colors.white),
+              underline: Container(
+                height: 2,
+                color: Colors.white30,
               ),
-            ],
+              onChanged: (String value) {
+                setState(() {
+                  _audioOutput = value;
+                });
+                save('audioOutput', value);
+              },
+              // TODO: Look at getting audio options here
+              items: _defaultAudioOutput.map((String value) {
+                return new DropdownMenuItem<String>(
+                  value: value,
+                  child: new Text(value),
+                );
+              }).toList(),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   /// -- Audio Sensitivity Card--
   Widget get audioInputSensitivityCard {
     return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: 10.0,
+        horizontal: 100.0,
+      ),
       child: Card(
-//        color: Colors.lightGreen[800],
-        elevation: 0,
-        color: Colors.transparent,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            TextWidget("Audio Input Sensitivity"),
+            audioInputSensitivitySliderCard
+//            SliderWidget(_audioInputSensitivity),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget get audioInputSensitivitySliderCard {
+    return Container(
+      child: Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            TextWidget("Audio Input Sensitivity",
-                _audioInputSensitivity.floor().toString()),
             audioInputSensitivitySlider,
+            TextWidget(_audioInputSensitivity.floor().toString()),
+//            SliderWidget(_audioInputSensitivity),
           ],
         ),
       ),
@@ -249,31 +271,29 @@ class _SettingsPageState extends State<SettingsPage> {
   /// -- Audio Input Sensitivity --
   /// Slider Display
   Widget get audioInputSensitivitySlider {
-    return Column(
-      children: <Widget>[
-        Container(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Flexible(
-                flex: 1,
-                child: Slider(
-                  activeColor: Colors.white,
-                  min: 0.0,
-                  max: 100.0,
-                  onChanged: (value) {
-                    setState(() {
-                      _audioInputSensitivity = value;
-                    });
-                    save('audioInputSensitivity', value);
-                  },
-                  value: _audioInputSensitivity,
-                ),
-              ),
-            ],
+    return Container(
+//      color: Colors.black87,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Flexible(
+            flex: 0,
+            child: Slider(
+              activeColor: Colors.white,
+              min: 0.0,
+              max: 100.0,
+              onChanged: (value) {
+                setState(() {
+                  _audioInputSensitivity = value;
+                });
+                save('audioInputSensitivity', value);
+              },
+              value: _audioInputSensitivity,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -281,15 +301,17 @@ class _SettingsPageState extends State<SettingsPage> {
   /// Text Display
   Widget get videoInputCard {
     return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: 10.0,
+        horizontal: 100.0,
+      ),
       child: Card(
-//        color: Colors.lightGreen[800],
-        elevation: 0,
-        color: Colors.transparent,
-        child: Column(
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            TextWidget("Webcam Input", _videoInput),
+            TextWidget("Webcam Input"),
+//            TextWidget(_videoInput),
             videoInputDropBox,
           ],
         ),
@@ -300,43 +322,39 @@ class _SettingsPageState extends State<SettingsPage> {
   /// -- WebCam Input --
   /// DropBox Widget
   Widget get videoInputDropBox {
-    return Column(
-      children: <Widget>[
-        Container(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Flexible(
-                flex: 1,
-                child: DropdownButton<String>(
-                  value: _videoInput,
-                  icon: Icon(Icons.arrow_downward),
-                  iconSize: 24,
-                  elevation: 16,
-                  style: TextStyle(color: Colors.white),
-                  underline: Container(
-                    height: 2,
-                    color: Colors.white30,
-                  ),
-                  onChanged: (String value) {
-                    setState(() {
-                      _videoInput = value;
-                    });
-                    save('videoInput', value);
-                  },
-                  // TODO: Look at getting audio options here
-                  items: _defaultVideoInput.map((String value) {
-                    return new DropdownMenuItem<String>(
-                      value: value,
-                      child: new Text(value),
-                    );
-                  }).toList(),
-                ),
+    return Container(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            child: DropdownButton<String>(
+              value: _videoInput,
+              icon: Icon(Icons.arrow_downward),
+              iconSize: 20,
+              elevation: 1,
+              style: TextStyle(color: Colors.white),
+              underline: Container(
+                height: 2,
+                color: Colors.white30,
               ),
-            ],
+              onChanged: (String value) {
+                setState(() {
+                  _videoInput = value;
+                });
+                save('videoInput', value);
+              },
+              // TODO: Look at getting audio options here
+              items: _defaultVideoInput.map((String value) {
+                return new DropdownMenuItem<String>(
+                  value: value,
+                  child: new Text(value),
+                );
+              }).toList(),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -344,15 +362,16 @@ class _SettingsPageState extends State<SettingsPage> {
   /// Text Display
   Widget get audioInputIsMuteCard {
     return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: 10.0,
+        horizontal: 100.0,
+      ),
       child: Card(
-//        color: Colors.lightGreen[800],
-        elevation: 0,
-        color: Colors.transparent,
-        child: Column(
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            TextWidget("Mute Audio Input", _audioInputIsMute.toString()),
+            TextWidget("Mute Audio Input"),
             audioInputIsMuteToggle,
           ],
         ),
@@ -363,41 +382,28 @@ class _SettingsPageState extends State<SettingsPage> {
   /// -- Mute Microphone --
   /// ToggleButton Widget
   Widget get audioInputIsMuteToggle {
-    return Column(
-      children: <Widget>[
-        Container(
-            padding: EdgeInsets.symmetric(
-              vertical: 16.0,
-              horizontal: 16.0,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                ToggleButtons(
-                  children: <Widget>[
-                    Icon(Icons.do_not_disturb_alt),
-                    Icon(Icons.check),
-                  ],
-//                  // Need mutually exclusive check
-                  onPressed: (int index) {
-                    setState(() {
-                      for (int i = 0; i < _audioInputIsSelected.length; i++) {
-                        if (i == index) {
-                          _audioInputIsSelected[i] = true;
-                        } else {
-                          _audioInputIsSelected[i] = false;
-                        }
-                        _audioInputIsMute = _audioInputIsSelected[i];
-                        save('audioInputIsMute', _audioInputIsSelected[i]);
-                        save('audioInputIsSelected', _audioInputIsSelected[i]);
-                      }
-                    });
-                  },
-                  isSelected: _audioInputIsSelected,
-                ),
-              ],
-            )),
-      ],
+    return Container(
+//            padding: EdgeInsets.symmetric(
+//              vertical: 16.0,
+//              horizontal: 16.0,
+//            ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Switch(
+            value: _audioInputIsMute,
+            onChanged: (value) {
+              setState(() {
+                _audioInputIsMute = value;
+              });
+              save('audioInputIsMute', _audioInputIsMute);
+            },
+            activeTrackColor: Colors.lightGreenAccent,
+            activeColor: Colors.green,
+          ),
+        ],
+      ),
     );
   }
 
@@ -405,15 +411,16 @@ class _SettingsPageState extends State<SettingsPage> {
   /// Text Display
   Widget get audioOutputIsMuteCard {
     return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: 10.0,
+        horizontal: 100.0,
+      ),
       child: Card(
-//        color: Colors.lightGreen[800],
-        elevation: 0,
-        color: Colors.transparent,
-        child: Column(
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            TextWidget("Mute Audio Input", _audioOutputIsMute.toString()),
+            TextWidget("Mute Audio Output"),
             audioOutputIsMuteToggle,
           ],
         ),
@@ -424,6 +431,54 @@ class _SettingsPageState extends State<SettingsPage> {
   /// -- Mute Headphone --
   /// ToggleButton Widget
   Widget get audioOutputIsMuteToggle {
+    return Container(
+//            padding: EdgeInsets.symmetric(
+//              vertical: 16.0,
+//              horizontal: 16.0,
+//            ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Switch(
+            value: _audioOutputIsMute,
+            onChanged: (value) {
+              setState(() {
+                _audioOutputIsMute = value;
+              });
+              save('audioOutputIsMute', _audioOutputIsMute);
+            },
+            activeTrackColor: Colors.lightGreenAccent,
+            activeColor: Colors.green,
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// -- Audio Card--
+  /// Text Display
+  Widget get themeCard {
+    return Container(
+      child: Card(
+//        color: Colors.lightGreen[800],
+        elevation: 0,
+        color: Colors.transparent,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Text("Theme"),
+            themeToggle,
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// -- Mute Headphone --
+  /// ToggleButton Widget
+  Widget get themeToggle {
     return Column(
       children: <Widget>[
         Container(
@@ -442,108 +497,28 @@ class _SettingsPageState extends State<SettingsPage> {
 //                  // Need mutually exclusive check
                   onPressed: (int index) {
                     setState(() {
-                      for (int i = 0; i < _audioOutputIsSelected.length; i++) {
+                      for (int i = 0; i < _themeIsSelected.length; i++) {
                         if (i == index) {
-                          _audioOutputIsSelected[i] = true;
+                          _themeIsSelected[i] = true;
+                          changeBrightness();
 //                          brightness: Brightness.dark,
                         } else {
-                          _audioOutputIsSelected[i] = false;
+                          _themeIsSelected[i] = false;
+                          changeBrightness();
                         }
-                        _audioOutputIsMute = _audioOutputIsSelected[i];
-                        save('audioOutputIsMute', _audioOutputIsSelected[i]);
-                        save('audioOutputIsSelected', _audioOutputIsSelected[i]);
+//                        _audioOutputIsMute = _audioOutputIsSelected[i];
+//                        save('audioOutputIsMute', _audioOutputIsSelected[i]);
+//                        save('audioOutputIsSelected', _audioOutputIsSelected[i]);
                       }
                     });
                   },
-                  isSelected: _audioOutputIsSelected,
+                  isSelected: _themeIsSelected,
                 ),
               ],
             )),
       ],
     );
   }
-//
-//  /// -- Theme Card--
-//  /// Text Display
-//  Widget get themeCard {
-//    return Container(
-//      child: Card(
-//        color: Colors.lightGreen[800],
-//        child: Column(
-//          crossAxisAlignment: CrossAxisAlignment.center,
-//          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//          children: <Widget>[
-//            TextWidget("", _audioOutputIsMute.toString()),
-//            audioOutputIsMuteToggle,
-//          ],
-//        ),
-//      ),
-//    );
-//  }
-//
-//  /// -- Theme Input --
-//  /// Text Widget
-//  Widget get themeText {
-//    return Container(
-//      child: Card(
-////          color: Colors.lightGreen[800],
-//          child: Padding(
-//            padding: const EdgeInsets.only(
-//              top: 10.0,
-//              bottom: 8.0,
-//              left: 20.0,
-//            ),
-//            child: Row(
-//              crossAxisAlignment: CrossAxisAlignment.start,
-//              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//              children: <Widget>[
-//                Text("Current Theme: " + _theme.toString(),
-//                    style: Theme.of(context).textTheme.headline),
-//              ],
-//            ),
-//          )),
-//    );
-//  }
-//
-//  /// -- Mute Headphone --
-//  /// ToggleButton Widget
-//  Widget get themeToggle {
-//    return Column(
-//      children: <Widget>[
-//        Container(
-//            padding: EdgeInsets.symmetric(
-//              vertical: 16.0,
-//              horizontal: 16.0,
-//            ),
-//            child: Row(
-//              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//              children: <Widget>[
-//                ToggleButtons(
-//                  children: <Widget>[
-//                    Icon(Icons.do_not_disturb_alt),
-//                    Icon(Icons.check),
-//                  ],
-////                  // Need mutually exclusive check
-//                  onPressed: (int index) {
-//                    setState(() {
-//                      for (int i = 0; i < _themeIsSelected.length; i++) {
-//                        if (i == index) {
-//                          _themeIsSelected[i] = true;
-//                        } else {
-//                          _themeIsSelected[i] = false;
-//                        }
-//                        _theme = _themeIsSelected[i];
-//                        save('theme', _themeIsSelected[i]);
-//                      }
-//                    });
-//                  },
-//                  isSelected: _themeIsSelected,
-//                ),
-//              ],
-//            )),
-//      ],
-//    );
-//  }
 
   @override
   Widget build(BuildContext context) {
@@ -576,6 +551,7 @@ class _SettingsPageState extends State<SettingsPage> {
               videoInputCard,
               audioInputIsMuteCard,
               audioOutputIsMuteCard,
+//              themeCard,
 //            audioInputDropBox,
 //            audioOutputText,
 //            audioOutputDropBox,

@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 
 class TextWidget extends StatelessWidget {
   final String text; // Display Text
-  final String varText; // Variable Text
 
-  TextWidget(this.text, this.varText);
+  TextWidget(this.text);
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +20,11 @@ class TextWidget extends StatelessWidget {
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
 //              Text("$text: " + varText,
 //                  style: Theme.of(context).textTheme.headline),
               Text(text, style: Theme.of(context).textTheme.headline),
-              Text(varText, style: Theme.of(context).textTheme.subhead),
             ],
           ),
         ),
