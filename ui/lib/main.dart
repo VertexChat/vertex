@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:vertex_ui/src/models/settings_model.dart';
 import 'package:vertex_ui/src/pages/settings_page.dart';
+import 'package:vertex_ui/src/pages/splash_screen.dart';
 import 'package:vertex_ui/src/pages/text_chat_page.dart';
 import 'package:vertex_ui/src/pages/video_call/connect_call_page.dart';
 import 'package:vertex_ui/src/pages/login_page.dart';
@@ -15,7 +16,7 @@ void main() => runApp(UI()); // Vertex_UI -> App root call to
 
 class UI extends StatefulWidget {
   @override
-  _UIState createState() => new _UIState();
+  _UIState createState() => _UIState();
 }
 
 /// App Root
@@ -33,7 +34,7 @@ class _UIState extends State<UI> {
     /// Gives us access to routing, context, and meta info functionality.
     return new DynamicTheme(
       defaultBrightness: Brightness.dark,
-      data: (brightness) => new ThemeData(
+      data: (brightness) => ThemeData(
         brightness: brightness,
       ),
       themedWidgetBuilder: (context, theme) {
@@ -90,6 +91,10 @@ class _VertexHomePageState extends State<VertexHomePage> {
         /// Setting AppBar title here
         title: Text(widget.title),
         actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.accessibility_new),
+            onPressed: _showSplashScreenPage,
+          ),
           IconButton(
             icon: Icon(Icons.video_call),
             onPressed: _showConnectCallPage,
@@ -174,6 +179,16 @@ class _VertexHomePageState extends State<VertexHomePage> {
     TextChatScreen textChatPage = await Navigator.of(context).push(
       MaterialPageRoute(builder: (BuildContext context) {
         return TextChatScreen();
+      }),
+    );
+  }
+
+  // TODO: Remove from this class
+  // This is for testing only!
+  Future _showSplashScreenPage() async {
+    SplashScreen _splashScreen = await Navigator.of(context).push(
+      MaterialPageRoute(builder: (BuildContext context) {
+        return SplashScreen();
       }),
     );
   }

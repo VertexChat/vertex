@@ -9,7 +9,7 @@ class _TextChatScreenState extends State<TextChatScreen>
     with TickerProviderStateMixin {
   final List<ChatMessage> _messages = <ChatMessage>[];
   final TextEditingController _textEditingController =
-  new TextEditingController();
+      new TextEditingController();
   bool _isComposing = false;
 
   @override
@@ -36,7 +36,7 @@ class _TextChatScreenState extends State<TextChatScreen>
               },
               onSubmitted: _handleSubmitted,
               decoration:
-              new InputDecoration.collapsed(hintText: "Send a message"),
+                  new InputDecoration.collapsed(hintText: "Send a message"),
             ),
           ),
           new Container(
@@ -78,6 +78,20 @@ class _TextChatScreenState extends State<TextChatScreen>
         title: new Text("Chat Screen"),
       ),
       body: new Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+              stops: [0.1, 0.3, 0.5, 0.7, 0.9],
+              colors: [
+                Colors.lightGreen[900],
+                Colors.lightGreen[800],
+                Colors.lightGreen[700],
+                Colors.lightGreen[500],
+                Colors.lightGreen[300],
+              ],
+            ),
+          ),
           child: new Column(
             children: <Widget>[
               new Flexible(
@@ -90,20 +104,18 @@ class _TextChatScreenState extends State<TextChatScreen>
               ),
               new Divider(height: 1.0),
               new Container(
-                decoration: new BoxDecoration(color: Theme
-                    .of(context)
-                    .cardColor),
+                decoration:
+                    new BoxDecoration(color: Theme.of(context).cardColor),
                 child: _buildTextComposer(),
               ),
             ],
-          )
-      ),
+          )),
     );
   }
 }
 
 /// User name for displaying in message list
-const String _name = "Morgan Reilly";
+const String _name = "Morgan Reilly"; //TODO: Change this to current user
 
 /// Handles displaying the message in the chat screen
 class ChatMessage extends StatelessWidget {
@@ -131,10 +143,7 @@ class ChatMessage extends StatelessWidget {
               child: new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  new Text(_name, style: Theme
-                      .of(context)
-                      .textTheme
-                      .subhead),
+                  new Text(_name, style: Theme.of(context).textTheme.subhead),
                   new Container(
                     margin: const EdgeInsets.only(top: 5.0),
                     child: new Text(text),
