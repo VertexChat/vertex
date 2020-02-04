@@ -95,7 +95,7 @@ class _VertexHomePageState extends State<VertexHomePage> {
             onPressed: _showConnectCallPage,
           ),
           IconButton(
-            icon: Icon(Icons.video_call),
+            icon: Icon(Icons.message),
             onPressed: _showTextChatPage,
           ),
           IconButton(
@@ -120,39 +120,31 @@ class _VertexHomePageState extends State<VertexHomePage> {
           ),
         ),
         child: Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginPage()),
-                );
-              },
-              child: Center(
-                child: Text(
-                  'LOGIN',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Montserrat'),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPage()),
+                  );
+                },
+                child: Center(
+                  child: Text(
+                    'LOGIN',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Montserrat'),
+                  ),
                 ),
               ),
-            ),
-          ],
-        )),
+            ],
+          ),
+        ),
       ),
     );
-  }
-
-  void changeBrightness() {
-    DynamicTheme.of(context).setBrightness(
-        Theme.of(context).brightness == Brightness.light
-            ? Brightness.dark
-            : Brightness.light);
-
-    print('Called ChangeBrightness: ');
   }
 
   //Display connect call page
@@ -186,4 +178,3 @@ class _VertexHomePageState extends State<VertexHomePage> {
     );
   }
 }
-
