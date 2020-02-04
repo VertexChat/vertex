@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:vertex_ui/src/models/settings_model.dart';
 import 'package:vertex_ui/src/pages/settings_page.dart';
+import 'package:vertex_ui/src/pages/text_chat_page.dart';
 import 'package:vertex_ui/src/pages/video_call/connect_call_page.dart';
 import 'package:vertex_ui/src/pages/login_page.dart';
 import 'package:vertex_ui/src/pages/register_page.dart';
@@ -94,6 +95,10 @@ class _VertexHomePageState extends State<VertexHomePage> {
             onPressed: _showConnectCallPage,
           ),
           IconButton(
+            icon: Icon(Icons.video_call),
+            onPressed: _showTextChatPage,
+          ),
+          IconButton(
             icon: Icon(Icons.build),
             onPressed: _showSettingsPage,
           ),
@@ -172,4 +177,13 @@ class _VertexHomePageState extends State<VertexHomePage> {
       }),
     );
   }
+
+  Future _showTextChatPage() async {
+    TextChatScreen textChatPage = await Navigator.of(context).push(
+      MaterialPageRoute(builder: (BuildContext context) {
+        return TextChatScreen();
+      }),
+    );
+  }
 }
+
