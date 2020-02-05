@@ -31,6 +31,12 @@ dependencies:
 
   dynamic_theme: ^1.0.0
 
+  # https://pub.dev/packages/http
+  http: ^0.12.0+4
+
+  # https://pub.dev/packages/connectivity
+  connectivity: ^0.4.6+2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

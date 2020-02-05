@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:vertex_ui/src/models/settings_model.dart';
+import 'package:vertex_ui/src/pages/example_data_screen.dart';
 import 'package:vertex_ui/src/pages/settings_page.dart';
 import 'package:vertex_ui/src/pages/splash_screen.dart';
 import 'package:vertex_ui/src/pages/text_chat_page.dart';
@@ -92,7 +93,11 @@ class _VertexHomePageState extends State<VertexHomePage> {
         title: Text(widget.title),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.accessibility_new),
+            icon: Icon(Icons.trip_origin),
+            onPressed: _showExampleDataPage,
+          ),
+          IconButton(
+            icon: Icon(Icons.donut_small),
             onPressed: _showSplashScreenPage,
           ),
           IconButton(
@@ -189,6 +194,17 @@ class _VertexHomePageState extends State<VertexHomePage> {
     SplashScreen _splashScreen = await Navigator.of(context).push(
       MaterialPageRoute(builder: (BuildContext context) {
         return SplashScreen();
+      }),
+    );
+  }
+
+  // _showExampleDataPage
+  // TODO: Remove from this class
+  // This is for testing only!
+  Future _showExampleDataPage() async {
+      ExampleDataScreen _showExampleData = await Navigator.of(context).push(
+      MaterialPageRoute(builder: (BuildContext context) {
+        return ExampleDataScreen();
       }),
     );
   }

@@ -24,8 +24,6 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-
-
   String _audioInput;
   String _audioOutput;
   double _audioInputSensitivity;
@@ -33,6 +31,7 @@ class _SettingsPageState extends State<SettingsPage> {
   bool _audioInputIsMute;
   bool _audioOutputIsMute;
   bool _theme; // Light --> true /  Dark --> false
+
 
   List<String> _defaultAudioInput = [
     'None Selected',
@@ -67,6 +66,7 @@ class _SettingsPageState extends State<SettingsPage> {
     super.dispose();
   }
 
+  // TODO: Nothing to do with brightness.. should be theme
   void changeBrightness() {
     DynamicTheme.of(context).setBrightness(
         Theme.of(context).brightness == Brightness.dark
@@ -103,6 +103,7 @@ class _SettingsPageState extends State<SettingsPage> {
       _audioOutputIsMute = (sharedPrefs.getBool('audioOutputIsMute') ?? false);
     });
   }
+
 
   /// -- Audio Input Card--
   /// Displays Text
