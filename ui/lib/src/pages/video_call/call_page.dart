@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:vertex_ui/main.dart';
 
+import '../home_page.dart';
+
 /// Each class defined below here is now a part of the App Root node
 /// VertexLanding is currently main landing page, meaning the App will
 /// load to that page.

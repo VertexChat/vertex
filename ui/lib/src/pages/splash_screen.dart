@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:vertex_ui/src/pages/home_page.dart';
+
+import '../../main.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -14,7 +17,11 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 5), () => print("Splash screen complete"));
+//    Timer(Duration(seconds: 5), () => UI());
+    Timer(
+        Duration(seconds: 3),
+        () => Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (BuildContext context) => VertexHomePage(title: 'Welcome Home'))));
   }
 
   @override
