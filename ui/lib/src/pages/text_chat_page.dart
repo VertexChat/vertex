@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import '../models/text_chat_model.dart';
 
 class TextChatScreen extends StatefulWidget {
   @override
-  State createState() => new _TextChatScreenState();
+  State createState() => _TextChatScreenState();
 }
 
 class _TextChatScreenState extends State<TextChatScreen>
     with TickerProviderStateMixin {
   final List<ChatMessage> _messages = <ChatMessage>[];
-  final TextEditingController _textEditingController =
-      new TextEditingController();
+  final TextEditingController _textEditingController = TextEditingController();
   bool _isComposing = false;
 
   @override
@@ -22,12 +22,12 @@ class _TextChatScreenState extends State<TextChatScreen>
 
   /// -- Send a message --
   Widget _buildTextComposer() {
-    return new Container(
+    return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: new Row(
+      child: Row(
         children: <Widget>[
-          new Flexible(
-            child: new TextField(
+          Flexible(
+            child: TextField(
               controller: _textEditingController,
               onChanged: (String text) {
                 setState(() {
@@ -35,14 +35,13 @@ class _TextChatScreenState extends State<TextChatScreen>
                 });
               },
               onSubmitted: _handleSubmitted,
-              decoration:
-                  new InputDecoration.collapsed(hintText: "Send a message"),
+              decoration: InputDecoration.collapsed(hintText: "Send a message"),
             ),
           ),
-          new Container(
-            margin: new EdgeInsets.symmetric(horizontal: 4.0),
-            child: new IconButton(
-              icon: new Icon(Icons.send),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 4.0),
+            child: IconButton(
+              icon: Icon(Icons.send),
               onPressed: _isComposing
                   ? () => _handleSubmitted(_textEditingController.text)
                   : null,
@@ -58,10 +57,10 @@ class _TextChatScreenState extends State<TextChatScreen>
     setState(() {
       _isComposing = false;
     });
-    ChatMessage message = new ChatMessage(
+    ChatMessage message = ChatMessage(
       text: text,
-      animationController: new AnimationController(
-        duration: new Duration(milliseconds: 400),
+      animationController: AnimationController(
+        duration: Duration(milliseconds: 400),
         vsync: this,
       ),
     );
@@ -73,11 +72,11 @@ class _TextChatScreenState extends State<TextChatScreen>
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("Chat Screen"),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Chat Screen"),
       ),
-      body: new Container(
+      body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.bottomCenter,
@@ -92,20 +91,19 @@ class _TextChatScreenState extends State<TextChatScreen>
               ],
             ),
           ),
-          child: new Column(
+          child: Column(
             children: <Widget>[
-              new Flexible(
-                child: new ListView.builder(
-                  padding: new EdgeInsets.all(8.0),
+              Flexible(
+                child: ListView.builder(
+                  padding: EdgeInsets.all(8.0),
                   reverse: true,
                   itemBuilder: (_, int index) => _messages[index],
                   itemCount: _messages.length,
                 ),
               ),
-              new Divider(height: 1.0),
-              new Container(
-                decoration:
-                    new BoxDecoration(color: Theme.of(context).cardColor),
+              Divider(height: 1.0),
+              Container(
+                decoration: BoxDecoration(color: Theme.of(context).cardColor),
                 child: _buildTextComposer(),
               ),
             ],
@@ -126,30 +124,35 @@ class ChatMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new SizeTransition(
-      sizeFactor: new CurvedAnimation(
-          parent: animationController, curve: Curves.easeOut),
+    return SizeTransition(
+      sizeFactor:
+          CurvedAnimation(parent: animationController, curve: Curves.easeOut),
       axisAlignment: 0.0,
-      child: new Container(
+      child: Container(
         margin: const EdgeInsets.symmetric(vertical: 10.0),
-        child: new Row(
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            new Container(
+            Container(
               margin: const EdgeInsets.only(right: 16.0),
-              child: new CircleAvatar(child: new Text(_name[0])),
+              child: CircleAvatar(child: Text(_name[0])),
             ),
             Expanded(
-              child: new Column(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  new Text(_name, style: Theme.of(context).textTheme.subhead),
-                  new Container(
+                  Text(dummyData[0].name,
+                      style: Theme.of(context).textTheme.subhead),
+                  Container(
                     margin: const EdgeInsets.only(top: 5.0),
-                    child: new Text(text),
+                    child: Text(text), // Body of message to display
                   ),
                 ],
               ),
+            ),
+            Container (
+              margin: const EdgeInsets.only(top: 5.0),
+              child: Text(DateTime.now().minute.toString()),
             ),
           ],
         ),

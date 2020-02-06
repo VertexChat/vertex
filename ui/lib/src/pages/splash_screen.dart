@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
 //    Timer(Duration(seconds: 5), () => UI());
     Timer(
-        Duration(seconds: 3),
+        Duration(seconds: 2),
         () => Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (BuildContext context) => VertexHomePage(title: 'Welcome Home'))));
   }
