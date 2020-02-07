@@ -1,7 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:vertex_ui/src/blocs/login_bloc.dart';
-import 'package:vertex_ui/src/pages/register_page.dart';
+import 'package:vertex_ui/src/pages/register/register_page.dart';
 import 'package:vertex_ui/src/services/api.dart';
 import 'package:vertex_ui/src/widgets/icon_card.dart';
 
@@ -26,7 +26,6 @@ class _LoginPageState extends State<LoginPage> implements LoginScreenContract {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool _validate = false;
   Login login = Login();
-  bool _isLoading = false;
   LoginScreenPresenter _presenter;
 
   //Constructor
@@ -251,7 +250,7 @@ class _LoginPageState extends State<LoginPage> implements LoginScreenContract {
     );
   } //End builder
 
-  // information snack bar. This is displayed if any errors happen during login
+  // Information snack bar. This is displayed if any errors happen during login
   void _showSnackBar(String text) {
     _scaffoldKey.currentState.showSnackBar(new SnackBar(
       content: new Text(
@@ -272,7 +271,6 @@ class _LoginPageState extends State<LoginPage> implements LoginScreenContract {
   @override
   void onLoginSuccess(Login login) {
     _showSnackBar(login.toString());
-    // setState(() => _isLoading = false);
     // TODO: implement onLoginSuccess
   } //End onLogin function
 } //end class

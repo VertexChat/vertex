@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:vertex_ui/src/blocs/registration_bloc.dart';
+import 'package:vertex_ui/src/pages/register/register_screen_presenter.dart';
 import 'package:vertex_ui/src/services/api.dart';
 import 'package:vertex_ui/src/widgets/icon_card.dart';
 
@@ -9,15 +10,20 @@ class RegisterPage extends StatefulWidget {
   _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _RegisterPageState extends State<RegisterPage>
+    implements RegisterScreenContract {
   //Member Variables
   // Create a global key that uniquely identifies the Form widget
   // and allows validation of the form.
   final formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool _validate = false;
-
-  //bool _isLoading = false;
   User user = User();
+  RegisterScreenPresenter _presenter;
+
+  _RegisterPageState() {
+    _presenter = new RegisterScreenPresenter(this);
+  }
 
   void _submit() {
     final form = formKey.currentState;
@@ -25,7 +31,7 @@ class _RegisterPageState extends State<RegisterPage> {
       //setState(() => _isLoading = true);
       form.save();
       print(user.toString());
-      onRegister(user);
+      _presenter.doRegister(user);
     }
   } //End function
 
@@ -37,6 +43,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
     return new Scaffold(
         resizeToAvoidBottomPadding: false,
+        key: _scaffoldKey,
         body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -177,14 +184,30 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       ],
     );
-  } //End widget
+  }
 
-  void onRegister(User user) async {
-    var apiInstance = AuthApi();
-    try {
-      apiInstance.register(user: user);
-    } catch (e) {
-      print(e);
-    }
+  // Information snack bar. This is displayed if any errors happen during login
+  void _showSnackBar(String text) {
+    _scaffoldKey.currentState.showSnackBar(new SnackBar(
+      content: new Text(
+        text,
+        textAlign: TextAlign.center,
+        style: TextStyle(color: Colors.white),
+      ),
+      backgroundColor: Colors.red,
+    ));
+    // setState(() => _isLoading = false);
   } //End function
+
+  @override
+  void onRegisterError(String errorTxt) {
+    // TODO: implement onRegisterError
+    _showSnackBar(errorTxt);
+  }
+
+  @override
+  void onRegisterSuccess(User user) {
+    // TODO: implement onRegisterSuccess
+    _showSnackBar(user.toString());
+  } //End widget
 } //end class
