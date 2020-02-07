@@ -1,16 +1,16 @@
 part of openapi.api;
 
 class Channel {
-  int id = null;
+  int id;
 
-  String name = null;
+  String name;
 
-  int capacity = null;
+  int capacity;
 
   /* Type determines what whether the channel is voice, text, or some specialised char e.g. direct                message N.B. This will be updated in future once the appropiate ENUM values have been finalised. */
-  String type = null;
+  String type;
 
-  int position = null;
+  int position;
 
   Channel();
 

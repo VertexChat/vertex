@@ -1,4 +1,4 @@
-package com.example.ui
+package ie.gmit.sw.ui
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

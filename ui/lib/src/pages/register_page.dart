@@ -184,7 +184,7 @@ class _RegisterPageState extends State<RegisterPage> {
     try {
       apiInstance.register(user: user);
     } catch (e) {
-      print("Exception $e");
+      print(e);
     }
   } //End function
 } //end class

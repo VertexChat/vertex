@@ -1,9 +1,9 @@
 part of openapi.api;
 
 class Server {
-  int userCount = null;
+  int userCount;
 
-  String appVersion = null;
+  String appVersion;
 
   Server();
 

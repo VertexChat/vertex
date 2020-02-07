@@ -44,11 +44,16 @@ class AuthApi {
   Future login({Login login}) async {
     Response response = await loginWithHttpInfo(login: login);
     if (response.statusCode >= 400) {
+      print(response.statusCode);
       throw ApiException(response.statusCode, _decodeBodyBytes(response));
     } else if (response.body != null) {
+      print(response.statusCode);
+      print(response.body);
     } else {
+      print(response.statusCode);
       return;
     }
+    return;
   }
 
   /// Allows a user register a new account with HTTP info returned

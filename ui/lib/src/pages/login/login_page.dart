@@ -5,6 +5,8 @@ import 'package:vertex_ui/src/pages/register_page.dart';
 import 'package:vertex_ui/src/services/api.dart';
 import 'package:vertex_ui/src/widgets/icon_card.dart';
 
+import 'login_screen_presenter.dart';
+
 class LoginPage extends StatefulWidget {
   //Member Variables
   final String pageTitle;
@@ -14,15 +16,24 @@ class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.pageTitle}) : super(key: key);
 
   @override
-  _LoginPageState createState() => new _LoginPageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends State<LoginPage> implements LoginScreenContract {
   //Member Variables
   bool rememberMe = false;
   final formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool _validate = false;
   Login login = Login();
+  bool _isLoading = false;
+  LoginScreenPresenter _presenter;
+
+  //Constructor
+  _LoginPageState() {
+    //TODO: Complete auth for login
+    _presenter = new LoginScreenPresenter(this);
+  }
 
   void _submit() {
     final form = formKey.currentState;
@@ -30,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
       //setState(() => _isLoading = true);
       form.save();
       print(login.toString());
-      onLogin(login);
+      _presenter.doLogin(login);
     }
   } //End function
 
@@ -41,6 +52,7 @@ class _LoginPageState extends State<LoginPage> {
 
     return new Scaffold(
         resizeToAvoidBottomPadding: false,
+        key: _scaffoldKey,
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -234,17 +246,33 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
-        )
+        ),
       ],
     );
   } //End builder
 
-  void onLogin(Login login) async {
-    var api = AuthApi();
-    try {
-      api.login(login: login);
-    } catch (e) {
-      print("Exception $e");
-    }
+  // information snack bar. This is displayed if any errors happen during login
+  void _showSnackBar(String text) {
+    _scaffoldKey.currentState.showSnackBar(new SnackBar(
+      content: new Text(
+        text,
+        textAlign: TextAlign.center,
+        style: TextStyle(color: Colors.white),
+      ),
+      backgroundColor: Colors.red,
+    ));
+    // setState(() => _isLoading = false);
+  } //End function
+
+  @override
+  void onLoginError(String errorTxt) {
+    _showSnackBar(errorTxt);
+  }
+
+  @override
+  void onLoginSuccess(Login login) {
+    _showSnackBar(login.toString());
+    // setState(() => _isLoading = false);
+    // TODO: implement onLoginSuccess
   } //End onLogin function
 } //end class
