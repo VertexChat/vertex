@@ -34,9 +34,12 @@ def add_user(body=None):  # noqa: E501
             cursor = cnx.cursor()
             cursor.execute(query, user_details)  # Run query
             cnx.commit()  # Commit
+            return "New user registered", 201
         except mysql.connector.Error as error:
-            print("Failed to insert into MySQL table: {}".format(error))
-            return "Failed to insert into MySQL table: {}".format(error)
+            if error.errno == 1062:
+                return "Sorry that username already exists in the database", 401
+            else:
+                return "Failed to insert into MySQL table: {}".format(error)
         finally:
             if cnx.is_connected():
                 cnx.close()

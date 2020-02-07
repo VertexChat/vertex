@@ -29,19 +29,17 @@ def login(body=None):  # noqa: E501
             # Loop through to find user by username
             for val in cursor.fetchall():
                 if body.user_name in val:
-                    print(val[2])  # Grab value at index two which is the password
                     # Compare the password to the saved hash and salt
                     password_check = hashing.check_password(body.password, val[2])
                     if password_check:
-                        print("User is authenticated!")
+                        return 'User is authenticated!', 202
                     else:
-                        print("Password incorrect")
-                else:
-                    print("User does not exist in the database")
+                        return 'Password incorrect', 401
+            else:
+                return 'User does not exist in the database', 401
 
         except mysql.connector.Error as error:
-            print("Failed to query database: {}".format(error))
-            return "Failed to query database: {}".format(error)
+            return "Failed to query database: {}".format(error), 500
         finally:
             if cnx.is_connected():
                 cnx.close()
