@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vertex_ui/src/models/settings_model.dart';
+import 'package:vertex_ui/src/widgets/drop_box_card.dart';
+import 'package:vertex_ui/src/widgets/slider_widget.dart';
+import 'package:vertex_ui/src/widgets/text_widget.dart';
+import 'package:dynamic_theme/dynamic_theme.dart';
 
 /// Passing settings in from main.dart
 /// Stateful widget receives data
@@ -19,16 +23,35 @@ class SettingsPage extends StatefulWidget {
   _SettingsPageState createState() => _SettingsPageState();
 }
 
-class _SettingsPageState extends State<SettingsPage>{
+class _SettingsPageState extends State<SettingsPage> {
   String _audioInput;
   String _audioOutput;
   double _audioInputSensitivity;
   String _videoInput;
   bool _audioInputIsMute;
   bool _audioOutputIsMute;
+  bool _theme; // Light --> true /  Dark --> false
 
-  List<bool> _audioInputIsSelected = [true, false];
-  List<bool> _audioOutputIsSelected = [true, false];
+
+  List<String> _defaultAudioInput = [
+    'None Selected',
+    'Integrated Microphone',
+    'External Microphone'
+  ];
+
+  List<String> _defaultAudioOutput = [
+    'None Selected',
+    'Integrated Speakers',
+    'External Headphones'
+  ];
+
+  List<String> _defaultVideoInput = [
+    'None Selected',
+    'Internal Webcam',
+    'External Webcam'
+  ];
+
+  List<bool> _themeIsSelected = [true, false];
 
   /// -- Init State --
   @override
@@ -41,6 +64,14 @@ class _SettingsPageState extends State<SettingsPage>{
   @override
   void dispose() {
     super.dispose();
+  }
+
+  // TODO: Nothing to do with brightness.. should be theme
+  void changeBrightness() {
+    DynamicTheme.of(context).setBrightness(
+        Theme.of(context).brightness == Brightness.dark
+            ? Brightness.light
+            : Brightness.dark);
   }
 
   // https://codingwithjoe.com/flutter-saving-and-restoring-with-sharedpreferences/
@@ -65,394 +96,392 @@ class _SettingsPageState extends State<SettingsPage>{
     setState(() {
       _audioInput = (sharedPrefs.getString('audioInput') ?? 'None Selected');
       _audioOutput = (sharedPrefs.getString('audioOutput') ?? 'None Selected');
-      _audioInputSensitivity = (sharedPrefs.getDouble('audioInputSensitivity') ?? 0.0);
+      _audioInputSensitivity =
+          (sharedPrefs.getDouble('audioInputSensitivity') ?? 50.0);
       _videoInput = (sharedPrefs.getString('videoInput') ?? 'None Selected');
       _audioInputIsMute = (sharedPrefs.getBool('audioInputIsMute') ?? false);
       _audioOutputIsMute = (sharedPrefs.getBool('audioOutputIsMute') ?? false);
     });
   }
 
-  /// -- Audio Input--
-  /// Text Display
-  Widget get audioInputText {
+
+  /// -- Audio Input Card--
+  /// Displays Text
+  /// Displays Dropdown
+  Widget get audioInCard {
     return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: 10.0,
+        horizontal: 10.0,
+      ),
       child: Card(
-          color: Colors.lightGreen[800],
-          child: Padding(
-            padding: const EdgeInsets.only(
-              top: 10.0,
-              bottom: 8.0,
-              left: 20.0,
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Text("Audio In: " + _audioInput,
-                    style: Theme.of(context).textTheme.headline),
-              ],
-            ),
-          )),
+//        color: Colors.red,
+//        elevation: 0,
+//        color: Colors.transparent,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            TextWidget('Audio Input'),
+//            TextWidget(_audioInput),
+            audioInputDropBox,
+          ],
+        ),
+      ),
     );
   }
 
   /// -- Audio Input --
   /// DropBox Display
-  ///
   /// TODO: Manipulate for systems hardware
   Widget get audioInputDropBox {
-    return Column(
-      children: <Widget>[
-        Container(
-            padding: EdgeInsets.symmetric(
-              vertical: 16.0,
-              horizontal: 16.0,
+    return Container(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            child: DropdownButton<String>(
+              value: _audioInput,
+              icon: Icon(Icons.arrow_downward),
+              iconSize: 24,
+              elevation: 16,
+              style: TextStyle(color: Colors.white),
+              underline: Container(
+                height: 2,
+                color: Colors.white30,
+              ),
+              onChanged: (String value) {
+                setState(() {
+                  _audioInput = value;
+                });
+                // Save as key value pair
+                save('audioInput', value);
+              },
+              items: _defaultAudioInput.map((String value) {
+                return new DropdownMenuItem<String>(
+                  value: value,
+                  child: new Text(value),
+                );
+              }).toList(),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Flexible(
-                  flex: 1,
-                  child: DropdownButton<String>(
-                    value: _audioInput,
-                    icon: Icon(Icons.arrow_downward),
-                    iconSize: 24,
-                    elevation: 16,
-                    style: TextStyle(color: Colors.lightGreen[800]),
-                    underline: Container(
-                      height: 2,
-                      color: Colors.lightGreen,
-                    ),
-                    onChanged: (String value) {
-                      setState(() {
-                        _audioInput = value;
-                      });
-                      save('audioInput', value);
-                    },
-                    // TODO: Look at getting audio options here
-                    items: <String>[
-                      'None Selected',
-                      'Integrated Microphone',
-                      'External Microphone'
-                    ].map((String value) {
-                      return new DropdownMenuItem<String>(
-                        value: value,
-                        child: new Text(value),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
-            )),
-      ],
+          ),
+        ],
+      ),
     );
   }
 
-  /// -- Audio Output --
+  /// -- Audio Card--
   /// Text Display
-  Widget get audioOutputText {
+  Widget get audioOutCard {
     return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: 10.0,
+        horizontal: 10.0,
+      ),
       child: Card(
-          color: Colors.lightGreen[800],
-          child: Padding(
-            padding: const EdgeInsets.only(
-              top: 10.0,
-              bottom: 8.0,
-              left: 20.0,
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Text("Audio Out: " + _audioOutput,
-                    style: Theme.of(context).textTheme.headline),
-              ],
-            ),
-          )),
+//        color: Colors.lightGreen[800],
+//        elevation: 0,
+//        color: Colors.transparent,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            TextWidget("Audio Out"),
+            audioOutputDropBox,
+          ],
+        ),
+      ),
     );
   }
 
   /// -- Audio Output --
   /// DropBox Display
   Widget get audioOutputDropBox {
-    return Column(
-      children: <Widget>[
-        Container(
-            padding: EdgeInsets.symmetric(
-              vertical: 16.0,
-              horizontal: 16.0,
+    return Container(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            child: DropdownButton<String>(
+              value: _audioOutput,
+              icon: Icon(Icons.arrow_downward),
+              iconSize: 24,
+              elevation: 16,
+              style: TextStyle(color: Colors.white),
+              underline: Container(
+                height: 2,
+                color: Colors.white30,
+              ),
+              onChanged: (String value) {
+                setState(() {
+                  _audioOutput = value;
+                });
+                save('audioOutput', value);
+              },
+              // TODO: Look at getting audio options here
+              items: _defaultAudioOutput.map((String value) {
+                return new DropdownMenuItem<String>(
+                  value: value,
+                  child: new Text(value),
+                );
+              }).toList(),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Flexible(
-                  flex: 1,
-                  child: DropdownButton<String>(
-                    value: _audioOutput,
-                    icon: Icon(Icons.arrow_downward),
-                    iconSize: 24,
-                    elevation: 16,
-                    style: TextStyle(color: Colors.lightGreen[800]),
-                    underline: Container(
-                      height: 2,
-                      color: Colors.lightGreen,
-                    ),
-                    onChanged: (String value) {
-                      setState(() {
-                        _audioOutput = value;
-                      });
-                      save('audioOutput', value);
-                    },
-
-                    // TODO: Look at getting audio options here
-                    items: <String>['None Selected', 'Speakers', 'Headphones']
-                        .map((String value) {
-                      return new DropdownMenuItem<String>(
-                        value: value,
-                        child: new Text(value),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
-            )),
-      ],
+          ),
+        ],
+      ),
     );
   }
 
-  /// -- Audio Input Sensitivity --
-  /// Text Display
-  Widget get audioInputSensitivityText {
+  /// -- Audio Sensitivity Card--
+  Widget get audioInputSensitivityCard {
     return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: 10.0,
+        horizontal: 10.0,
+      ),
       child: Card(
-          color: Colors.lightGreen[800],
-          child: Padding(
-            padding: const EdgeInsets.only(
-              top: 10.0,
-              bottom: 8.0,
-              left: 20.0,
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Text(
-                    "Audio Input Sensitivity: " +
-                        _audioInputSensitivity.floor().toString(),
-                    style: Theme.of(context).textTheme.headline),
-              ],
-            ),
-          )),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            TextWidget("Audio Input Sensitivity"),
+            audioInputSensitivitySliderCard
+//            SliderWidget(_audioInputSensitivity),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget get audioInputSensitivitySliderCard {
+    return Container(
+      child: Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            audioInputSensitivitySlider,
+            TextWidget(_audioInputSensitivity.floor().toString()),
+//            SliderWidget(_audioInputSensitivity),
+          ],
+        ),
+      ),
     );
   }
 
   /// -- Audio Input Sensitivity --
   /// Slider Display
   Widget get audioInputSensitivitySlider {
-    return Column(
-      children: <Widget>[
-        Container(
-            padding: EdgeInsets.symmetric(
-              vertical: 16.0,
-              horizontal: 16.0,
+    return Container(
+//      color: Colors.black87,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Flexible(
+            flex: 0,
+            child: Slider(
+              activeColor: Colors.white,
+              min: 0.0,
+              max: 100.0,
+              onChanged: (value) {
+                setState(() {
+                  _audioInputSensitivity = value;
+                });
+                save('audioInputSensitivity', value);
+              },
+              value: _audioInputSensitivity,
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Flexible(
-                  flex: 1,
-                  child: Slider(
-                    activeColor: Colors.lightGreen,
-                    min: 0.0,
-                    max: 100.0,
-                    onChanged: (value) {
-                     setState(() {
-                       _audioInputSensitivity = value;
-                     });
-                     save('audioInputSensitivity', value);
-                    },
-                    value: _audioInputSensitivity,
-                  ),
-                ),
-
-                // This displays the slider value
-                Container(
-                  width: 50.0,
-                  alignment: Alignment.center,
-                  child: Text(
-                    '${_audioInputSensitivity.toInt()}',
-                    style: Theme.of(context).textTheme.display1,
-                  ),
-                )
-              ],
-            )),
-      ],
+          ),
+        ],
+      ),
     );
   }
 
-  /// -- WebCam Input --
-  /// Text Widget
-  Widget get videoInputText {
+  /// -- Audio Card--
+  /// Text Display
+  Widget get videoInputCard {
     return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: 10.0,
+        horizontal: 10.0,
+      ),
       child: Card(
-          color: Colors.lightGreen[800],
-          child: Padding(
-            padding: const EdgeInsets.only(
-              top: 10.0,
-              bottom: 8.0,
-              left: 20.0,
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Text("Webcam In: " + _videoInput,
-                    style: Theme.of(context).textTheme.headline),
-              ],
-            ),
-          )),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            TextWidget("Webcam Input"),
+//            TextWidget(_videoInput),
+            videoInputDropBox,
+          ],
+        ),
+      ),
     );
   }
 
   /// -- WebCam Input --
   /// DropBox Widget
   Widget get videoInputDropBox {
-    return Column(
-      children: <Widget>[
-        Container(
-            padding: EdgeInsets.symmetric(
-              vertical: 16.0,
-              horizontal: 16.0,
+    return Container(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            child: DropdownButton<String>(
+              value: _videoInput,
+              icon: Icon(Icons.arrow_downward),
+              iconSize: 20,
+              elevation: 1,
+              style: TextStyle(color: Colors.white),
+              underline: Container(
+                height: 2,
+                color: Colors.white30,
+              ),
+              onChanged: (String value) {
+                setState(() {
+                  _videoInput = value;
+                });
+                save('videoInput', value);
+              },
+              // TODO: Look at getting audio options here
+              items: _defaultVideoInput.map((String value) {
+                return new DropdownMenuItem<String>(
+                  value: value,
+                  child: new Text(value),
+                );
+              }).toList(),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Flexible(
-                  flex: 1,
-                  child: DropdownButton<String>(
-                    value: _videoInput,
-                    icon: Icon(Icons.arrow_downward),
-                    iconSize: 24,
-                    elevation: 16,
-                    style: TextStyle(color: Colors.lightGreen[800]),
-                    underline: Container(
-                      height: 2,
-                      color: Colors.lightGreen,
-                    ),
-                    onChanged: (String value) {
-                      setState(() {
-                        _videoInput = value;
-                      });
-                      save('videoInput', value);
-                    },
-                    items: <String>[
-                      'None Selected',
-                      'Webcam',
-                    ].map((String value) {
-                      return new DropdownMenuItem<String>(
-                        value: value,
-                        child: new Text(value),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
-            )),
-      ],
+          ),
+        ],
+      ),
     );
   }
 
-  /// -- Mute Microphone --
-  /// Text Widget
-  Widget get audioInputIsMuteText {
+  /// -- Audio Card--
+  /// Text Display
+  Widget get audioInputIsMuteCard {
     return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: 10.0,
+        horizontal: 10.0,
+      ),
       child: Card(
-          color: Colors.lightGreen[800],
-          child: Padding(
-            padding: const EdgeInsets.only(
-              top: 10.0,
-              bottom: 8.0,
-              left: 20.0,
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Text("Mute Audio Input: " + _audioInputIsMute.toString(),
-                    style: Theme.of(context).textTheme.headline),
-              ],
-            ),
-          )),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            TextWidget("Mute Audio Input"),
+            audioInputIsMuteToggle,
+          ],
+        ),
+      ),
     );
   }
 
   /// -- Mute Microphone --
   /// ToggleButton Widget
   Widget get audioInputIsMuteToggle {
-    return Column(
-      children: <Widget>[
-        Container(
-            padding: EdgeInsets.symmetric(
-              vertical: 16.0,
-              horizontal: 16.0,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                ToggleButtons(
-                  children: <Widget>[
-                    Icon(Icons.do_not_disturb_alt),
-                    Icon(Icons.check),
-                  ],
-//                  // Need mutually exclusive check
-                  onPressed: (int index) {
-                    setState(() {
-                      for (int i = 0; i < _audioInputIsSelected.length; i++) {
-                        if (i == index) {
-                          _audioInputIsSelected[i] = true;
-                        } else {
-                          _audioInputIsSelected[i] = false;
-                        }
-                        _audioInputIsMute = _audioInputIsSelected[i];
-                        save('audioInputIsMute', _audioInputIsSelected[i]);
-                      }
-                    });
-                  },
-                  isSelected: _audioInputIsSelected,
-                ),
-              ],
-            )),
-      ],
+    return Container(
+//            padding: EdgeInsets.symmetric(
+//              vertical: 16.0,
+//              horizontal: 16.0,
+//            ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Switch(
+            value: _audioInputIsMute,
+            onChanged: (value) {
+              setState(() {
+                _audioInputIsMute = value;
+              });
+              save('audioInputIsMute', _audioInputIsMute);
+            },
+            activeTrackColor: Colors.lightGreenAccent,
+            activeColor: Colors.green,
+          ),
+        ],
+      ),
     );
   }
 
-  /// -- Mute Headphone --
-  /// Text Widget
-  Widget get audioOutputIsMuteText {
+  /// -- Audio Card--
+  /// Text Display
+  Widget get audioOutputIsMuteCard {
     return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: 10.0,
+        horizontal: 10.0,
+      ),
       child: Card(
-          color: Colors.lightGreen[800],
-          child: Padding(
-            padding: const EdgeInsets.only(
-              top: 10.0,
-              bottom: 8.0,
-              left: 20.0,
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Text("Mute Audio Output: " + _audioOutputIsMute.toString(),
-                    style: Theme.of(context).textTheme.headline),
-              ],
-            ),
-          )),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            TextWidget("Mute Audio Output"),
+            audioOutputIsMuteToggle,
+          ],
+        ),
+      ),
     );
   }
 
   /// -- Mute Headphone --
   /// ToggleButton Widget
   Widget get audioOutputIsMuteToggle {
+    return Container(
+//            padding: EdgeInsets.symmetric(
+//              vertical: 16.0,
+//              horizontal: 16.0,
+//            ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Switch(
+            value: _audioOutputIsMute,
+            onChanged: (value) {
+              setState(() {
+                _audioOutputIsMute = value;
+              });
+              save('audioOutputIsMute', _audioOutputIsMute);
+            },
+            activeTrackColor: Colors.lightGreenAccent,
+            activeColor: Colors.green,
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// -- Audio Card--
+  /// Text Display
+  Widget get themeCard {
+    return Container(
+      child: Card(
+//        color: Colors.lightGreen[800],
+        elevation: 0,
+        color: Colors.transparent,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Text("Theme"),
+            themeToggle,
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// -- Mute Headphone --
+  /// ToggleButton Widget
+  Widget get themeToggle {
     return Column(
       children: <Widget>[
         Container(
@@ -471,19 +500,22 @@ class _SettingsPageState extends State<SettingsPage>{
 //                  // Need mutually exclusive check
                   onPressed: (int index) {
                     setState(() {
-                      for (int i = 0; i < _audioOutputIsSelected.length; i++) {
+                      for (int i = 0; i < _themeIsSelected.length; i++) {
                         if (i == index) {
-                          _audioOutputIsSelected[i] = true;
+                          _themeIsSelected[i] = true;
+                          changeBrightness();
+//                          brightness: Brightness.dark,
                         } else {
-                          _audioOutputIsSelected[i] = false;
+                          _themeIsSelected[i] = false;
+                          changeBrightness();
                         }
-                        _audioOutputIsMute = _audioOutputIsSelected[i];
-                        save('audioOutputIsMute', _audioOutputIsSelected[i]);
-
+//                        _audioOutputIsMute = _audioOutputIsSelected[i];
+//                        save('audioOutputIsMute', _audioOutputIsSelected[i]);
+//                        save('audioOutputIsSelected', _audioOutputIsSelected[i]);
                       }
                     });
                   },
-                  isSelected: _audioOutputIsSelected,
+                  isSelected: _themeIsSelected,
                 ),
               ],
             )),
@@ -493,27 +525,55 @@ class _SettingsPageState extends State<SettingsPage>{
 
   @override
   Widget build(BuildContext context) {
+
+    //Data about the device the application is running on
+    final data = MediaQuery.of(context);
+
     return Scaffold(
-//      backgroundColor: Colors.white12,
+      backgroundColor: Colors.white12,
       appBar: AppBar(
         title: Text("Settings"),
       ),
-      body: Center(
-        child: ListView(
-          children: <Widget>[
-            audioInputText,
-            audioInputDropBox,
-            audioOutputText,
-            audioOutputDropBox,
-            audioInputSensitivityText,
-            audioInputSensitivitySlider,
-            videoInputText,
-            videoInputDropBox,
-            audioInputIsMuteText,
-            audioInputIsMuteToggle,
-            audioOutputIsMuteText,
-            audioOutputIsMuteToggle,
-          ],
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
+            stops: [0.1, 0.3, 0.5, 0.7, 0.9],
+            colors: [
+              Colors.lightGreen[900],
+              Colors.lightGreen[800],
+              Colors.lightGreen[700],
+              Colors.lightGreen[500],
+              Colors.lightGreen[300],
+            ],
+          ),
+        ),
+        child: Center(
+          child: ListView(
+            children: <Widget>[
+              audioInCard,
+              audioOutCard,
+              audioInputSensitivityCard,
+              videoInputCard,
+              audioInputIsMuteCard,
+              audioOutputIsMuteCard,
+//              themeCard,
+//            audioInputDropBox,
+//            audioOutputText,
+//            audioOutputDropBox,
+//            audioInputSensitivityText,
+//            audioInputSensitivitySlider,
+//            videoInputText,
+//            videoInputDropBox,
+//            audioInputIsMuteText,
+//            audioInputIsMuteToggle,
+//            audioOutputIsMuteText,
+//            audioOutputIsMuteToggle,
+//            themeText,
+//            themeToggle,
+            ],
+          ),
         ),
       ),
     );

@@ -18,6 +18,7 @@ class _IconState extends State<IconCard> {
           iconSize: 42,
           onPressed: () {
             //TODO:
+            print("Steam OATH Icon Pressed");
           },
         ),
         IconButton(
@@ -25,6 +26,7 @@ class _IconState extends State<IconCard> {
           iconSize: 42,
           onPressed: () {
             //TODO:
+            print("Reddit OATH Icon Pressed");
           },
         ),
         IconButton(
@@ -32,6 +34,7 @@ class _IconState extends State<IconCard> {
           iconSize: 42,
           onPressed: () {
             //TODO:
+            print("Twitch OATH Icon Pressed");
           },
         ),
         IconButton(
@@ -39,6 +42,7 @@ class _IconState extends State<IconCard> {
           iconSize: 42,
           onPressed: () {
             //TODO:
+            print("Google OATH Icon Pressed");
           },
         )
       ],
