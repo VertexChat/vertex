@@ -1,0 +1,5 @@
+connexion == 2.2.0
+python_dateutil == 2.6.0
+setuptools >= 21.0.0
+py-bcrypt==0.4
+mysql-connector-python==8.0.19

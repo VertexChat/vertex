@@ -1,9 +1,10 @@
+import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:vertex_ui/src/models/settings_model.dart';
+import 'package:vertex_ui/src/pages/login/login_page.dart';
+import 'package:vertex_ui/src/pages/register/register_page.dart';
 import 'package:vertex_ui/src/pages/settings_page.dart';
 import 'package:vertex_ui/src/pages/video_call/connect_call_page.dart';
-import 'package:vertex_ui/src/pages/login_page.dart';
-import 'package:vertex_ui/src/pages/register_page.dart';
 
 /// Call to run App Root (App starts here)
 void main() => runApp(UI()); // Vertex_UI -> App root call to
@@ -15,25 +16,36 @@ class UI extends StatefulWidget {
 
 /// App Root
 class _UIState extends State<UI> {
-
   @override
-  void initState(){
+  void initState() {
     super.initState();
   }
+
+  Brightness brightness;
 
   @override
   Widget build(BuildContext context) {
     /// MaterialApp is the base Widget for your Flutter Application
     /// Gives us access to routing, context, and meta info functionality.
-    return MaterialApp(
-      title: 'Vertex',
-      theme: ThemeData(brightness: Brightness.dark),
-      home: VertexHomePage(title: 'Welcome Home'), // TODO: ${username}
-      debugShowCheckedModeBanner: false, // Remove debug banner
-      //Login route
-      routes: <String, WidgetBuilder>{
-        '/login': (BuildContext context) => new LoginPage(),
-        '/register': (BuildContext context) => new RegisterPage()
+    return new DynamicTheme(
+      defaultBrightness: Brightness.dark,
+      data: (brightness) => new ThemeData(
+        brightness: brightness,
+      ),
+      themedWidgetBuilder: (context, theme) {
+        return new MaterialApp(
+          title: 'Vertex',
+          theme: ThemeData(brightness: Brightness.dark),
+          home: VertexHomePage(title: 'Welcome Home'),
+          // TODO: ${username}
+          debugShowCheckedModeBanner: false,
+          // Remove debug banner
+          //Login route
+          routes: <String, WidgetBuilder>{
+            '/login': (BuildContext context) => new LoginPage(),
+            '/register': (BuildContext context) => new RegisterPage()
+          },
+        );
       },
     );
   }
@@ -58,6 +70,7 @@ class _VertexHomePageState extends State<VertexHomePage> {
   Settings settings;
 
   String title = "Welcome Home";
+
   /// Build is run and rerun every time above method, setState, is called
   @override
   Widget build(BuildContext context) {
@@ -84,7 +97,7 @@ class _VertexHomePageState extends State<VertexHomePage> {
           gradient: LinearGradient(
             begin: Alignment.bottomCenter,
             end: Alignment.topCenter,
-            stops: [0.1,0.3, 0.5, 0.7, 0.9],
+            stops: [0.1, 0.3, 0.5, 0.7, 0.9],
             colors: [
               Colors.lightGreen[900],
               Colors.lightGreen[800],
@@ -96,37 +109,36 @@ class _VertexHomePageState extends State<VertexHomePage> {
         ),
         child: Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginPage()),
-                    );
-                  },
-                  child: Center(
-                    child: Text(
-                      'LOGIN',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Montserrat'),
-                    ),
-                  ),
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                );
+              },
+              child: Center(
+                child: Text(
+                  'LOGIN',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Montserrat'),
                 ),
-              ],
-            )),
+              ),
+            ),
+          ],
+        )),
       ),
     );
   }
 
   //Display connect call page
   Future _showConnectCallPage() async {
-    await Navigator.of(context)
-        .push(MaterialPageRoute(builder: (BuildContext context) {
-      return ConnectCallPage("Connect to Video Call");
-    }));
+    await Navigator.of(context).push(MaterialPageRoute(
+        builder: (BuildContext context) =>
+            ConnectCallPage("Connect to Video Call")));
   } //End _showConnectCallPage()
 
   // Any time you're pushing a new route and expect that route
