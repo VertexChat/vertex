@@ -16,7 +16,6 @@ class RegisterScreenPresenter {
     api.register(user: user).then((user) {
       _view.onRegisterSuccess(user);
     }).catchError((Object error) {
-      //TODO: Handle error message better i.e user readable
       _view.onRegisterError(error.toString());
     });
   } //End doLogin function

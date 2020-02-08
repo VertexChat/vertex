@@ -7,9 +7,8 @@ import 'package:vertex_ui/src/pages/settings_page.dart';
 import 'package:vertex_ui/src/pages/splash_screen.dart';
 import 'package:vertex_ui/src/pages/text_chat_page.dart';
 import 'package:vertex_ui/src/pages/video_call/connect_call_page.dart';
-import 'package:vertex_ui/src/pages/login_page.dart';
-import 'package:vertex_ui/src/pages/register_page.dart';
-import 'package:dynamic_theme/dynamic_theme.dart';
+
+import 'login/login_page.dart';
 
 /// Public --> StatefulWidget
 class VertexHomePage extends StatefulWidget {

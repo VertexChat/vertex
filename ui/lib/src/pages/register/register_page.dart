@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:vertex_ui/src/blocs/registration_bloc.dart';
+import 'package:vertex_ui/src/pages/home_page.dart';
 import 'package:vertex_ui/src/pages/register/register_screen_presenter.dart';
 import 'package:vertex_ui/src/services/api.dart';
 import 'package:vertex_ui/src/widgets/icon_card.dart';
@@ -86,54 +87,57 @@ class _RegisterPageState extends State<RegisterPage>
       children: <Widget>[
         StreamBuilder<String>(
           stream: bloc.username,
-          builder: (context, snapshot) => TextFormField(
-            onSaved: (String val) => this.user.username = val,
-            onChanged: bloc.usernameChanged,
-            decoration: InputDecoration(
-                labelText: 'USERNAME',
-                labelStyle: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey),
-                focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.green)),
-                errorText: snapshot.error),
-          ),
+          builder: (context, snapshot) =>
+              TextFormField(
+                onSaved: (String val) => this.user.username = val,
+                onChanged: bloc.usernameChanged,
+                decoration: InputDecoration(
+                    labelText: 'USERNAME',
+                    labelStyle: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey),
+                    focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.green)),
+                    errorText: snapshot.error),
+              ),
         ),
         SizedBox(height: data.size.height / 90),
         StreamBuilder<String>(
           stream: bloc.password,
-          builder: (context, snapshot) => TextFormField(
-            obscureText: true,
-            onSaved: (String val) => this.user.password = val,
-            onChanged: bloc.passwordChanged,
-            decoration: InputDecoration(
-                labelText: 'PASSWORD ',
-                labelStyle: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey),
-                focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.green)),
-                errorText: snapshot.error),
-          ),
+          builder: (context, snapshot) =>
+              TextFormField(
+                obscureText: true,
+                onSaved: (String val) => this.user.password = val,
+                onChanged: bloc.passwordChanged,
+                decoration: InputDecoration(
+                    labelText: 'PASSWORD ',
+                    labelStyle: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey),
+                    focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.green)),
+                    errorText: snapshot.error),
+              ),
         ),
         SizedBox(height: data.size.height / 90),
         StreamBuilder<String>(
           stream: bloc.displayName,
-          builder: (context, snapshot) => TextFormField(
-            onSaved: (String val) => this.user.displayName = val,
-            onChanged: bloc.displayNameChanged,
-            decoration: InputDecoration(
-                labelText: 'DISPLAY NAME ',
-                labelStyle: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey),
-                focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.green)),
-                errorText: snapshot.error),
-          ),
+          builder: (context, snapshot) =>
+              TextFormField(
+                onSaved: (String val) => this.user.displayName = val,
+                onChanged: bloc.displayNameChanged,
+                decoration: InputDecoration(
+                    labelText: 'DISPLAY NAME ',
+                    labelStyle: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey),
+                    focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.green)),
+                    errorText: snapshot.error),
+              ),
         ),
         //Register button container
         SizedBox(height: data.size.height / 20.0),
@@ -146,19 +150,20 @@ class _RegisterPageState extends State<RegisterPage>
               elevation: 7.0,
               child: StreamBuilder<bool>(
                 stream: bloc.submitCheck,
-                builder: (context, snapshot) => RaisedButton(
-                  color: Colors.green,
-                  onPressed: snapshot.hasData ? () => _submit() : null,
-                  child: Center(
-                    child: Text(
-                      'REGISTER',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Montserrat'),
+                builder: (context, snapshot) =>
+                    RaisedButton(
+                      color: Colors.green,
+                      onPressed: snapshot.hasData ? () => _submit() : null,
+                      child: Center(
+                        child: Text(
+                          'REGISTER',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Montserrat'),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
               ),
             )),
         SizedBox(height: data.size.height / 30.0),
@@ -196,18 +201,15 @@ class _RegisterPageState extends State<RegisterPage>
       ),
       backgroundColor: Colors.red,
     ));
-    // setState(() => _isLoading = false);
   } //End function
 
   @override
   void onRegisterError(String errorTxt) {
-    // TODO: implement onRegisterError
     _showSnackBar(errorTxt);
   }
 
   @override
   void onRegisterSuccess(User user) {
-    // TODO: implement onRegisterSuccess
-    _showSnackBar(user.toString());
+    _showSnackBar("Account successfully registered");
   } //End widget
 } //end class
