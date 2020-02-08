@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:vertex_ui/src/pages/home_page.dart';
 import 'package:vertex_ui/src/pages/login_page.dart';
 import 'package:vertex_ui/src/pages/register_page.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
