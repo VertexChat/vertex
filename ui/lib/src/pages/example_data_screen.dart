@@ -47,7 +47,7 @@ class _ExampleDataScreenState extends State<ExampleDataScreen> {
     // TODO: API Call Here
     http.Response response =
         await http.get("https://jsonplaceholder.typicode.com/posts/");
-    if (response.statusCode == HttpStatus.OK) {
+    if (response.statusCode == HttpStatus.ok) {
       var result = jsonDecode(response.body);
       return result;
     }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vertex_ui/main.dart';
+import 'package:vertex_ui/src/widgets/custom_gradient.dart';
 
 import '../home_page.dart';
 
@@ -54,17 +54,7 @@ class _CallPageState extends State<CallPage> {
               new Container(
                   margin: const EdgeInsets.all(10.0),
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topRight,
-                      end: Alignment.bottomLeft,
-                      stops: [0.1, 0.5, 0.7, 0.9],
-                      colors: [
-                        Colors.lightGreen[900],
-                        Colors.lightGreen[700],
-                        Colors.lightGreen[500],
-                        Colors.lightGreen[300],
-                      ],
-                    ),
+                    gradient: getCustomGradient(),
                   ),
                   //Setting percentage amount of height & width
                   child: Center(
@@ -78,7 +68,7 @@ class _CallPageState extends State<CallPage> {
               new Container(
                   alignment: Alignment.topRight,
                   padding:
-                  new EdgeInsets.only(top: 10, right: 10.0, left: 10.0),
+                      new EdgeInsets.only(top: 10, right: 10.0, left: 10.0),
                   child: new Container(
                       margin: const EdgeInsets.all(10.0),
                       color: Colors.black,
