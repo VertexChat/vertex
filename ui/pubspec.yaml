@@ -36,6 +36,9 @@ dependencies:
 
   connectivity:
 
+  # https://pubdev/packages/connection_status_bar#-installing-tab-:
+  connection_status_bar: ^1.1.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

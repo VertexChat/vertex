@@ -1,12 +1,14 @@
+import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:vertex_ui/src/pages/login/login_page.dart';
 import 'package:vertex_ui/src/pages/register/register_page.dart';
-import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:vertex_ui/src/pages/splash_screen.dart';
 
-/// Call to run App Root (App starts here)
-//void main() => runApp(UI()); // Vertex_UI -> App root call to
+/// Call to run App Root
 void main() {
+  // Initialization of ConnectionStatus
+
+  // Run application start this class first
   runApp(UI());
 }
 
@@ -17,6 +19,9 @@ class UI extends StatefulWidget {
 
 /// App Root
 class _UIState extends State<UI> {
+  //Variables
+  bool offline = false;
+
   @override
   void initState() {
     super.initState();
@@ -50,4 +55,4 @@ class _UIState extends State<UI> {
       },
     );
   }
-}
+} //End class

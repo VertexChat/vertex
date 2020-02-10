@@ -47,10 +47,7 @@ class AuthApi {
       print(response.statusCode);
       throw ApiException(response.statusCode, _decodeBodyBytes(response));
     } else if (response.body != null) {
-      print(response.statusCode);
-      print(response.body);
     } else {
-      print(response.statusCode);
       return;
     }
     return;

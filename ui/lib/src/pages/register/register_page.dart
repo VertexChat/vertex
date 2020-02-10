@@ -192,24 +192,24 @@ class _RegisterPageState extends State<RegisterPage>
   }
 
   // Information snack bar. This is displayed if any errors happen during login
-  void _showSnackBar(String text) {
-    _scaffoldKey.currentState.showSnackBar(new SnackBar(
+  void _showSnackBar(String text, Color color) {
+        _scaffoldKey.currentState.showSnackBar(new SnackBar(
       content: new Text(
         text,
         textAlign: TextAlign.center,
         style: TextStyle(color: Colors.white),
       ),
-      backgroundColor: Colors.red,
+      backgroundColor: color
     ));
   } //End function
 
   @override
   void onRegisterError(String errorTxt) {
-    _showSnackBar(errorTxt);
+    _showSnackBar(errorTxt, Colors.red);
   }
 
   @override
   void onRegisterSuccess(User user) {
-    _showSnackBar("Account successfully registered");
+    _showSnackBar("Account successfully registered", Colors.green);
   } //End widget
 } //end class
