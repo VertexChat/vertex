@@ -3,19 +3,15 @@ import 'dart:async';
 class Validators {
   var validateName =
       StreamTransformer<String, String>.fromHandlers(handleData: (name, sink) {
-    String pattern = r'(^[a-zA-Z ]*$)';
-    RegExp regExp = new RegExp(pattern);
     if (name.length == 0)
       sink.addError("Display name is Required");
-    else if (!regExp.hasMatch(name))
-      sink.addError("Name must be a-z and A-Z");
     else
       sink.add(name);
   });
 
   var validateUsername = StreamTransformer<String, String>.fromHandlers(
       handleData: (username, sink) {
-    String pattern = r'(^[a-zA-Z ]*$)';
+      String pattern = r'(^[a-zA-Z0-9]*$)';
     RegExp regExp = new RegExp(pattern);
     if (username.length == 0)
       sink.addError("Username is Required");

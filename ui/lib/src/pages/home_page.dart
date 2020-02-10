@@ -1,5 +1,6 @@
 // VertexHomePage
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:vertex_ui/src/models/settings_model.dart';
 import 'package:vertex_ui/src/pages/example_data_screen.dart';
@@ -7,7 +8,9 @@ import 'package:vertex_ui/src/pages/settings_page.dart';
 import 'package:vertex_ui/src/pages/splash_screen.dart';
 import 'package:vertex_ui/src/pages/text_chat_page.dart';
 import 'package:vertex_ui/src/pages/video_call/connect_call_page.dart';
-import 'package:vertex_ui/src/pages/login_page.dart';
+import 'package:vertex_ui/src/widgets/custom_gradient.dart';
+
+import 'login/login_page.dart';
 
 /// Public --> StatefulWidget
 class VertexHomePage extends StatefulWidget {
@@ -16,7 +19,6 @@ class VertexHomePage extends StatefulWidget {
 
   /// Home page of application.
   /// Fields in Widget subclass always marked final
-
   VertexHomePage({Key key, this.title, this.settings}) : super(key: key);
 
   @override
@@ -25,12 +27,10 @@ class VertexHomePage extends StatefulWidget {
 
 /// Stateless class
 class _VertexHomePageState extends State<VertexHomePage> {
+  //Variables
   Settings settings;
-
   String title = "Welcome Home";
-
   Brightness brightness;
-
   bool isSwitched = true;
 
   /// Build is run and rerun every time above method, setState, is called
@@ -43,6 +43,7 @@ class _VertexHomePageState extends State<VertexHomePage> {
       appBar: AppBar(
         /// Setting AppBar title here
         title: Text(widget.title),
+        //Added scaffoldKey so all child widgets can call on it
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.trip_origin),
@@ -68,18 +69,7 @@ class _VertexHomePageState extends State<VertexHomePage> {
       ),
       body: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.bottomCenter,
-            end: Alignment.topCenter,
-            stops: [0.1, 0.3, 0.5, 0.7, 0.9],
-            colors: [
-              Colors.lightGreen[900],
-              Colors.lightGreen[800],
-              Colors.lightGreen[700],
-              Colors.lightGreen[500],
-              Colors.lightGreen[300],
-            ],
-          ),
+          gradient: getCustomGradient(),
         ),
         child: Center(
           child: Column(
@@ -92,15 +82,7 @@ class _VertexHomePageState extends State<VertexHomePage> {
                     MaterialPageRoute(builder: (context) => LoginPage()),
                   );
                 },
-                child: Center(
-                  child: Text(
-                    'LOGIN',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Montserrat'),
-                  ),
-                ),
+                child: null,
               ),
             ],
           ),
@@ -125,7 +107,7 @@ class _VertexHomePageState extends State<VertexHomePage> {
   // On submission, the information in that form page
   // will be passed back to this function.
   Future _showSettingsPage() async {
-    SettingsPage settingsPage = await Navigator.of(context).push(
+    await Navigator.of(context).push(
       MaterialPageRoute(builder: (BuildContext context) {
         return SettingsPage();
       }),
@@ -133,7 +115,7 @@ class _VertexHomePageState extends State<VertexHomePage> {
   }
 
   Future _showTextChatPage() async {
-    TextChatScreen textChatPage = await Navigator.of(context).push(
+    await Navigator.of(context).push(
       MaterialPageRoute(builder: (BuildContext context) {
         return TextChatScreen();
       }),
@@ -143,7 +125,7 @@ class _VertexHomePageState extends State<VertexHomePage> {
   // TODO: Remove from this class
   // This is for testing only!
   Future _showSplashScreenPage() async {
-    SplashScreen _splashScreen = await Navigator.of(context).push(
+    await Navigator.of(context).push(
       MaterialPageRoute(builder: (BuildContext context) {
         return SplashScreen();
       }),
@@ -154,7 +136,7 @@ class _VertexHomePageState extends State<VertexHomePage> {
   // TODO: Remove from this class
   // This is for testing only!
   Future _showExampleDataPage() async {
-    ExampleDataScreen _showExampleData = await Navigator.of(context).push(
+    await Navigator.of(context).push(
       MaterialPageRoute(builder: (BuildContext context) {
         return ExampleDataScreen();
       }),
