@@ -16,7 +16,6 @@ class LoginScreenPresenter {
     api.login(login: login).then((login) {
       _view.onLoginSuccess(login);
     }).catchError((Object error) {
-      //TODO: Handle error message better i.e user readable
       _view.onLoginError(error.toString());
     });
   } //End doLogin function

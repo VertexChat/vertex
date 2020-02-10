@@ -4,8 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:vertex_ui/src/pages/home_page.dart';
-
-import '../../main.dart';
+import 'package:vertex_ui/src/widgets/custom_gradient.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -20,8 +19,9 @@ class _SplashScreenState extends State<SplashScreen> {
 //    Timer(Duration(seconds: 5), () => UI());
     Timer(
         Duration(seconds: 2),
-        () => Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (BuildContext context) => VertexHomePage(title: 'Welcome Home'))));
+        () => Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) =>
+                VertexHomePage(title: 'Welcome Home'))));
   }
 
   @override
@@ -32,18 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
         children: <Widget>[
           Container(
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
-                stops: [0.1, 0.3, 0.5, 0.7, 0.9],
-                colors: [
-                  Colors.lightGreen[900],
-                  Colors.lightGreen[800],
-                  Colors.lightGreen[700],
-                  Colors.lightGreen[500],
-                  Colors.lightGreen[300],
-                ],
-              ),
+              gradient: getCustomGradient(),
             ),
           ),
           Column(
@@ -94,16 +83,9 @@ class _SplashScreenState extends State<SplashScreen> {
                         top: 20.0,
                       ),
                     ),
-                    Text(
-                      "Initialising...\nPlease Wait",
-                      style: TextStyle(
-                          color: Colors.black87,
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold),
-                    ),
                   ],
                 ),
-              )
+              ),
             ],
           )
         ],
