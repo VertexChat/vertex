@@ -1,12 +1,11 @@
 part of openapi.api;
 
 class Login {
-  String password;
-
-  String userName;
-
-  //Constructor
-  Login({this.password, this.userName});
+  
+  String password = null;
+  
+  String userName = null;
+  Login();
 
   @override
   String toString() {
@@ -20,23 +19,22 @@ class Login {
   }
 
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> json = {};
-    if (password != null) json['password'] = password;
-    if (userName != null) json['userName'] = userName;
+    Map <String, dynamic> json = {};
+    if (password != null)
+      json['password'] = password;
+    if (userName != null)
+      json['userName'] = userName;
     return json;
   }
 
   static List<Login> listFromJson(List<dynamic> json) {
-    return json == null
-        ? List<Login>()
-        : json.map((value) => Login.fromJson(value)).toList();
+    return json == null ? List<Login>() : json.map((value) => Login.fromJson(value)).toList();
   }
 
   static Map<String, Login> mapFromJson(Map<String, dynamic> json) {
     var map = Map<String, Login>();
     if (json != null && json.isNotEmpty) {
-      json.forEach(
-          (String key, dynamic value) => map[key] = Login.fromJson(value));
+      json.forEach((String key, dynamic value) => map[key] = Login.fromJson(value));
     }
     return map;
   }
@@ -44,11 +42,12 @@ class Login {
   // maps a json object with a list of Login-objects as value to a dart map
   static Map<String, List<Login>> mapListFromJson(Map<String, dynamic> json) {
     var map = Map<String, List<Login>>();
-    if (json != null && json.isNotEmpty) {
-      json.forEach((String key, dynamic value) {
-        map[key] = Login.listFromJson(value);
-      });
-    }
-    return map;
+     if (json != null && json.isNotEmpty) {
+       json.forEach((String key, dynamic value) {
+         map[key] = Login.listFromJson(value);
+       });
+     }
+     return map;
   }
 }
+
