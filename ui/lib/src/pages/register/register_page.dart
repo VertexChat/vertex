@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:vertex_ui/src/blocs/registration_bloc.dart';
-import 'package:vertex_ui/src/pages/home_page.dart';
 import 'package:vertex_ui/src/pages/register/register_screen_presenter.dart';
 import 'package:vertex_ui/src/services/api.dart';
 import 'package:vertex_ui/src/widgets/icon_card.dart';

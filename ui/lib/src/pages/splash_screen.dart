@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:vertex_ui/src/pages/home_page.dart';
 import 'package:vertex_ui/src/widgets/custom_gradient.dart';
+
+import 'home/home_page.dart';
 
 class SplashScreen extends StatefulWidget {
   @override

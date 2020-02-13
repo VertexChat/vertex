@@ -1,9 +1,11 @@
-import 'package:example/widgets/drawer_option/drawer_option.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+import 'package:vertex_ui/src/widgets/drawer_option/drawer_list_view.dart';
+import 'package:vertex_ui/src/widgets/drawer_option/drawer_navigation_bar.dart';
 
+import '../heading_widget.dart';
 import 'app_drawer_mobile.dart';
-import 'app_drawer_tablet.dart';
+import 'app_drawer_web.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({Key key}) : super(key: key);
@@ -12,31 +14,27 @@ class AppDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenTypeLayout(
       mobile: AppDrawerMobile(),
-      tablet: OrientationLayoutBuilder(
-        portrait: (context) => AppDrawerTabletPortrait(),
-        landscape: (context) => AppDrawerTabletLandscape(),
+      desktop: OrientationLayoutBuilder(
+        portrait: (context) => AppDrawerWebPortrait(),
+        landscape: (context) => AppDrawerWebLandscape(),
       ),
     );
-  }
+  } //End widget builder
 
+// Return app widgets that will display inside the left drawer
   static List<Widget> getDrawerOptions() {
+    // These values will be populated from the server // TEST DATA
+    final List<String> testEntries = <String>[
+      'Test channel 1',
+      'Test channel 2',
+      'Test channel 3'
+    ];
     return [
-      DrawerOption(
-        title: 'Images',
-        iconData: Icons.image,
+      HeadingWidget(headingText: 'Server Name'),
+      DrawerListView(
+        items: testEntries,
       ),
-      DrawerOption(
-        title: 'Reports',
-        iconData: Icons.photo_filter,
-      ),
-      DrawerOption(
-        title: 'Incidents',
-        iconData: Icons.message,
-      ),
-      DrawerOption(
-        title: 'Settings',
-        iconData: Icons.settings,
-      ),
+      DrawerNavigationBar(),
     ];
   }
 }
