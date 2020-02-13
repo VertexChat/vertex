@@ -282,6 +282,7 @@ class _SettingsPageState extends State<SettingsPage> {
           Flexible(
             flex: 0,
             child: Slider(
+
               activeColor: Colors.white,
               min: 0.0,
               max: 100.0,

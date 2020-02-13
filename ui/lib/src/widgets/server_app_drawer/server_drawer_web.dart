@@ -9,7 +9,7 @@ class ServerDrawerWebPortrait extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 130,
+      height: 200,
       decoration: BoxDecoration(color: Colors.grey),
       child: Row(
         children: ServerDrawer.getDrawerOptions(),

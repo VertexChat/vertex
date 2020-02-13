@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 /// This Widget is for creating a heading for the app drawer
 
@@ -9,11 +10,11 @@ class HeadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //final data = MediaQuery.of(context).size
     return Container(
-      padding:
-          EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0, bottom: 10.0),
+      padding: EdgeInsets.all(20.0),
       alignment: Alignment.center,
-      child: Text(headingText,
+      child: AutoSizeText(headingText,
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
     );

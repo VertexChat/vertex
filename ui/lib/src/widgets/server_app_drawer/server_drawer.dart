@@ -63,6 +63,7 @@ class ServerDrawer extends StatelessWidget {
       // Currently hard coded until server hock in
       HeadingWidget(headingText: 'Server Name'),
       ServerDrawerListBuilder(items: testEntries),
+      SizedBox(height: 40),
       ServerDrawerListBuilder(items: testTextChannels),
       ServerDrawerSettingsBar(),
     ];

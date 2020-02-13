@@ -22,11 +22,6 @@ class _UIState extends State<UI> {
   //Variables
   bool offline = false;
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
   Brightness brightness;
 
   @override
