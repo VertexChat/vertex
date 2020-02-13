@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
+
 LinearGradient getCustomGradient() {
   return LinearGradient(
     begin: Alignment.bottomCenter,

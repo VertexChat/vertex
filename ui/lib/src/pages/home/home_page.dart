@@ -5,8 +5,12 @@ import 'package:vertex_ui/src/models/settings_model.dart';
 import 'package:vertex_ui/src/pages/home/home_view_mobile.dart';
 import 'package:vertex_ui/src/pages/home/home_view_web.dart';
 
-/// Public --> StatefulWidget
+/// This class displays the UI differently depending on the device the application
+/// is running on. This is to allow for a response design across web, mobile & tablet.
+///
+///
 class VertexHomePage extends StatefulWidget {
+  //Variables
   final String title;
   final Settings settings; //TODO: Load from file in main.dart
 
@@ -20,19 +24,10 @@ class VertexHomePage extends StatefulWidget {
 
 /// Stateless class
 class _VertexHomePageState extends State<VertexHomePage> {
-  //Variables
-  Settings settings;
-  String title = "Welcome Home";
-  Brightness brightness;
-  bool isSwitched = true;
-
-
   /// Build is run and rerun every time above method, setState, is called
   @override
   Widget build(BuildContext context) {
-    /// Scaffold: framework which implements the basic material
-    /// design visual layout structure of the flutter app.
-    /// Need one every time we build a new page
+    /// Returns the layout type depending on the device the application is running on
     return ScreenTypeLayout(
       breakpoints: ScreenBreakpoints(desktop: 900, tablet: 650, watch: 250),
       mobile: OrientationLayoutBuilder(

@@ -1,12 +1,11 @@
 import 'package:flutter/cupertino.dart';
 
-/// Widget for drawer heading name
+/// This Widget is for creating a heading for the app drawer
 
 class HeadingWidget extends StatelessWidget {
   final String headingText;
 
-  const HeadingWidget({Key key, this.headingText})
-      : super(key: key);
+  const HeadingWidget({Key key, this.headingText}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

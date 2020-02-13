@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-// Class that displays icons of service a user can sign up with or login with.
+/// Class that displays icons of service a user can sign up with or login with.
 
 class IconCard extends StatefulWidget {
   @override

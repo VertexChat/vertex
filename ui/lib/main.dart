@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:vertex_ui/src/pages/login/login_page.dart';
 import 'package:vertex_ui/src/pages/register/register_page.dart';
 import 'package:vertex_ui/src/pages/splash_screen.dart';
+import 'package:vertex_ui/src/routing/route_names.dart';
+import 'package:vertex_ui/src/routing/router.dart';
 
 /// Call to run App Root
 void main() {
-  // Initialization of ConnectionStatus
-
   // Run application start this class first
   runApp(UI());
 }
@@ -47,10 +47,9 @@ class _UIState extends State<UI> {
           debugShowCheckedModeBanner: false,
           // Remove debug banner
           //Login route
-          routes: <String, WidgetBuilder>{
-            '/login': (BuildContext context) => new LoginPage(),
-            '/register': (BuildContext context) => new RegisterPage()
-          },
+          onGenerateRoute: Router.generateRoute,
+          initialRoute:
+              HomeRoute, // TODO: Implement auth first! Currently bypassing init loading screen
         );
       },
     );

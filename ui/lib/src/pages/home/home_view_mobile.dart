@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:vertex_ui/src/widgets/app_drawer/app_drawer.dart';
-import 'package:vertex_ui/src/widgets/custom_appbar.dart';
+import 'package:vertex_ui/src/widgets/app_navigation_bar.dart';
 import 'package:vertex_ui/src/widgets/heading_widget.dart';
+import 'package:vertex_ui/src/widgets/server_app_drawer/server_drawer.dart';
 
 class HomeMobilePortrait extends StatefulWidget {
   HomeMobilePortrait({Key key}) : super(key: key);
@@ -18,8 +18,8 @@ class _HomeMobilePortrait extends State<HomeMobilePortrait> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: CustomAppBar(),
-      drawer: AppDrawer(),
+      appBar: AppNavigationBar(),
+      drawer: ServerDrawer(),
       body: Column(
         children: <Widget>[
           HeadingWidget(headingText: "Text Channel Name"),
@@ -37,7 +37,7 @@ class HomeMobileLandscape extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Row(
-        children: <Widget>[AppDrawer()],
+        children: <Widget>[ServerDrawer()],
       ),
     );
   }

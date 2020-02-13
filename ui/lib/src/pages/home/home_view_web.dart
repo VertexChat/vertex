@@ -1,18 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:vertex_ui/src/widgets/app_drawer/app_drawer.dart';
-import 'package:vertex_ui/src/widgets/custom_appbar.dart';
+import 'package:vertex_ui/src/widgets/app_navigation_bar.dart';
 import 'package:vertex_ui/src/widgets/heading_widget.dart';
+import 'package:vertex_ui/src/widgets/server_app_drawer/server_drawer.dart';
 
 class HomeViewTablet extends StatelessWidget {
   const HomeViewTablet({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var orientation = MediaQuery.of(context).orientation;
-
     var children = [
-      Expanded(
+      ServerDrawer(), //App drawer
+      Expanded( // Main view
         child: Container(
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -25,14 +24,11 @@ class HomeViewTablet extends StatelessWidget {
         ),
       ),
       // Left app drawer, this class will return the view in the correct orientation
-      AppDrawer()
     ];
 
     return Scaffold(
-      appBar: CustomAppBar(), // Top app bar
-      body: orientation == Orientation.portrait
-          ? Column(children: children)
-          : Row(children: children.reversed.toList()),
+      appBar: AppNavigationBar(), // Top app bar
+      body: Row(children: children),
     );
-  }
-}
+  }//End builder
+}//End class

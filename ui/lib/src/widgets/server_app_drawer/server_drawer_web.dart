@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:vertex_ui/src/widgets/drawer_option/drawer_navigation_bar.dart';
 
-import 'app_drawer.dart';
+import 'server_drawer.dart';
 
 // TODO: Not Worried about this for awhile yet
-class AppDrawerWebPortrait extends StatelessWidget {
-  const AppDrawerWebPortrait({Key key}) : super(key: key);
+class ServerDrawerWebPortrait extends StatelessWidget {
+  const ServerDrawerWebPortrait({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,15 +12,15 @@ class AppDrawerWebPortrait extends StatelessWidget {
       height: 130,
       decoration: BoxDecoration(color: Colors.grey),
       child: Row(
-        children: AppDrawer.getDrawerOptions(),
+        children: ServerDrawer.getDrawerOptions(),
       ),
     );
   }//End builder
 }//End class
 
 // PRIMARY CLASS FOR WEB VIEW ==================================================
-class AppDrawerWebLandscape extends StatelessWidget {
-  const AppDrawerWebLandscape({Key key}) : super(key: key);
+class ServerDrawerWebLandscape extends StatelessWidget {
+  const ServerDrawerWebLandscape({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +28,7 @@ class AppDrawerWebLandscape extends StatelessWidget {
       width: 250,
       decoration: BoxDecoration(color: Color.fromRGBO(55, 55, 55, 50)),
       child: Column(
-        children: AppDrawer.getDrawerOptions(),
+        children: ServerDrawer.getDrawerOptions(),
       ),
     );
   }

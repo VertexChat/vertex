@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class DrawerNavigationBar extends StatelessWidget {
+/// Drawer settings class that returns a widget with buttons that allow
+/// the user to mute there mic, headset or navigate into settings
+/// TODO: Complete settings integration
+
+class ServerDrawerSettingsBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
