@@ -39,6 +39,9 @@ dependencies:
   # https://pubdev/packages/connection_status_bar#-installing-tab-:
   connection_status_bar: ^1.1.2
 
+  # Used for allow the creation of a responsive design on mobile, web and tablet devices
+  responsive_builder:
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

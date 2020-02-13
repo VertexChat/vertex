@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:vertex_ui/src/pages/home/home_page.dart';
 import 'package:vertex_ui/src/widgets/custom_gradient.dart';
-
-import '../home_page.dart';
 
 /// Each class defined below here is now a part of the App Root node
 /// VertexLanding is currently main landing page, meaning the App will

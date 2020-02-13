@@ -1,4 +1,6 @@
-import 'package:vertex_ui/src/services/api.dart';
+
+
+import 'package:vertex_ui/src/services/client_stubs/api.dart';
 
 abstract class RegisterScreenContract {
   void onRegisterSuccess(User user);

@@ -1,4 +1,5 @@
 import connexion
+import mysql.connector
 import six
 
 from swagger_server.models.channel import Channel  # noqa: E501
@@ -44,6 +45,27 @@ def get_channel_by_id(id):  # noqa: E501
 
     :rtype: Channel
     """
+    # Query
+    query = "SELECT * FROM channel WHERE channel_name = 'VOICE'"
+
+    try:
+        cnx = mysql.connector.connect(option_files='config.ini')  # Start Connection
+        cursor = cnx.cursor()
+        cursor.execute(query)  # Run query
+
+        result = cursor.fetchall()
+        print(result)
+        return result
+
+    except mysql.connector.Error as error:
+        return "Failed to query database: {}".format(error), 500
+    finally:
+        if cnx.is_connected():
+            cnx.close()
+            cursor.close()
+            print("MySQL connection is closed")
+            
+
     return 'do some magic!'
 
 
