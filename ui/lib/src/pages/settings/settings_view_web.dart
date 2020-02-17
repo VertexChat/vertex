@@ -1,9 +1,10 @@
-import 'dart:html';
-
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:vertex_ui/src/widgets/settings_widgets/mute_card_widget.dart';
+import 'package:vertex_ui/src/widgets/settings_widgets/settings_card_widget.dart';
+import 'package:vertex_ui/src/widgets/settings_widgets/user_details_widget.dart';
 import 'package:vertex_ui/src/widgets/text_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -98,32 +99,10 @@ class _SettingsViewWeb extends State<SettingsViewWeb> {
     });
   }
 
-  /// -- Audio Input Card--
-  /// Displays Text
-  /// Displays Dropdown
-  Widget get audioInCard {
-    return Container(
-      width: 600,
-      padding: EdgeInsets.all(10.0),
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              TextWidget('Audio Input'),
-              audioInputDropBox,
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   /// -- Audio Input --
   /// DropBox Display
   /// TODO: Manipulate for systems hardware
+  /// Cant be extracted due to state being updated during the life of this widget in the tree
   Widget get audioInputDropBox {
     return Container(
       child: Row(
@@ -157,28 +136,6 @@ class _SettingsViewWeb extends State<SettingsViewWeb> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  /// -- Audio Card--
-  /// Text Display
-  Widget get audioOutCard {
-    return Container(
-      width: 600,
-      padding: EdgeInsets.all(10.0),
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              TextWidget("Audio Out"),
-              audioOutputDropBox,
-            ],
-          ),
-        ),
       ),
     );
   }
@@ -225,10 +182,10 @@ class _SettingsViewWeb extends State<SettingsViewWeb> {
   /// -- Audio Sensitivity Card--
   Widget get audioInputSensitivityCard {
     return Container(
-      padding: EdgeInsets.all(10.0),
+      padding: EdgeInsets.all(8.0),
       child: Card(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+          padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -282,30 +239,10 @@ class _SettingsViewWeb extends State<SettingsViewWeb> {
     ));
   } //End widget
 
-  /// -- Audio Card--
-  /// Text Display
-  Widget get videoInputCard {
-    return Container(
-      padding: EdgeInsets.all(10.0),
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              TextWidget("Webcam Input"),
-              videoInputDropBox,
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   /// -- WebCam Input --
   /// DropBox Widget
   Widget get videoInputDropBox {
+    // String _videoInput;
     return Container(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -342,27 +279,6 @@ class _SettingsViewWeb extends State<SettingsViewWeb> {
     );
   }
 
-  /// -- Audio Card--
-  /// Text Display
-  Widget get audioInputIsMuteCard {
-    return Container(
-      padding: EdgeInsets.all(10.0),
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              TextWidget("Mute Audio Input"),
-              audioInputIsMuteToggle,
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   /// -- Mute Microphone --
   /// ToggleButton Widget
   Widget get audioInputIsMuteToggle {
@@ -383,27 +299,6 @@ class _SettingsViewWeb extends State<SettingsViewWeb> {
             activeColor: Colors.green,
           ),
         ],
-      ),
-    );
-  }
-
-  /// -- Audio Card--
-  /// Text Display
-  Widget get audioOutputIsMuteCard {
-    return Container(
-      padding: EdgeInsets.all(10.0),
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              TextWidget("Mute Audio Output"),
-              audioOutputIsMuteToggle,
-            ],
-          ),
-        ),
       ),
     );
   }
@@ -432,94 +327,6 @@ class _SettingsViewWeb extends State<SettingsViewWeb> {
     );
   }
 
-  /// -- Audio Card--
-  /// Text Display
-  Widget get themeCard {
-    return Container(
-      child: Card(
-//        color: Colors.lightGreen[800],
-        elevation: 0,
-        color: Colors.transparent,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Text("Theme"),
-            themeToggle,
-          ],
-        ),
-      ),
-    );
-  }
-
-  /// -- Mute Headphone --
-  /// ToggleButton Widget
-  Widget get themeToggle {
-    return Column(
-      children: <Widget>[
-        Container(
-            padding: EdgeInsets.symmetric(
-              vertical: 16.0,
-              horizontal: 16.0,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                ToggleButtons(
-                  children: <Widget>[
-                    Icon(Icons.do_not_disturb_alt),
-                    Icon(Icons.check),
-                  ],
-//                  // Need mutually exclusive check
-                  onPressed: (int index) {
-                    setState(() {
-                      for (int i = 0; i < _themeIsSelected.length; i++) {
-                        if (i == index) {
-                          _themeIsSelected[i] = true;
-                          changeBrightness();
-//                          brightness: Brightness.dark,
-                        } else {
-                          _themeIsSelected[i] = false;
-                          changeBrightness();
-                        }
-//                        _audioOutputIsMute = _audioOutputIsSelected[i];
-//                        save('audioOutputIsMute', _audioOutputIsSelected[i]);
-//                        save('audioOutputIsSelected', _audioOutputIsSelected[i]);
-                      }
-                    });
-                  },
-                  isSelected: _themeIsSelected,
-                ),
-              ],
-            )),
-      ],
-    );
-  }
-
-  Widget user() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Icon(FontAwesomeIcons.user, size: 44.0),
-        ),
-        Text(
-          "User Account Name",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-        ),
-        RaisedButton(
-          padding: EdgeInsets.all(10.0),
-
-          color: Colors.black26,
-          onPressed: () => null,
-          child: Text("Log Out", style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
-        )
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -535,14 +342,11 @@ class _SettingsViewWeb extends State<SettingsViewWeb> {
         ));
   } //End builder
 
-  Widget appInfo(){
+  Widget appInfo() {
     return Row(
-      children: <Widget>[
-
-      ],
+      children: <Widget>[],
     );
   }
-
 
   Widget settings() {
     return Column(
@@ -550,7 +354,8 @@ class _SettingsViewWeb extends State<SettingsViewWeb> {
         Container(
           height: 100,
           color: Colors.black26,
-          child: user(),
+          //TODO: Tie in with logged in user
+          child: UserDetails(userName: "User Account Name"),
         ),
         SizedBox(height: 20.0),
         Container(
@@ -568,14 +373,32 @@ class _SettingsViewWeb extends State<SettingsViewWeb> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    audioInCard,
-                    audioOutCard,
+                    SettingsCard(
+                      optionsDropdownBox: audioInputDropBox,
+                      settingsTypeHeading: "Input Audio",
+                      width: 600,
+                    ),
+                    // Audio Output Settings
+                    SettingsCard(
+                      optionsDropdownBox: audioOutputDropBox,
+                      settingsTypeHeading: "Output Audio",
+                      width: 600,
+                    ),
                   ],
                 ),
                 audioInputSensitivityCard,
-                videoInputCard,
-                audioInputIsMuteCard,
-                audioOutputIsMuteCard,
+                SettingsCard(
+                    optionsDropdownBox: videoInputDropBox,
+                    settingsTypeHeading: "Webcam Device"),
+                // Audio Mute Settings output & input
+                MuteCard(
+                  audioMuteToggle: audioInputIsMuteToggle,
+                  muteSourceTypeHeading: "Mute Audio Input",
+                ),
+                MuteCard(
+                  audioMuteToggle: audioOutputIsMuteToggle,
+                  muteSourceTypeHeading: "Mute Audio Output",
+                )
               ],
             ),
           ),

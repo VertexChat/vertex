@@ -1,10 +1,12 @@
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:vertex_ui/src/widgets/text_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vertex_ui/src/widgets/settings_widgets/mute_card_widget.dart';
+import 'package:vertex_ui/src/widgets/settings_widgets/settings_card_widget.dart';
+import 'package:vertex_ui/src/widgets/settings_widgets/user_details_widget.dart';
+import 'package:vertex_ui/src/widgets/text_widget.dart';
 
-// MAIN Settings view for mobile
+///  Main Settings view for mobile device
 class SettingsViewMobilePortrait extends StatefulWidget {
   SettingsViewMobilePortrait({Key key}) : super(key: key);
 
@@ -93,31 +95,10 @@ class _SettingsViewMobilePortrait extends State<SettingsViewMobilePortrait> {
     });
   }
 
-  /// -- Audio Input Card--
-  /// Displays Text
-  /// Displays Dropdown
-  Widget get audioInCard {
-    return Container(
-      padding: EdgeInsets.all(8.0),
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              TextWidget('Audio Input'),
-              audioInputDropBox,
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   /// -- Audio Input --
   /// DropBox Display
   /// TODO: Manipulate for systems hardware
+  /// Cant be extracted due to state being updated during the life of this widget in the tree
   Widget get audioInputDropBox {
     return Container(
       child: Row(
@@ -151,28 +132,6 @@ class _SettingsViewMobilePortrait extends State<SettingsViewMobilePortrait> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  /// -- Audio Card--
-  /// Text Display
-  Widget get audioOutCard {
-    return Container(
-      width: 600,
-      padding: EdgeInsets.all(8.0),
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              TextWidget("Audio Out"),
-              audioOutputDropBox,
-            ],
-          ),
-        ),
       ),
     );
   }
@@ -257,49 +216,29 @@ class _SettingsViewMobilePortrait extends State<SettingsViewMobilePortrait> {
   Widget get audioInputSensitivitySlider {
     return Container(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Slider(
-              activeColor: Colors.white,
-              min: 0.0,
-              max: 100.0,
-              onChanged: (value) {
-                setState(() {
-                  _audioInputSensitivity = value;
-                });
-                save('audioInputSensitivity', value);
-              },
-              value: _audioInputSensitivity,
-            ),
-          ],
-        ));
-  } //End widget
-
-  /// -- Audio Card--
-  /// Text Display
-  Widget get videoInputCard {
-    return Container(
-      padding: EdgeInsets.all(8.0),
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              TextWidget("Webcam Input"),
-              videoInputDropBox,
-            ],
-          ),
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Slider(
+          activeColor: Colors.white,
+          min: 0.0,
+          max: 100.0,
+          onChanged: (value) {
+            setState(() {
+              _audioInputSensitivity = value;
+            });
+            save('audioInputSensitivity', value);
+          },
+          value: _audioInputSensitivity,
         ),
-      ),
-    );
-  }
+      ],
+    ));
+  } //End widget
 
   /// -- WebCam Input --
   /// DropBox Widget
   Widget get videoInputDropBox {
+    // String _videoInput;
     return Container(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -336,27 +275,6 @@ class _SettingsViewMobilePortrait extends State<SettingsViewMobilePortrait> {
     );
   }
 
-  /// -- Audio Card--
-  /// Text Display
-  Widget get audioInputIsMuteCard {
-    return Container(
-      padding: EdgeInsets.all(8.0),
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              TextWidget("Mute Audio Input"),
-              audioInputIsMuteToggle,
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   /// -- Mute Microphone --
   /// ToggleButton Widget
   Widget get audioInputIsMuteToggle {
@@ -377,27 +295,6 @@ class _SettingsViewMobilePortrait extends State<SettingsViewMobilePortrait> {
             activeColor: Colors.green,
           ),
         ],
-      ),
-    );
-  }
-
-  /// -- Audio Card--
-  /// Text Display
-  Widget get audioOutputIsMuteCard {
-    return Container(
-      padding: EdgeInsets.all(8.0),
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              TextWidget("Mute Audio Output"),
-              audioOutputIsMuteToggle,
-            ],
-          ),
-        ),
       ),
     );
   }
@@ -431,7 +328,6 @@ class _SettingsViewMobilePortrait extends State<SettingsViewMobilePortrait> {
   Widget get themeCard {
     return Container(
       child: Card(
-//        color: Colors.lightGreen[800],
         elevation: 0,
         color: Colors.transparent,
         child: Column(
@@ -490,22 +386,6 @@ class _SettingsViewMobilePortrait extends State<SettingsViewMobilePortrait> {
     );
   }
 
-  Widget user() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Icon(FontAwesomeIcons.user, size: 44.0),
-        ),
-        Text(
-          "User Account Name",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-        )
-      ],
-    );
-  }//End widget
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -516,26 +396,44 @@ class _SettingsViewMobilePortrait extends State<SettingsViewMobilePortrait> {
           Container(
             height: 100,
             color: Colors.black26,
-            child: user(),
+            //TODO: Hock in with currently logged user
+            child: UserDetails(userName: "User account Name"),
           ),
           SizedBox(height: 20.0),
           Container(
             child: Expanded(
               child: ListView(
                 children: <Widget>[
-                  audioInCard,
-                  audioOutCard,
+                  // Audio Input Settings
+                  SettingsCard(
+                    optionsDropdownBox: audioInputDropBox,
+                    settingsTypeHeading: "Input Audio",
+                  ),
+                  // Audio Output Settings
+                  SettingsCard(
+                    optionsDropdownBox: audioOutputDropBox,
+                    settingsTypeHeading: "Output Audio",
+                  ),
                   audioInputSensitivityCard,
-                  videoInputCard,
-                  audioInputIsMuteCard,
-                  audioOutputIsMuteCard,
+                  // Video Input Settings
+                  SettingsCard(
+                      optionsDropdownBox: videoInputDropBox,
+                      settingsTypeHeading: "Webcam Device"),
+                  // Audio Mute Settings output & input
+                  MuteCard(
+                    audioMuteToggle: audioInputIsMuteToggle,
+                    muteSourceTypeHeading: "Mute Audio Input",
+                  ),
+                  MuteCard(
+                    audioMuteToggle: audioOutputIsMuteToggle,
+                    muteSourceTypeHeading: "Mute Audio Output",
+                  )
                 ],
               ),
             ),
           ),
-
         ],
       ),
     );
   } //End builder
-} //End class
+}//End class
