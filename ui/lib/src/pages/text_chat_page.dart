@@ -73,32 +73,43 @@ class _TextChatScreenState extends State<TextChatScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Chat Screen"),
-      ),
-      body: Container(
-          decoration: BoxDecoration(
-            gradient: getCustomGradient(),
-          ),
-          child: Column(
+    return Container(
+        child: Column(
+      children: <Widget>[
+        //Heading
+        Container(
+          color: Colors.black26,
+          height: 40,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              Flexible(
-                child: ListView.builder(
-                  padding: EdgeInsets.all(8.0),
-                  reverse: true,
-                  itemBuilder: (_, int index) => _messages[index],
-                  itemCount: _messages.length,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  "Text Channel Name (General)",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.white),
                 ),
-              ),
-              Divider(height: 1.0),
-              Container(
-                decoration: BoxDecoration(color: Theme.of(context).cardColor),
-                child: _buildTextComposer(),
-              ),
+              )
             ],
-          )),
-    );
+          ),
+        ),
+        Flexible(
+          child: ListView.builder(
+            padding: EdgeInsets.all(8.0),
+            reverse: true,
+            itemBuilder: (_, int index) => _messages[index],
+            itemCount: _messages.length,
+          ),
+        ),
+        Divider(height: 1.0),
+        Container(
+          decoration: BoxDecoration(color: Theme.of(context).cardColor),
+          child: _buildTextComposer(),
+        ),
+      ],
+    ));
   }
 }
 
@@ -140,7 +151,7 @@ class ChatMessage extends StatelessWidget {
                 ],
               ),
             ),
-            Container (
+            Container(
               margin: const EdgeInsets.only(top: 5.0),
               child: Text(DateTime.now().minute.toString()),
             ),

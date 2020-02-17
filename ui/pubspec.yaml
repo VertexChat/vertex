@@ -42,6 +42,9 @@ dependencies:
   # Used for allow the creation of a responsive design on mobile, web and tablet devices
   responsive_builder:
 
+  # https://github.com/brianegan/font_awesome_flutter:
+  font_awesome_flutter:
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

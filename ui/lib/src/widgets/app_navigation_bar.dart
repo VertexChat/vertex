@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:vertex_ui/src/models/settings_model.dart';
-import 'package:vertex_ui/src/pages/settings_page.dart';
-import 'package:vertex_ui/src/pages/splash_screen.dart';
-import 'package:vertex_ui/src/pages/text_chat_page.dart';
+import 'package:vertex_ui/src/pages/settings/settings_page.dart';
 import 'package:vertex_ui/src/pages/video_call/connect_call_page.dart';
 
 /// This class is used to create a custom AppBar for this application.
@@ -36,16 +35,6 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
       //Added scaffoldKey so all child widgets can call on it
       actions: <Widget>[
         IconButton(
-          icon: Icon(Icons.donut_small),
-          onPressed: () {
-            //locator<NavigationService>().navigateTo(routeName);
-            Navigator.push(
-                context,
-                new MaterialPageRoute(
-                    builder: (context) => new SplashScreen()));
-          },
-        ),
-        IconButton(
           icon: Icon(Icons.video_call),
           onPressed: () {
             Navigator.push(
@@ -53,15 +42,6 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
                 new MaterialPageRoute(
                     builder: (context) =>
                         new ConnectCallPage("Connect to a call")));
-          },
-        ),
-        IconButton(
-          icon: Icon(Icons.message),
-          onPressed: () {
-            Navigator.push(
-                context,
-                new MaterialPageRoute(
-                    builder: (context) => new TextChatScreen()));
           },
         ),
         IconButton(
@@ -76,6 +56,14 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
                         )));
           },
         ),
+        IconButton(
+            icon: Icon(FontAwesomeIcons.user),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) => new SettingsPage()));
+            })
       ],
     );
   }

@@ -1,36 +1,25 @@
-import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:vertex_ui/src/models/settings_model.dart';
-import 'package:vertex_ui/src/widgets/custom_gradient.dart';
-import 'package:vertex_ui/src/widgets/drop_box_card.dart';
-import 'package:vertex_ui/src/widgets/slider_widget.dart';
-import 'package:vertex_ui/src/widgets/text_widget.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:vertex_ui/src/widgets/text_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-/// Passing settings in from main.dart
-/// Stateful widget receives data
-/// It hands off data to Stateless widget
-/// Stateless widget creates the widget from the data
-/// It then passes it back to Stateful, who return the built widget
-class SettingsPage extends StatefulWidget {
-  // Immutable data -- Sort of.. this is the hand over, essentially just a temp ?
-  final String title;
-  final Settings settings;
-
-  // Constructor
-  SettingsPage({this.title, this.settings});
+// MAIN Settings view for mobile
+class SettingsViewMobilePortrait extends StatefulWidget {
+  SettingsViewMobilePortrait({Key key}) : super(key: key);
 
   @override
-  _SettingsPageState createState() => _SettingsPageState();
+  _SettingsViewMobilePortrait createState() => _SettingsViewMobilePortrait();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
+class _SettingsViewMobilePortrait extends State<SettingsViewMobilePortrait> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   String _audioInput;
   String _audioOutput;
-  double _audioInputSensitivity;
+  double _audioInputSensitivity = 0.0;
   String _videoInput;
-  bool _audioInputIsMute;
-  bool _audioOutputIsMute;
+  bool _audioInputIsMute = false;
+  bool _audioOutputIsMute = false;
   bool _theme; // Light --> true /  Dark --> false
 
   List<String> _defaultAudioInput = [
@@ -109,22 +98,18 @@ class _SettingsPageState extends State<SettingsPage> {
   /// Displays Dropdown
   Widget get audioInCard {
     return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: 10.0,
-        horizontal: 10.0,
-      ),
+      padding: EdgeInsets.all(8.0),
       child: Card(
-//        color: Colors.red,
-//        elevation: 0,
-//        color: Colors.transparent,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextWidget('Audio Input'),
-//            TextWidget(_audioInput),
-            audioInputDropBox,
-          ],
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              TextWidget('Audio Input'),
+              audioInputDropBox,
+            ],
+          ),
         ),
       ),
     );
@@ -174,21 +159,19 @@ class _SettingsPageState extends State<SettingsPage> {
   /// Text Display
   Widget get audioOutCard {
     return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: 10.0,
-        horizontal: 10.0,
-      ),
+      width: 600,
+      padding: EdgeInsets.all(8.0),
       child: Card(
-//        color: Colors.lightGreen[800],
-//        elevation: 0,
-//        color: Colors.transparent,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextWidget("Audio Out"),
-            audioOutputDropBox,
-          ],
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              TextWidget("Audio Out"),
+              audioOutputDropBox,
+            ],
+          ),
         ),
       ),
     );
@@ -236,19 +219,18 @@ class _SettingsPageState extends State<SettingsPage> {
   /// -- Audio Sensitivity Card--
   Widget get audioInputSensitivityCard {
     return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: 10.0,
-        horizontal: 10.0,
-      ),
+      padding: EdgeInsets.all(8.0),
       child: Card(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextWidget("Audio Input Sensitivity"),
-            audioInputSensitivitySliderCard
-//            SliderWidget(_audioInputSensitivity),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              TextWidget("Sensitivity"),
+              audioInputSensitivitySliderCard
+            ],
+          ),
         ),
       ),
     );
@@ -257,9 +239,9 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget get audioInputSensitivitySliderCard {
     return Container(
       child: Container(
-        child: Column(
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             audioInputSensitivitySlider,
             TextWidget(_audioInputSensitivity.floor().toString()),
@@ -274,15 +256,11 @@ class _SettingsPageState extends State<SettingsPage> {
   /// Slider Display
   Widget get audioInputSensitivitySlider {
     return Container(
-//      color: Colors.black87,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Flexible(
-            flex: 0,
-            child: Slider(
-
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Slider(
               activeColor: Colors.white,
               min: 0.0,
               max: 100.0,
@@ -294,29 +272,26 @@ class _SettingsPageState extends State<SettingsPage> {
               },
               value: _audioInputSensitivity,
             ),
-          ),
-        ],
-      ),
-    );
-  }
+          ],
+        ));
+  } //End widget
 
   /// -- Audio Card--
   /// Text Display
   Widget get videoInputCard {
     return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: 10.0,
-        horizontal: 10.0,
-      ),
+      padding: EdgeInsets.all(8.0),
       child: Card(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextWidget("Webcam Input"),
-//            TextWidget(_videoInput),
-            videoInputDropBox,
-          ],
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              TextWidget("Webcam Input"),
+              videoInputDropBox,
+            ],
+          ),
         ),
       ),
     );
@@ -328,7 +303,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return Container(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Container(
             child: DropdownButton<String>(
@@ -365,18 +340,18 @@ class _SettingsPageState extends State<SettingsPage> {
   /// Text Display
   Widget get audioInputIsMuteCard {
     return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: 10.0,
-        horizontal: 10.0,
-      ),
+      padding: EdgeInsets.all(8.0),
       child: Card(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextWidget("Mute Audio Input"),
-            audioInputIsMuteToggle,
-          ],
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              TextWidget("Mute Audio Input"),
+              audioInputIsMuteToggle,
+            ],
+          ),
         ),
       ),
     );
@@ -386,13 +361,9 @@ class _SettingsPageState extends State<SettingsPage> {
   /// ToggleButton Widget
   Widget get audioInputIsMuteToggle {
     return Container(
-//            padding: EdgeInsets.symmetric(
-//              vertical: 16.0,
-//              horizontal: 16.0,
-//            ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Switch(
             value: _audioInputIsMute,
@@ -414,18 +385,18 @@ class _SettingsPageState extends State<SettingsPage> {
   /// Text Display
   Widget get audioOutputIsMuteCard {
     return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: 10.0,
-        horizontal: 10.0,
-      ),
+      padding: EdgeInsets.all(8.0),
       child: Card(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextWidget("Mute Audio Output"),
-            audioOutputIsMuteToggle,
-          ],
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              TextWidget("Mute Audio Output"),
+              audioOutputIsMuteToggle,
+            ],
+          ),
         ),
       ),
     );
@@ -435,10 +406,6 @@ class _SettingsPageState extends State<SettingsPage> {
   /// ToggleButton Widget
   Widget get audioOutputIsMuteToggle {
     return Container(
-//            padding: EdgeInsets.symmetric(
-//              vertical: 16.0,
-//              horizontal: 16.0,
-//            ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -523,47 +490,52 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
+  Widget user() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Icon(FontAwesomeIcons.user, size: 44.0),
+        ),
+        Text(
+          "User Account Name",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        )
+      ],
+    );
+  }//End widget
   @override
   Widget build(BuildContext context) {
-    //Data about the device the application is running on
-    final data = MediaQuery.of(context);
-
     return Scaffold(
-      backgroundColor: Colors.white12,
-      appBar: AppBar(
-        title: Text("Settings"),
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: getCustomGradient(),
-        ),
-        child: Center(
-          child: ListView(
-            children: <Widget>[
-              audioInCard,
-              audioOutCard,
-              audioInputSensitivityCard,
-              videoInputCard,
-              audioInputIsMuteCard,
-              audioOutputIsMuteCard,
-//              themeCard,
-//            audioInputDropBox,
-//            audioOutputText,
-//            audioOutputDropBox,
-//            audioInputSensitivityText,
-//            audioInputSensitivitySlider,
-//            videoInputText,
-//            videoInputDropBox,
-//            audioInputIsMuteText,
-//            audioInputIsMuteToggle,
-//            audioOutputIsMuteText,
-//            audioOutputIsMuteToggle,
-//            themeText,
-//            themeToggle,
-            ],
+      key: _scaffoldKey,
+      appBar: AppBar(title: Text("Settings")),
+      body: Column(
+        children: <Widget>[
+          Container(
+            height: 100,
+            color: Colors.black26,
+            child: user(),
           ),
-        ),
+          SizedBox(height: 20.0),
+          Container(
+            child: Expanded(
+              child: ListView(
+                children: <Widget>[
+                  audioInCard,
+                  audioOutCard,
+                  audioInputSensitivityCard,
+                  videoInputCard,
+                  audioInputIsMuteCard,
+                  audioOutputIsMuteCard,
+                ],
+              ),
+            ),
+          ),
+
+        ],
       ),
     );
-  }
-}
+  } //End builder
+} //End class

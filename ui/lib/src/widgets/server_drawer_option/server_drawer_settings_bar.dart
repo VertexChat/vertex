@@ -12,12 +12,12 @@ class ServerDrawerSettingsBar extends StatelessWidget {
       child: Align(
         alignment: FractionalOffset.bottomCenter,
         child: BottomNavigationBar(
-            backgroundColor: Colors.black12,
+            backgroundColor: Colors.black26,
             items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: IconButton(
                   onPressed: null, //TODO: Implement navigation to settings page
-                  icon: Icon(Icons.mic),
+                  icon: Icon(Icons.mic, color: Colors.lightGreenAccent,),
                 ),
                 title: Text(''),
               ),

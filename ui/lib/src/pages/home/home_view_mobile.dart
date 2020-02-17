@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:vertex_ui/src/pages/text_chat_page.dart';
 import 'package:vertex_ui/src/widgets/app_navigation_bar.dart';
-import 'package:vertex_ui/src/widgets/heading_widget.dart';
 import 'package:vertex_ui/src/widgets/server_app_drawer/server_drawer.dart';
 
 class HomeMobilePortrait extends StatelessWidget {
@@ -13,12 +13,8 @@ class HomeMobilePortrait extends StatelessWidget {
       key: _scaffoldKey,
       appBar: AppNavigationBar(),
       drawer: ServerDrawer(),
-      body: Column(
-        children: <Widget>[
-          HeadingWidget(headingText: "Text Channel Name"),
-          //More widgets to add here
-        ],
-      ),
+      body: TextChatScreen(),
+      //More widgets to add here
     );
   }
 }
