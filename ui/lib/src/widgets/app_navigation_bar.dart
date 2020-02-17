@@ -45,18 +45,6 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
           },
         ),
         IconButton(
-          icon: Icon(Icons.build),
-          onPressed: () {
-            Navigator.push(
-                context,
-                new MaterialPageRoute(
-                    builder: (context) => new SettingsPage(
-                          title: "Setttings",
-                          settings: this.settings,
-                        )));
-          },
-        ),
-        IconButton(
             icon: Icon(FontAwesomeIcons.user),
             onPressed: () {
               Navigator.push(
