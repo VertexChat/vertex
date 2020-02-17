@@ -14,7 +14,8 @@ class ServerDrawerMobile extends StatelessWidget {
     return Container(
       width: orientation == Orientation.portrait ? 250 : 250,
       decoration: BoxDecoration(color: Colors.black54),
-      child: Column(children: ServerDrawer.getDrawerOptions()),
+      child: Column(
+          children: ServerDrawer.getDrawerOptions()),
     );
   }//End Builder
 }//End class

@@ -12,64 +12,76 @@ class ServerDrawerListBuilder extends StatelessWidget {
   //Variables
   final List<ChannelModel> items;
 
-  const ServerDrawerListBuilder({Key key, @required this.items}) : super(key: key);
+  const ServerDrawerListBuilder({Key key, @required this.items})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-        child: ListView.separated(
-      padding: const EdgeInsets.all(8),
-      itemCount: items == null ? 1 : items.length + 1,
-      itemBuilder: (BuildContext context, int index) {
-        if (index == 0) {
-          //Display heading above the list
-          return new Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                items[index].listName,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-              ),
-            ],
-          );
-        }
-        index -= 1;
-        // Display channels in container
-        return Container(
-            height: 40,
-            color: Colors.blue,
-            child: RaisedButton(
-                child: Row(
+    final data = MediaQuery.of(context).size.height;
+    return Container(
+      height: data / 3,
+      child: Row(
+        children: <Widget>[
+          Expanded(
+              child: ListView.separated(
+            padding: const EdgeInsets.all(8),
+            itemCount: items == null ? 1 : items.length + 1,
+            itemBuilder: (BuildContext context, int index) {
+              if (index == 0) {
+                //Display heading above the list
+                return new Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Icon(items[index].iconData),
-                        ],
-                      ),
+                    Text(
+                      items[index].listName,
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                  ],
+                );
+              }
+              index -= 1;
+              // Display channels in container
+              return Container(
+                  height: 40,
+                  child: RaisedButton(
+                      color: Colors.black26,
+                      child: Row(
                         children: <Widget>[
-                          Text(
-                            items[index].title,
-                            textAlign: TextAlign.center,
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Icon(items[index].iconData, color: Colors.lightGreenAccent,),
+                              ],
+                            ),
                           ),
+                          Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  items[index].title,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          )
                         ],
                       ),
-                    )
-                  ],
-                ),
-                onPressed: () => null));
-      },
-      separatorBuilder: (BuildContext context, int index) => const Divider(),
-    ));
-  }//End builder
-}//End class
+                      onPressed: () => null));
+            },
+            separatorBuilder: (BuildContext context, int index) =>
+                const Divider(),
+          ))
+        ],
+      ),
+    );
+  } //End builder
+
+} //End class

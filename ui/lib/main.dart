@@ -1,7 +1,5 @@
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:vertex_ui/src/pages/login/login_page.dart';
-import 'package:vertex_ui/src/pages/register/register_page.dart';
 import 'package:vertex_ui/src/pages/splash_screen.dart';
 import 'package:vertex_ui/src/routing/route_names.dart';
 import 'package:vertex_ui/src/routing/router.dart';
@@ -21,7 +19,6 @@ class UI extends StatefulWidget {
 class _UIState extends State<UI> {
   //Variables
   bool offline = false;
-
   Brightness brightness;
 
   @override

@@ -33,7 +33,7 @@ class _VertexHomePageState extends State<VertexHomePage> {
       mobile: OrientationLayoutBuilder(
         portrait: (context) => HomeMobilePortrait(),
       ),
-      desktop: HomeViewTablet(),
+      desktop: HomeViewWeb(),
     );
   }
 }

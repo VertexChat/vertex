@@ -31,40 +31,24 @@ class ServerDrawer extends StatelessWidget {
     final List<ChannelModel> testEntries = <ChannelModel>[
       new ChannelModel(
           listName: 'VOICE CHANNELS',
-          title: 'Test Channel 1',
+          title: 'General',
           iconData: Icons.volume_up),
-      new ChannelModel(
-          listName: 'VOICE CHANNELS',
-          title: 'Test Channel 2',
-          iconData: Icons.volume_up),
-      new ChannelModel(
-          listName: 'VOICE CHANNELS',
-          title: 'Test Channel 2',
-          iconData: Icons.volume_up)
     ];
 
     final List<ChannelModel> testTextChannels = <ChannelModel>[
       new ChannelModel(
           listName: 'TEXT CHANNELS',
-          title: 'Text channel 1',
+          title: 'Development',
           iconData: Icons.message),
-      new ChannelModel(
-          listName: 'TEXT CHANNELS',
-          title: 'Text channel 2',
-          iconData: Icons.message),
-      new ChannelModel(
-          listName: 'TEXT CHANNELS',
-          title: 'Text channel 3',
-          iconData: Icons.message)
     ];
 
     return [
       //Elements that are displayed within the app drawer
       // Currently hard coded until server hock in
       HeadingWidget(headingText: 'Server Name'),
-      ServerDrawerListBuilder(items: testEntries),
-      SizedBox(height: 40),
       ServerDrawerListBuilder(items: testTextChannels),
+      SizedBox(height: 50),
+      ServerDrawerListBuilder(items: testEntries),
       ServerDrawerSettingsBar(),
     ];
   }
