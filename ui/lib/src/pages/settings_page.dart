@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vertex_ui/src/models/settings_model.dart';
+import 'package:vertex_ui/src/widgets/custom_gradient.dart';
 import 'package:vertex_ui/src/widgets/drop_box_card.dart';
 import 'package:vertex_ui/src/widgets/slider_widget.dart';
 import 'package:vertex_ui/src/widgets/text_widget.dart';
@@ -31,7 +32,6 @@ class _SettingsPageState extends State<SettingsPage> {
   bool _audioInputIsMute;
   bool _audioOutputIsMute;
   bool _theme; // Light --> true /  Dark --> false
-
 
   List<String> _defaultAudioInput = [
     'None Selected',
@@ -103,7 +103,6 @@ class _SettingsPageState extends State<SettingsPage> {
       _audioOutputIsMute = (sharedPrefs.getBool('audioOutputIsMute') ?? false);
     });
   }
-
 
   /// -- Audio Input Card--
   /// Displays Text
@@ -283,6 +282,7 @@ class _SettingsPageState extends State<SettingsPage> {
           Flexible(
             flex: 0,
             child: Slider(
+
               activeColor: Colors.white,
               min: 0.0,
               max: 100.0,
@@ -525,7 +525,6 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-
     //Data about the device the application is running on
     final data = MediaQuery.of(context);
 
@@ -536,18 +535,7 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       body: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.bottomCenter,
-            end: Alignment.topCenter,
-            stops: [0.1, 0.3, 0.5, 0.7, 0.9],
-            colors: [
-              Colors.lightGreen[900],
-              Colors.lightGreen[800],
-              Colors.lightGreen[700],
-              Colors.lightGreen[500],
-              Colors.lightGreen[300],
-            ],
-          ),
+          gradient: getCustomGradient(),
         ),
         child: Center(
           child: ListView(

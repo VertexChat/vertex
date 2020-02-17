@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vertex_ui/src/widgets/custom_gradient.dart';
 import '../models/text_chat_model.dart';
 
 class TextChatScreen extends StatefulWidget {
@@ -78,18 +79,7 @@ class _TextChatScreenState extends State<TextChatScreen>
       ),
       body: Container(
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter,
-              stops: [0.1, 0.3, 0.5, 0.7, 0.9],
-              colors: [
-                Colors.lightGreen[900],
-                Colors.lightGreen[800],
-                Colors.lightGreen[700],
-                Colors.lightGreen[500],
-                Colors.lightGreen[300],
-              ],
-            ),
+            gradient: getCustomGradient(),
           ),
           child: Column(
             children: <Widget>[

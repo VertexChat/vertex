@@ -1,4 +1,6 @@
-import 'package:vertex_ui/src/services/api.dart';
+
+
+import 'package:vertex_ui/src/services/client_stubs/api.dart';
 
 abstract class RegisterScreenContract {
   void onRegisterSuccess(User user);
@@ -16,7 +18,6 @@ class RegisterScreenPresenter {
     api.register(user: user).then((user) {
       _view.onRegisterSuccess(user);
     }).catchError((Object error) {
-      //TODO: Handle error message better i.e user readable
       _view.onRegisterError(error.toString());
     });
   } //End doLogin function

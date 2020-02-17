@@ -2,7 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:vertex_ui/src/blocs/login_bloc.dart';
 import 'package:vertex_ui/src/pages/register/register_page.dart';
-import 'package:vertex_ui/src/services/api.dart';
+import 'package:vertex_ui/src/services/client_stubs/api.dart';
 import 'package:vertex_ui/src/widgets/icon_card.dart';
 
 import 'login_screen_presenter.dart';
@@ -37,9 +37,7 @@ class _LoginPageState extends State<LoginPage> implements LoginScreenContract {
   void _submit() {
     final form = formKey.currentState;
     if (form.validate()) {
-      //setState(() => _isLoading = true);
       form.save();
-      print(login.toString());
       _presenter.doLogin(login);
     }
   } //End function
@@ -251,26 +249,23 @@ class _LoginPageState extends State<LoginPage> implements LoginScreenContract {
   } //End builder
 
   // Information snack bar. This is displayed if any errors happen during login
-  void _showSnackBar(String text) {
+  void _showSnackBar(String text, Color color) {
     _scaffoldKey.currentState.showSnackBar(new SnackBar(
-      content: new Text(
-        text,
-        textAlign: TextAlign.center,
-        style: TextStyle(color: Colors.white),
-      ),
-      backgroundColor: Colors.red,
-    ));
-    // setState(() => _isLoading = false);
+        content: new Text(
+          text,
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: color));
   } //End function
 
   @override
   void onLoginError(String errorTxt) {
-    _showSnackBar(errorTxt);
+    _showSnackBar(errorTxt, Colors.red);
   }
 
   @override
   void onLoginSuccess(Login login) {
-    _showSnackBar(login.toString());
-    // TODO: implement onLoginSuccess
+    _showSnackBar("Successful Login redirecting...", Colors.green);
   } //End onLogin function
 } //end class
