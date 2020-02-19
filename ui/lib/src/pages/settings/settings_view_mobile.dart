@@ -136,7 +136,7 @@ class _SettingsViewMobilePortrait extends State<SettingsViewMobilePortrait> {
         ],
       ),
     );
-  }
+  }//End function
 
   /// -- Audio Output --
   /// DropBox Display

@@ -5,6 +5,7 @@ import 'package:package_info/package_info.dart';
 /// Class which gets information about the app current build number and version
 /// and builds a column that can display the information within the Settings UI
 /// Imported package called `package_info` to achieve this
+/// https://blog.maskys.com/how-to-get-the-version-build-number/
 
 class AppInfo extends StatefulWidget {
   AppInfo({Key key}) : super(key: key);
@@ -17,24 +18,26 @@ class _AppInfoState extends State<AppInfo> {
   //Variables
   PackageInfo _packageInfo;
   String _versionName;
-  String _buildCode;
+  String _buildNumber;
   bool isWeb = false;
 
-  Future<void> fetchPackageInfo() async {
-    if (kIsWeb) {
-      isWeb = true;
-      return;
-    } else {
-      _packageInfo = await PackageInfo.fromPlatform();
-      _versionName = _packageInfo.version;
-      _buildCode = _packageInfo.buildNumber;
-    } // end if else
+  Future<String> _getVersionNumber() async {
+    _packageInfo = await PackageInfo.fromPlatform();
+    // Updated values and call setState to rebuild widget
+    _versionName = _packageInfo.version;
+    return _versionName;
+  } //Enf function
+
+  Future<String> _getBuildNumber() async {
+    _packageInfo = await PackageInfo.fromPlatform();
+    // Updated values and call setState to rebuild widget
+    _buildNumber = _packageInfo.buildNumber;
+    return _buildNumber;
   } //Enf function
 
   @override
   void initState() {
     super.initState();
-    fetchPackageInfo();
   } //End Function
 
   @override
@@ -42,34 +45,46 @@ class _AppInfoState extends State<AppInfo> {
     if (isWeb) {
       return Text(" ");
     } else {
-      if (_packageInfo != null) {
-        return Column(
-          children: <Widget>[
-            Divider(
-              thickness: 3,
-              color: Colors.grey,
+      return Column(
+        children: <Widget>[
+          Divider(
+            thickness: 3,
+            color: Colors.grey,
+          ),
+          Text(
+            "App Info",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
             ),
-            Text(
-              "App Info",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            ListTile(
-              title: Text("Version",
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-              trailing: Text(_versionName),
-            ),
-            ListTile(
-                title: Text("Build Number",
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                trailing: Text(_buildCode)),
-          ],
-        );
-      } else {
-        //Loading info
-        return CircularProgressIndicator();
-      }
-    } //end if else
-  } //End builder
+          ),
+          ListTile(
+            leading: Text("App Version Number",
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            trailing: FutureBuilder(
+                future: _getVersionNumber(),
+                // The async function we wrote earlier that will be providing the data i.e vers. no
+                builder:
+                    (BuildContext context, AsyncSnapshot<String> snapshot) =>
+                        Text(
+                          snapshot.hasData ? snapshot.data : "Loading ...",
+                        ) // The widget using the data
+                ),
+          ),
+          ListTile(
+            leading: Text("Build Number",
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            trailing: FutureBuilder(
+                future: _getBuildNumber(),
+                // The async function we wrote earlier that will be providing the data i.e vers. no
+                builder:
+                    (BuildContext context, AsyncSnapshot<String> snapshot) =>
+                        Text(
+                          snapshot.hasData ? snapshot.data : "Loading ...",
+                        ) // The widget using the data
+                ),
+          ),
+        ],
+      );
+    } //End builder
+  } //End class
 } //End class
