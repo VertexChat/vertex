@@ -45,6 +45,14 @@ dependencies:
   # https://github.com/brianegan/font_awesome_flutter:
   font_awesome_flutter:
 
+  # For information about devices
+  # https://pubdev/packages/device_info:
+  device_info:
+
+  # For information about the application
+  # https://pubdev/packages/package_info:
+  package_info:
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
