@@ -136,7 +136,7 @@ class _SettingsViewMobilePortrait extends State<SettingsViewMobilePortrait> {
         ],
       ),
     );
-  }//End function
+  } //End function
 
   /// -- Audio Output --
   /// DropBox Display
@@ -412,16 +412,7 @@ class _SettingsViewMobilePortrait extends State<SettingsViewMobilePortrait> {
                     settingsTypeHeading: "Input Audio",
                   ),
                   // Audio Output Settings
-                  SettingsCard(
-                    optionsDropdownBox: audioOutputDropBox,
-                    settingsTypeHeading: "Output Audio",
-                  ),
                   audioInputSensitivityCard,
-                  // Video Input Settings
-                  SettingsCard(
-                      optionsDropdownBox: videoInputDropBox,
-                      settingsTypeHeading: "Webcam Device"),
-                  // Audio Mute Settings output & input
                   MuteCard(
                     audioMuteToggle: audioInputIsMuteToggle,
                     muteSourceTypeHeading: "Mute Audio Input",

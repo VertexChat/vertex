@@ -62,11 +62,10 @@ class _AppInfoState extends State<AppInfo> {
                 style: TextStyle(fontWeight: FontWeight.bold)),
             trailing: FutureBuilder(
                 future: _getVersionNumber(),
-                // The async function we wrote earlier that will be providing the data i.e vers. no
                 builder:
                     (BuildContext context, AsyncSnapshot<String> snapshot) =>
                         Text(
-                          snapshot.hasData ? snapshot.data : "Loading ...",
+                          snapshot.hasData ? snapshot.data : "Loading...",
                         ) // The widget using the data
                 ),
           ),
@@ -75,11 +74,10 @@ class _AppInfoState extends State<AppInfo> {
                 style: TextStyle(fontWeight: FontWeight.bold)),
             trailing: FutureBuilder(
                 future: _getBuildNumber(),
-                // The async function we wrote earlier that will be providing the data i.e vers. no
                 builder:
                     (BuildContext context, AsyncSnapshot<String> snapshot) =>
                         Text(
-                          snapshot.hasData ? snapshot.data : "Loading ...",
+                          snapshot.hasData ? snapshot.data : "Loading...",
                         ) // The widget using the data
                 ),
           ),
