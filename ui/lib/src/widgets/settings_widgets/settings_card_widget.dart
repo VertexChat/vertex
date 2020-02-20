@@ -6,7 +6,10 @@ import '../text_widget.dart';
 
 class SettingsCard extends StatelessWidget {
   const SettingsCard(
-      {Key key, @required this.optionsDropdownBox, @required this.settingsTypeHeading, this.width })
+      {Key key,
+      @required this.optionsDropdownBox,
+      @required this.settingsTypeHeading,
+      this.width})
       : super(key: key);
 
   // Dropbox widget either input || output for video or audio

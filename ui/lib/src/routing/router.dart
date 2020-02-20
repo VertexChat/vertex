@@ -10,13 +10,13 @@ class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case HomeRoute:
-        return _getPageRoute(VertexHomePage());
+        return _getPageRoute(VertexHomePage(), settings);
       case SettingsRoute:
-        return _getPageRoute(SettingsPage());
+        return _getPageRoute(SettingsPage(), settings);
       case LoginRoute:
-        return _getPageRoute(LoginPage());
+        return _getPageRoute(LoginPage(), settings);
       case RegisterRoute:
-        return _getPageRoute(RegisterPage());
+        return _getPageRoute(RegisterPage(), settings);
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(
@@ -26,8 +26,7 @@ class Router {
     } //End switch
   } //End function
 
-  static PageRoute _getPageRoute(Widget child) {
-    return MaterialPageRoute(builder: (context) => child);
+  static PageRoute _getPageRoute(Widget child, RouteSettings settings) {
+    return MaterialPageRoute(builder: (context) => child, settings: settings);
   } //End function
-
-}
+}//End class

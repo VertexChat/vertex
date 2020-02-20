@@ -45,18 +45,29 @@ dependencies:
   # https://github.com/brianegan/font_awesome_flutter:
   font_awesome_flutter:
 
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
+  # For information about devices
+  # https://pubdev/packages/device_info:
+  device_info:
 
-  #Testing
-  test: ^1.3.0
+  # For information about the application
+  # https://pubdev/packages/package_info:
+  package_info:
+
+  # WebRTC
+  # https://pub.dev/packages/flutter_webrtc
+  flutter_webrtc: ^0.2.6
 
   # RxDart adds additional capabilities to Dart Streams and StreamControllers.
   # https://pub.dev/packages/rxdart#-readme-tab-
   # NOTE: https://pub.dev/packages/rxdart_codemod
   rxdart: ^0.23.1
 
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  #Testing
+  test: ^1.3.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

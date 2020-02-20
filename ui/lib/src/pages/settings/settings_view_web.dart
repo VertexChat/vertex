@@ -1,12 +1,11 @@
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vertex_ui/src/widgets/settings_widgets/mute_card_widget.dart';
 import 'package:vertex_ui/src/widgets/settings_widgets/settings_card_widget.dart';
 import 'package:vertex_ui/src/widgets/settings_widgets/user_details_widget.dart';
 import 'package:vertex_ui/src/widgets/text_widget.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 // Settings view for web
 class SettingsViewWeb extends StatefulWidget {
@@ -122,7 +121,7 @@ class _SettingsViewWeb extends State<SettingsViewWeb> {
               ),
               onChanged: (String value) {
                 setState(() {
-                  _audioInput = value;
+                    _audioInput = value;
                 });
                 // Save as key value pair
                 save('audioInput', value);

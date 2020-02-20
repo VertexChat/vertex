@@ -1,6 +1,8 @@
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vertex_ui/src/pages/settings/app_info.dart';
+import 'package:vertex_ui/src/pages/settings/device_info.dart';
 import 'package:vertex_ui/src/widgets/settings_widgets/mute_card_widget.dart';
 import 'package:vertex_ui/src/widgets/settings_widgets/settings_card_widget.dart';
 import 'package:vertex_ui/src/widgets/settings_widgets/user_details_widget.dart';
@@ -134,7 +136,7 @@ class _SettingsViewMobilePortrait extends State<SettingsViewMobilePortrait> {
         ],
       ),
     );
-  }
+  } //End function
 
   /// -- Audio Output --
   /// DropBox Display
@@ -410,16 +412,7 @@ class _SettingsViewMobilePortrait extends State<SettingsViewMobilePortrait> {
                     settingsTypeHeading: "Input Audio",
                   ),
                   // Audio Output Settings
-                  SettingsCard(
-                    optionsDropdownBox: audioOutputDropBox,
-                    settingsTypeHeading: "Output Audio",
-                  ),
                   audioInputSensitivityCard,
-                  // Video Input Settings
-                  SettingsCard(
-                      optionsDropdownBox: videoInputDropBox,
-                      settingsTypeHeading: "Webcam Device"),
-                  // Audio Mute Settings output & input
                   MuteCard(
                     audioMuteToggle: audioInputIsMuteToggle,
                     muteSourceTypeHeading: "Mute Audio Input",
@@ -427,6 +420,15 @@ class _SettingsViewMobilePortrait extends State<SettingsViewMobilePortrait> {
                   MuteCard(
                     audioMuteToggle: audioOutputIsMuteToggle,
                     muteSourceTypeHeading: "Mute Audio Output",
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                        child: Column(children: <Widget>[
+                      //Device info
+                      DeviceInfo(),
+                      AppInfo(),
+                    ])),
                   )
                 ],
               ),
@@ -436,4 +438,4 @@ class _SettingsViewMobilePortrait extends State<SettingsViewMobilePortrait> {
       ),
     );
   } //End builder
-}//End class
+} //End class
