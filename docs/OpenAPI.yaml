@@ -239,6 +239,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Server'
+<<<<<<< HEAD:docs/OpenAPI.yaml
 
         default:
           $ref: '#/components/responses/Unexpected'
@@ -276,10 +277,52 @@ paths:
       responses:
         '201':
           description: user was registered successfully
+=======
+>>>>>>> upstream/master:docs/swagger.yaml
 
         default:
           $ref: '#/components/responses/Unexpected'
 
+<<<<<<< HEAD:docs/OpenAPI.yaml
+=======
+  /login:
+    post:
+      tags:
+        - Auth
+      summary: Allows a user that is registered to login
+      operationId: login
+      description: Allows a user that is register to login to the applcation
+
+      responses:
+        '200':
+          description: user is authenticated on the server
+
+        default:
+          $ref: '#/components/responses/Unexpected'
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+        description: User to be authenticated
+
+  /register:
+    post:
+      tags:
+        - Auth
+      summary: Allows a user register a new account
+      operationId: register
+      description: Allow a user register a new account with the server
+
+      responses:
+        '201':
+          description: user was registered successfully
+
+        default:
+          $ref: '#/components/responses/Unexpected'
+
+>>>>>>> upstream/master:docs/swagger.yaml
       requestBody:
         content:
           application/json:
@@ -333,8 +376,7 @@ components:
 
       properties:
         id:
-          type: number
-          format: int
+          type: integer
           example: 1
 
         username:
