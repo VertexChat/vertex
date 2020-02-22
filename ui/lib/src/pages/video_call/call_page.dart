@@ -1,122 +1,117 @@
 import 'package:flutter/material.dart';
-import 'package:vertex_ui/src/pages/home/home_page.dart';
-import 'package:vertex_ui/src/widgets/custom_gradient.dart';
+import 'package:flutter_webrtc/webrtc.dart';
+import 'package:vertex_ui/src/pages/video_call/signaling.dart';
 
-/// Each class defined below here is now a part of the App Root node
-/// VertexLanding is currently main landing page, meaning the App will
-/// load to that page.
-/// Stateful class --> Stateful widget.
+
 class CallPage extends StatefulWidget {
   //Member Variables
   final String pageTitle;
+  final String ip;
 
-  /// Home page of application.
-  /// Fields in Widget subclass always marked final
-  CallPage({Key key, this.pageTitle}) : super(key: key);
+  // Constructor
+  CallPage({Key key, this.pageTitle, @required this.ip}) : super(key: key);
 
   @override
-  _CallPageState createState() => _CallPageState();
-}
+  _CallPageState createState() => _CallPageState(serverIP: ip);
+} //End class
 
 /// Stateless class
 class _CallPageState extends State<CallPage> {
-  /// Build is run and rerun every time above method, setState, is called
+  // Variables
+  Signaling _signaling;
+  List<dynamic> _peers;
+  var _selfId;
+  RTCVideoRenderer _localRenderer = new RTCVideoRenderer();
+  RTCVideoRenderer _remoteRenderer = new RTCVideoRenderer();
+  bool _inCalling = false;
+  final String serverIP;
+
+  _CallPageState({Key key, @required this.serverIP});
+
   @override
-  Widget build(BuildContext context) {
-    //Data about the device the application is running on
-    final data = MediaQuery.of(context);
+  initState() {
+    super.initState();
+    initRenderers();
+    _connect();
+  }
 
-    /// Scaffold: framework which implements the basic material
-    /// design visual layout structure of the flutter app.
-    return Scaffold(
-        appBar: AppBar(
-          /// Setting AppBar title here
-          /// Add in process class duration in appbar so user can see the duration of the current class
-          title: Text(
-            widget.pageTitle,
-            style: TextStyle(color: Colors.white),
-          ),
-          actions: <Widget>[
-            IconButton(
-              //TODO: Add support for appBar action buttons across all page views in some sort of a class
-              icon: Icon(Icons.settings),
-            )
-          ],
-        ),
+  initRenderers() async {
+    await _localRenderer.initialize();
+    await _remoteRenderer.initialize();
+  }
 
-        /// Center: A widget that centers all children within it
-        body: Center(
-          child: Stack(
-            children: <Widget>[
-              // Right video box
-              // Added widgets to display video call will be added here
-              new Container(
-                  margin: const EdgeInsets.all(10.0),
-                  decoration: BoxDecoration(
-                    gradient: getCustomGradient(),
-                  ),
-                  //Setting percentage amount of height & width
-                  child: Center(
-                    // Center all content 'Center'
-                    child: Text('External Camera',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white)),
-                  )),
-              // Left video box
-              // Added widgets to display video call will be added here
-              new Container(
-                  alignment: Alignment.topRight,
-                  padding:
-                      new EdgeInsets.only(top: 10, right: 10.0, left: 10.0),
-                  child: new Container(
-                      margin: const EdgeInsets.all(10.0),
-                      color: Colors.black,
-                      width: data.size.width / 2.5,
-                      height: data.size.height / 4.5,
-                      child: Center(
-                        // Center all content 'Center'
-                        child: Text('Local Camera',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white)),
-                      ))),
-              new Container(
-                //Container for the icons
-                margin: const EdgeInsets.all(30.0),
-                alignment: Alignment.bottomCenter,
-                child: new Row(
-                  //Row on icons inside the container
-                  //Container for call fanatically buttons
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    //TODO: Add over color so when the mouse is over the button it will light up to give a better feedback to the user
-                    IconButton(
-                      icon: Icon(Icons.call_end, size: 24.0),
-                      onPressed: () => _endCall(),
-                    ),
-                    //Mute mic button
-                    IconButton(
-                      icon: Icon(Icons.mic, size: 24.0),
-                      onPressed: () => _muteMic(),
-                    ),
-                    // Mute headset button
-                    IconButton(
-                        icon: Icon(Icons.headset, size: 24.0),
-                        onPressed: () => _muteHeadset()),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ));
-  } //end Widget build
+  @override
+  deactivate() {
+    super.deactivate();
+    if (_signaling != null) _signaling.close();
+    _localRenderer.dispose();
+    _remoteRenderer.dispose();
+  }
 
-  //Function to end call and return to home page
-  _endCall() async {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => new VertexHomePage(title: "Welcome Home")));
-  } //End function
+  void _connect() async {
+    if (_signaling == null) {
+      _signaling = new Signaling(serverIP)..connect();
+
+      _signaling.onStateChange = (SignalingState state) {
+        switch (state) {
+          case SignalingState.CallStateNew:
+            this.setState(() {
+              _inCalling = true;
+            });
+            break;
+          case SignalingState.CallStateBye:
+            this.setState(() {
+              _localRenderer.srcObject = null;
+              _remoteRenderer.srcObject = null;
+              _inCalling = false;
+            });
+            break;
+          case SignalingState.CallStateInvite:
+          case SignalingState.CallStateConnected:
+          case SignalingState.CallStateRinging:
+          case SignalingState.ConnectionClosed:
+          case SignalingState.ConnectionError:
+          case SignalingState.ConnectionOpen:
+            break;
+        }
+      };
+
+      _signaling.onPeersUpdate = ((event) {
+        this.setState(() {
+          _selfId = event['self'];
+          _peers = event['peers'];
+        });
+      });
+
+      _signaling.onLocalStream = ((stream) {
+        _localRenderer.srcObject = stream;
+      });
+
+      _signaling.onAddRemoteStream = ((stream) {
+        _remoteRenderer.srcObject = stream;
+      });
+
+      _signaling.onRemoveRemoteStream = ((stream) {
+        _remoteRenderer.srcObject = null;
+      });
+    }
+  }
+
+  _invitePeer(context, peerId, use_screen) async {
+    if (_signaling != null && peerId != _selfId) {
+      _signaling.invite(peerId, 'video', use_screen);
+    }
+  }
+
+  _hangUp() {
+    if (_signaling != null) {
+      _signaling.bye();
+    }
+  }
+
+  _switchCamera() {
+    _signaling.switchCamera();
+  }
 
   _muteMic() async {
     //TODO: need to connect with audio settings page I feel
@@ -125,4 +120,110 @@ class _CallPageState extends State<CallPage> {
   _muteHeadset() async {
     //TODO: need to connect with audio setting page I feel
   } //End function
+
+  _buildRow(context, peer) {
+    var self = (peer['id'] == _selfId);
+    return ListBody(children: <Widget>[
+      ListTile(
+        title: Text(self
+            ? peer['name'] + '[Your self]'
+            : peer['name'] + '[' + peer['user_agent'] + ']'),
+        onTap: null,
+        trailing: new SizedBox(
+            width: 100.0,
+            child: new Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  IconButton(
+                    icon: const Icon(Icons.videocam),
+                    onPressed: () => _invitePeer(context, peer['id'], false),
+                    tooltip: 'Video calling',
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.screen_share),
+                    onPressed: () => _invitePeer(context, peer['id'], true),
+                    tooltip: 'Screen sharing',
+                  )
+                ])),
+        subtitle: Text('id: ' + peer['id']),
+      ),
+      Divider()
+    ]);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text('P2P Call Sample'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: null,
+            tooltip: 'setup',
+          ),
+        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: _inCalling
+          ? new SizedBox(
+              width: 200.0,
+              child: new Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    FloatingActionButton(
+                      child: const Icon(Icons.switch_camera),
+                      onPressed: _switchCamera,
+                    ),
+                    FloatingActionButton(
+                      onPressed: _hangUp,
+                      tooltip: 'Hangup',
+                      child: new Icon(Icons.call_end),
+                      backgroundColor: Colors.pink,
+                    ),
+                    FloatingActionButton(
+                      child: const Icon(Icons.mic_off),
+                      onPressed: _muteMic,
+                    )
+                  ]))
+          : null,
+      body: _inCalling
+          ? OrientationBuilder(builder: (context, orientation) {
+              return new Container(
+                child: new Stack(children: <Widget>[
+                  new Positioned(
+                      left: 0.0,
+                      right: 0.0,
+                      top: 0.0,
+                      bottom: 0.0,
+                      child: new Container(
+                        margin: new EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height,
+                        child: new RTCVideoView(_remoteRenderer),
+                        decoration: new BoxDecoration(color: Colors.black54),
+                      )),
+                  new Positioned(
+                    left: 20.0,
+                    top: 20.0,
+                    child: new Container(
+                      width: orientation == Orientation.portrait ? 90.0 : 120.0,
+                      height:
+                          orientation == Orientation.portrait ? 120.0 : 90.0,
+                      child: new RTCVideoView(_localRenderer),
+                      decoration: new BoxDecoration(color: Colors.black54),
+                    ),
+                  ),
+                ]),
+              );
+            })
+          : new ListView.builder(
+              shrinkWrap: true,
+              padding: const EdgeInsets.all(0.0),
+              itemCount: (_peers != null ? _peers.length : 0),
+              itemBuilder: (context, i) {
+                return _buildRow(context, _peers[i]);
+              }),
+    );
+  } //end Widget build
 } //End class
