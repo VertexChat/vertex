@@ -3,7 +3,6 @@ import 'package:vertex_ui/src/services/client_stubs/api.dart';
 
 abstract class LoginScreenContract {
   void onLoginSuccess(Login login);
-
   void onLoginError(String errorTxt);
 }
 
@@ -17,6 +16,7 @@ class LoginScreenPresenter {
     api.login(login: login).then((login) {
       _view.onLoginSuccess(login);
     }).catchError((Object error) {
+      print(error);
       _view.onLoginError(error.toString());
     });
   } //End doLogin function

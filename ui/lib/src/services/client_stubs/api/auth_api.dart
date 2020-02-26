@@ -1,13 +1,15 @@
 part of openapi.api;
 
 class AuthApi {
+  //Variables
   final ApiClient apiClient;
+  bool _isLoggedIn = false;
 
   AuthApi([ApiClient apiClient]) : apiClient = apiClient ?? defaultApiClient;
 
   /// Allows a user that is registered to login with HTTP info returned
   ///
-  /// Allows a user that is register to login to the applcation
+  /// Allows a user that is register to login to the application
   Future loginWithHttpInfo({Login login}) async {
     Object postBody = login;
 
@@ -25,7 +27,8 @@ class AuthApi {
 
     String contentType =
         contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
-    List<String> authNames = [];
+    // Added login_auth
+    List<String> authNames = ['login_auth'];
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -45,12 +48,23 @@ class AuthApi {
     Response response = await loginWithHttpInfo(login: login);
     if (response.statusCode >= 400) {
       print(response.statusCode);
+      isLoggedIn = false;
       throw ApiException(response.statusCode, _decodeBodyBytes(response));
     } else if (response.body != null) {
+      isLoggedIn = true;
+      print(isLoggedIn);
     } else {
+      isLoggedIn = true;
+      print(isLoggedIn);
       return;
     }
     return;
+  }
+
+  bool get isLoggedIn => _isLoggedIn;
+
+  set isLoggedIn(bool value) {
+    _isLoggedIn = value;
   }
 
   /// Allows a user register a new account with HTTP info returned

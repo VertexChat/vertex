@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:vertex_ui/src/widgets/custom_gradient.dart';
 import '../models/text_chat_model.dart';
 
 class TextChatScreen extends StatefulWidget {

@@ -1,10 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:vertex_ui/src/blocs/auth.dart';
 import 'package:vertex_ui/src/blocs/login_bloc.dart';
 import 'package:vertex_ui/src/pages/register/register_page.dart';
+import 'package:vertex_ui/src/routing/route_names.dart';
 import 'package:vertex_ui/src/services/client_stubs/api.dart';
 import 'package:vertex_ui/src/widgets/icon_card.dart';
-
 import 'login_screen_presenter.dart';
 
 class LoginPage extends StatefulWidget {
@@ -19,8 +20,10 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> implements LoginScreenContract {
+class _LoginPageState extends State<LoginPage>
+    implements LoginScreenContract, AuthStateListener {
   //Member Variables
+  BuildContext _ctx;
   bool rememberMe = false;
   final formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -30,8 +33,9 @@ class _LoginPageState extends State<LoginPage> implements LoginScreenContract {
 
   //Constructor
   _LoginPageState() {
-    //TODO: Complete auth for login
     _presenter = new LoginScreenPresenter(this);
+    var authStateProvider = new AuthStateProvider();
+    authStateProvider.subscribe(this);
   }
 
   void _submit() {
@@ -43,9 +47,11 @@ class _LoginPageState extends State<LoginPage> implements LoginScreenContract {
   } //End function
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext mainContext) {
+    // Init with the context from this widget
+    _ctx = context;
     //Data about the device the application is running on
-    final data = MediaQuery.of(context);
+    final data = MediaQuery.of(mainContext);
 
     return new Scaffold(
         resizeToAvoidBottomPadding: false,
@@ -266,6 +272,15 @@ class _LoginPageState extends State<LoginPage> implements LoginScreenContract {
 
   @override
   void onLoginSuccess(Login login) {
+    var authStateProvider = new AuthStateProvider();
+
     _showSnackBar("Successful Login redirecting...", Colors.green);
+    authStateProvider.notify(AuthState.LOGGED_IN);
+  }
+
+  @override
+  void onAuthStateChanged(AuthState state) {
+    if (state == AuthState.LOGGED_IN)
+      Navigator.of(_ctx).pushReplacementNamed(HomeRoute);
   } //End onLogin function
 } //end class
