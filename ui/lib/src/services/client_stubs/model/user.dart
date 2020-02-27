@@ -4,7 +4,6 @@ class User {
 
   int id;
   String username;
-
   /* In the case of user creation the password field will be the plaintext password in all other instances where the server returns a User object it will be a combination of the hash of the users password and associated salt */
   String password;
   String displayName;

@@ -4,6 +4,7 @@ class AuthApi {
   //Variables
   final ApiClient apiClient;
   bool _isLoggedIn = false;
+  String userLoggedIn;
 
   AuthApi([ApiClient apiClient]) : apiClient = apiClient ?? defaultApiClient;
 
@@ -51,10 +52,15 @@ class AuthApi {
       isLoggedIn = false;
       throw ApiException(response.statusCode, _decodeBodyBytes(response));
     } else if (response.body != null) {
+      // Update logged in
       isLoggedIn = true;
-      print(isLoggedIn);
+      // Assign Current user logged in
+      userLoggedIn = login.userName;
+      print(response.body);
     } else {
+      // Logged in without any information about the user
       isLoggedIn = true;
+      print(response.body[0]);
       print(isLoggedIn);
       return;
     }

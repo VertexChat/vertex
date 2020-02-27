@@ -2,6 +2,7 @@ import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vertex_ui/src/services/client_stubs/api.dart';
 import 'package:vertex_ui/src/widgets/settings_widgets/mute_card_widget.dart';
 import 'package:vertex_ui/src/widgets/settings_widgets/settings_card_widget.dart';
 import 'package:vertex_ui/src/widgets/settings_widgets/user_details_widget.dart';
@@ -348,13 +349,13 @@ class _SettingsViewWeb extends State<SettingsViewWeb> {
   }
 
   Widget settings() {
+    var api = AuthApi();
     return Column(
       children: <Widget>[
         Container(
           height: 100,
           color: Colors.black26,
-          //TODO: Tie in with logged in user
-          child: UserDetails(userName: "User Account Name"),
+          child: UserDetails(userName: api.userLoggedIn),
         ),
         SizedBox(height: 20.0),
         Container(

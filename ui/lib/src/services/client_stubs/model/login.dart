@@ -2,9 +2,9 @@ part of openapi.api;
 
 class Login {
   
-  String password = null;
-  
-  String userName = null;
+  String password;
+  String userName;
+
   Login();
 
   @override
