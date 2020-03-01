@@ -5,8 +5,6 @@ class HomeCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //Variables
-    final data = MediaQuery.of(context).size;
-
     return Expanded(
       child: Container(
         constraints: BoxConstraints.expand(), // Fill the screen area
@@ -78,5 +76,5 @@ class HomeCardWidget extends StatelessWidget {
         ),
       ),
     );
-  }
-}
+  } //End builder
+} //End class

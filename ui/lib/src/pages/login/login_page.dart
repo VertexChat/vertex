@@ -131,7 +131,7 @@ class _LoginPageState extends State<LoginPage>
           stream: bloc.username,
           builder: (context, snapshot) => TextFormField(
             onChanged: bloc.usernameChanged,
-            onSaved: (String val) => this.login.userName = val,
+            onSaved: (String val) => this.login.username = val,
             decoration: InputDecoration(
               labelText: 'USERNAME',
               labelStyle: TextStyle(

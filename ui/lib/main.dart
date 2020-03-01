@@ -2,6 +2,7 @@ import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:vertex_ui/src/pages/home/home_page.dart';
 import 'package:vertex_ui/src/pages/login/login_page.dart';
+import 'package:vertex_ui/src/routing/route_names.dart';
 import 'package:vertex_ui/src/routing/router.dart';
 import 'package:vertex_ui/src/services/client_stubs/api.dart';
 
@@ -41,11 +42,11 @@ class _UIState extends State<UI> {
         return new MaterialApp(
           title: 'Vertex',
           theme: ThemeData(brightness: Brightness.dark),
-          home: _defaultRoute,
+       //   home: _defaultRoute,
           debugShowCheckedModeBanner: false,
           onGenerateRoute: Router.generateRoute,
-//          initialRoute:
-//              HomeRoute,
+          initialRoute:
+              HomeRoute,
         );
       },
     );

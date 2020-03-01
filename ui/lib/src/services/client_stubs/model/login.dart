@@ -3,27 +3,27 @@ part of openapi.api;
 class Login {
   
   String password;
-  String userName;
+  String username;
 
   Login();
 
   @override
   String toString() {
-    return 'Login[password=$password, userName=$userName, ]';
+    return 'Login[password=$password, userName=$username, ]';
   }
 
   Login.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
     password = json['password'];
-    userName = json['userName'];
+    username = json['userName'];
   }
 
   Map<String, dynamic> toJson() {
     Map <String, dynamic> json = {};
     if (password != null)
       json['password'] = password;
-    if (userName != null)
-      json['userName'] = userName;
+    if (username != null)
+      json['userName'] = username;
     return json;
   }
 
