@@ -354,8 +354,7 @@ components:
         
       properties:
         id:
-          type: number
-          format: int
+          type: integer
           example: 1
         
         username:
