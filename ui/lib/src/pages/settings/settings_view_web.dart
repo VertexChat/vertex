@@ -124,7 +124,7 @@ class _SettingsViewWeb extends State<SettingsViewWeb> {
               ),
               onChanged: (String value) {
                 setState(() {
-                  _audioInput = value;
+                    _audioInput = value;
                 });
                 // Save as key value pair
                 save('audioInput', value);
