@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vertex_ui/src/models/channel_model.dart';
-import 'package:vertex_ui/src/services/client_stubs/api.dart';
+import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
 import 'package:vertex_ui/src/widgets/server_drawer_option/server_drawer_list_builder.dart';
 import 'package:vertex_ui/src/widgets/server_drawer_option/server_drawer_settings_bar.dart';
 import '../heading_widget.dart';

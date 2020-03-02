@@ -1,4 +1,5 @@
-import 'package:vertex_ui/src/services/client_stubs/api.dart';
+
+import 'client_stubs/lib/api.dart';
 
 //Enum
 enum AuthState { LOGGED_IN, LOGGED_OUT }

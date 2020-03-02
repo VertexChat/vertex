@@ -4,7 +4,7 @@ import 'package:vertex_ui/src/blocs/login_bloc.dart';
 import 'package:vertex_ui/src/pages/register/register_page.dart';
 import 'package:vertex_ui/src/routing/route_names.dart';
 import 'package:vertex_ui/src/services/auth.dart';
-import 'package:vertex_ui/src/services/client_stubs/api.dart';
+import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
 import 'package:vertex_ui/src/widgets/icon_card.dart';
 import 'login_screen_presenter.dart';
 
