@@ -1,18 +1,6 @@
 part of openapi.api;
 
 class Channel {
-<<<<<<< HEAD:ui/lib/src/services/client_stubs/lib/model/channel.dart
-  
-  int id = null;
-  
-  String name = null;
-  
-  int capacity = null;
-  /* Type determines what whether the channel is voice, text, or some specialised char e.g. direct                message N.B. This will be updated in future once the appropiate ENUM values have been finalised. */
-  String type = null;
-  
-  int position = null;
-=======
   int id;
   String name;
   int capacity;
@@ -20,7 +8,6 @@ class Channel {
   String type;
   int position;
 
->>>>>>> upstream/master:ui/lib/src/services/client_stubs/model/channel.dart
   Channel();
 
   @override
