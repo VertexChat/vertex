@@ -1,10 +1,10 @@
 part of openapi.api;
 
 class Server {
-  
-  int userCount = null;
-  
-  String appVersion = null;
+
+  int userCount;
+  String appVersion;
+
   Server();
 
   @override
@@ -28,13 +28,15 @@ class Server {
   }
 
   static List<Server> listFromJson(List<dynamic> json) {
-    return json == null ? List<Server>() : json.map((value) => Server.fromJson(value)).toList();
+    return json == null ? List<Server>() : json.map((value) =>
+        Server.fromJson(value)).toList();
   }
 
   static Map<String, Server> mapFromJson(Map<String, dynamic> json) {
     var map = Map<String, Server>();
     if (json != null && json.isNotEmpty) {
-      json.forEach((String key, dynamic value) => map[key] = Server.fromJson(value));
+      json.forEach((String key, dynamic value) =>
+      map[key] = Server.fromJson(value));
     }
     return map;
   }
@@ -42,12 +44,12 @@ class Server {
   // maps a json object with a list of Server-objects as value to a dart map
   static Map<String, List<Server>> mapListFromJson(Map<String, dynamic> json) {
     var map = Map<String, List<Server>>();
-     if (json != null && json.isNotEmpty) {
-       json.forEach((String key, dynamic value) {
-         map[key] = Server.listFromJson(value);
-       });
-     }
-     return map;
+    if (json != null && json.isNotEmpty) {
+      json.forEach((String key, dynamic value) {
+        map[key] = Server.listFromJson(value);
+      });
+    }
+    return map;
   }
 }
 

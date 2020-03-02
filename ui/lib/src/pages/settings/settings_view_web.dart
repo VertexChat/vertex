@@ -26,6 +26,7 @@ class _SettingsViewWeb extends State<SettingsViewWeb> {
   bool _audioInputIsMute = false;
   bool _audioOutputIsMute = false;
   bool _theme; // Light --> true /  Dark --> false
+  String _loggedInUser;
 
   List<String> _defaultAudioInput = [
     'None Selected',
@@ -95,8 +96,10 @@ class _SettingsViewWeb extends State<SettingsViewWeb> {
       _videoInput = (sharedPrefs.getString('videoInput') ?? 'None Selected');
       _audioInputIsMute = (sharedPrefs.getBool('audioInputIsMute') ?? false);
       _audioOutputIsMute = (sharedPrefs.getBool('audioOutputIsMute') ?? false);
+      _loggedInUser =
+          (sharedPrefs.getString('username') ?? "No User Logged In");
     });
-  }
+  } //End restore
 
   /// -- Audio Input --
   /// DropBox Display
@@ -348,61 +351,68 @@ class _SettingsViewWeb extends State<SettingsViewWeb> {
   }
 
   Widget settings() {
-    return Column(
-      children: <Widget>[
-        Container(
-          height: 100,
-          color: Colors.black26,
-          //TODO: Tie in with logged in user
-          child: UserDetails(userName: "User Account Name"),
-        ),
-        SizedBox(height: 20.0),
-        Container(
-          child: Expanded(
-            child: ListView(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    "VOICE SETTINGS",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+    return FutureBuilder(
+        future: restore(),
+        builder: (BuildContext context, snapshot) {
+          return Column(
+            children: <Widget>[
+              Container(
+                height: 100,
+                color: Colors.black26,
+
+                /// TODO: Revisit this
+                child: UserDetails(
+                    userName: snapshot.hasData ? _loggedInUser : ""),
+              ),
+              SizedBox(height: 20.0),
+              Container(
+                child: Expanded(
+                  child: ListView(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "VOICE SETTINGS",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          SettingsCard(
+                            optionsDropdownBox: audioInputDropBox,
+                            settingsTypeHeading: "Input Audio",
+                            width: 600,
+                          ),
+                          // Audio Output Settings
+                          SettingsCard(
+                            optionsDropdownBox: audioOutputDropBox,
+                            settingsTypeHeading: "Output Audio",
+                            width: 600,
+                          ),
+                        ],
+                      ),
+                      audioInputSensitivityCard,
+                      SettingsCard(
+                          optionsDropdownBox: videoInputDropBox,
+                          settingsTypeHeading: "Webcam Device"),
+                      // Audio Mute Settings output & input
+                      MuteCard(
+                        audioMuteToggle: audioInputIsMuteToggle,
+                        muteSourceTypeHeading: "Mute Audio Input",
+                      ),
+                      MuteCard(
+                        audioMuteToggle: audioOutputIsMuteToggle,
+                        muteSourceTypeHeading: "Mute Audio Output",
+                      )
+                    ],
                   ),
                 ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    SettingsCard(
-                      optionsDropdownBox: audioInputDropBox,
-                      settingsTypeHeading: "Input Audio",
-                      width: 600,
-                    ),
-                    // Audio Output Settings
-                    SettingsCard(
-                      optionsDropdownBox: audioOutputDropBox,
-                      settingsTypeHeading: "Output Audio",
-                      width: 600,
-                    ),
-                  ],
-                ),
-                audioInputSensitivityCard,
-                SettingsCard(
-                    optionsDropdownBox: videoInputDropBox,
-                    settingsTypeHeading: "Webcam Device"),
-                // Audio Mute Settings output & input
-                MuteCard(
-                  audioMuteToggle: audioInputIsMuteToggle,
-                  muteSourceTypeHeading: "Mute Audio Input",
-                ),
-                MuteCard(
-                  audioMuteToggle: audioOutputIsMuteToggle,
-                  muteSourceTypeHeading: "Mute Audio Output",
-                )
-              ],
-            ),
-          ),
-        )
-      ],
-    );
-  }
+              )
+            ],
+          );
+        } //End builder
+        );
+  } //End widget
 } //End class

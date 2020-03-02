@@ -11,19 +11,22 @@ class UserDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Icon(FontAwesomeIcons.user, size: 44.0),
-        ),
-        Text(
-          userName,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-        )
-      ],
+    return Card(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          ListTile(
+            leading: Icon(FontAwesomeIcons.user, size: 44.0),
+            title: Text(userName,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            trailing: RaisedButton(
+              child: Text("Logout"),
+              color: Colors.red,
+              onPressed: () => null,
+            ),
+          ),
+        ],
+      ),
     );
   } //End builder
 } //End class

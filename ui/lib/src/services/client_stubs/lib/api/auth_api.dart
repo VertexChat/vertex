@@ -1,13 +1,15 @@
 part of openapi.api;
 
 class AuthApi {
+  //Variables
   final ApiClient apiClient;
+  bool _isLoggedIn = false;
 
   AuthApi([ApiClient apiClient]) : apiClient = apiClient ?? defaultApiClient;
 
   /// Allows a user that is registered to login with HTTP info returned
   ///
-  /// Allows a user that is register to login to the applcation
+  /// Allows a user that is register to login to the application
   Future loginWithHttpInfo({Login login}) async {
     Object postBody = login;
 
@@ -24,8 +26,9 @@ class AuthApi {
     List<String> contentTypes = ["application/json"];
 
     String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
-    List<String> authNames = [];
+    contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
+    // Added login_auth
+    List<String> authNames = ['login_auth'];
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -33,8 +36,15 @@ class AuthApi {
       if (hasFields) postBody = mp;
     } else {}
 
-    var response = await apiClient.invokeAPI(path, 'POST', queryParams,
-        postBody, headerParams, formParams, contentType, authNames);
+    var response = await apiClient.invokeAPI(
+        path,
+        'POST',
+        queryParams,
+        postBody,
+        headerParams,
+        formParams,
+        contentType,
+        authNames);
     return response;
   }
 
@@ -43,14 +53,39 @@ class AuthApi {
   /// Allows a user that is register to login to the application
   Future login({Login login}) async {
     Response response = await loginWithHttpInfo(login: login);
+    final userDetails = await SharedPreferences.getInstance();
+    User user;
+
     if (response.statusCode >= 400) {
       print(response.statusCode);
+      isLoggedIn = false;
       throw ApiException(response.statusCode, _decodeBodyBytes(response));
     } else if (response.body != null) {
+      // Update logged in
+      isLoggedIn = true;
+      // TODO: Revisit this once oauth is implemented
+      // Deserialize user from the body of the login response. This is done to
+      // allow the application store details on a user so it can be used
+      // later on to make requests
+      user = apiClient.deserialize(_decodeBodyBytes(response), 'User') as User;
+      // Store currently logged in user information
+      userDetails.setString('username', user.username);
+      userDetails.setInt('id', user.id);
+      print(user);
     } else {
+//      // Logged in without any information about the user
+//      isLoggedIn = true;
+//      // Store currently logged in user information
+//      userDetails.setString('username', login.username);
       return;
-    }
+    }//End if else
     return;
+  }//End login function
+
+  bool get isLoggedIn => _isLoggedIn;
+
+  set isLoggedIn(bool value) {
+    _isLoggedIn = value;
   }
 
   /// Allows a user register a new account with HTTP info returned
@@ -72,7 +107,7 @@ class AuthApi {
     List<String> contentTypes = ["application/json"];
 
     String contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
+    contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
     List<String> authNames = [];
 
     if (contentType.startsWith("multipart/form-data")) {
@@ -81,8 +116,15 @@ class AuthApi {
       if (hasFields) postBody = mp;
     } else {}
 
-    var response = await apiClient.invokeAPI(path, 'POST', queryParams,
-        postBody, headerParams, formParams, contentType, authNames);
+    var response = await apiClient.invokeAPI(
+        path,
+        'POST',
+        queryParams,
+        postBody,
+        headerParams,
+        formParams,
+        contentType,
+        authNames);
     return response;
   }
 
@@ -93,8 +135,7 @@ class AuthApi {
     Response response = await registerWithHttpInfo(user: user);
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, _decodeBodyBytes(response));
-    } else if (response.body != null) {
-    } else {
+    } else if (response.body != null) {} else {
       return;
     }
   }

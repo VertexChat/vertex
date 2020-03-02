@@ -1,10 +1,9 @@
 part of openapi.api;
 
 class Error {
-  
-  String code = null;
-  
-  String message = null;
+  String code;
+  String message;
+
   Error();
 
   @override
