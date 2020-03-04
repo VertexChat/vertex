@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:async';
 import 'package:flutter_webrtc/webrtc.dart';
-import 'package:vertex_ui/src/utils/websocket.dart';
 
 import 'random_string.dart';
 

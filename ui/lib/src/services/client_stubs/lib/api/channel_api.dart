@@ -111,7 +111,7 @@ class ChannelApi {
     // verify required params are set
 
     // create path and map variables
-    String path = "/channels".replaceAll("{format}","json");
+    String path = "/channels".replaceAll("{format}", "json");
 
     // query params
     List<QueryParam> queryParams = [];
@@ -120,38 +120,34 @@ class ChannelApi {
 
     List<String> contentTypes = [];
 
-    String contentType = contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
+    String contentType =
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
     List<String> authNames = [];
 
-    if(contentType.startsWith("multipart/form-data")) {
+    if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
       MultipartRequest mp = MultipartRequest(null, null);
-      if(hasFields)
-        postBody = mp;
-    }
-    else {
-    }
+      if (hasFields) postBody = mp;
+    } else {}
 
-    var response = await apiClient.invokeAPI(path,
-        'GET',
-        queryParams,
-        postBody,
-        headerParams,
-        formParams,
-        contentType,
-        authNames);
+    var response = await apiClient.invokeAPI(path, 'GET', queryParams, postBody,
+        headerParams, formParams, contentType, authNames);
     return response;
   }
 
   /// Returns all channels
   ///
   /// Returns all channels in a server
-  Future<Channel> getAllChannels() async {
+  Future<List<Channel>> getAllChannels() async {
     Response response = await getAllChannelsWithHttpInfo();
-    if(response.statusCode >= 400) {
+    if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, _decodeBodyBytes(response));
-    } else if(response.body != null) {
-      return apiClient.deserialize(_decodeBodyBytes(response), 'Channel') as Channel;
+    } else if (response.body != null) {
+      print(response.body);
+      return (apiClient.deserialize(_decodeBodyBytes(response), 'List<Channel>')
+              as List)
+          .map((item) => item as Channel)
+          .toList();
     } else {
       return null;
     }

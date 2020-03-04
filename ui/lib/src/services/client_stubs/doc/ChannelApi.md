@@ -11,6 +11,7 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**addChannel**](ChannelApi.md#addChannel) | **POST** /channels | Channel has been created
 [**deleteChannelByID**](ChannelApi.md#deleteChannelByID) | **DELETE** /channels/{id} | Deletes an existing channel
+[**getAllChannels**](ChannelApi.md#getAllChannels) | **GET** /channels | Returns all channels
 [**getChannelByID**](ChannelApi.md#getChannelByID) | **GET** /channels/{id} | Get a channel by its ID
 [**updateChannelByID**](ChannelApi.md#updateChannelByID) | **PUT** /channels/{id} | Updates an existing channel
 
@@ -27,7 +28,7 @@ Channel has been created
 import 'package:openapi/api.dart';
 
 var api_instance = ChannelApi();
-var channel = Channel(); // Channel | The Channel to be created
+var channel = Channel(); // Channel | The Channel to be create
 
 try { 
     api_instance.addChannel(channel);
@@ -40,7 +41,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **channel** | [**Channel**](Channel.md)| The Channel to be created | [optional] 
+ **channel** | [**Channel**](Channel.md)| The Channel to be create | [optional] 
 
 ### Return type
 
@@ -87,6 +88,45 @@ Name | Type | Description  | Notes
 ### Return type
 
 void (empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **getAllChannels**
+> List<Channel> getAllChannels()
+
+Returns all channels
+
+Returns all channels in a server
+
+### Example 
+```dart
+import 'package:openapi/api.dart';
+
+var api_instance = ChannelApi();
+
+try { 
+    var result = api_instance.getAllChannels();
+    print(result);
+} catch (e) {
+    print("Exception when calling ChannelApi->getAllChannels: $e\n");
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+[**List<Channel>**](Channel.md)
 
 ### Authorization
 
