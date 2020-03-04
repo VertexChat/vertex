@@ -52,7 +52,7 @@ class ServerDrawer extends StatelessWidget {
     ];
 
     return [
-      //Elements that are displayed within the app drawer
+      // Elements that are displayed within the app drawer
       // Currently hard coded until server hock in
       HeadingWidget(headingText: 'Server Name'),
       ServerDrawerListBuilder(items: testTextChannels),

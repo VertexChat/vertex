@@ -86,57 +86,54 @@ class _RegisterPageState extends State<RegisterPage>
       children: <Widget>[
         StreamBuilder<String>(
           stream: bloc.username,
-          builder: (context, snapshot) =>
-              TextFormField(
-                onSaved: (String val) => this.user.username = val,
-                onChanged: bloc.usernameChanged,
-                decoration: InputDecoration(
-                    labelText: 'USERNAME',
-                    labelStyle: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey),
-                    focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.green)),
-                    errorText: snapshot.error),
-              ),
+          builder: (context, snapshot) => TextFormField(
+            onSaved: (String val) => this.user.username = val,
+            onChanged: bloc.usernameChanged,
+            decoration: InputDecoration(
+                labelText: 'USERNAME',
+                labelStyle: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey),
+                focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.green)),
+                errorText: snapshot.error),
+          ),
         ),
         SizedBox(height: data.size.height / 90),
         StreamBuilder<String>(
           stream: bloc.password,
-          builder: (context, snapshot) =>
-              TextFormField(
-                obscureText: true,
-                onSaved: (String val) => this.user.password = val,
-                onChanged: bloc.passwordChanged,
-                decoration: InputDecoration(
-                    labelText: 'PASSWORD ',
-                    labelStyle: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey),
-                    focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.green)),
-                    errorText: snapshot.error),
-              ),
+          builder: (context, snapshot) => TextFormField(
+            obscureText: true,
+            onSaved: (String val) => this.user.password = val,
+            onChanged: bloc.passwordChanged,
+            decoration: InputDecoration(
+                labelText: 'PASSWORD ',
+                labelStyle: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey),
+                focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.green)),
+                errorText: snapshot.error),
+          ),
         ),
         SizedBox(height: data.size.height / 90),
         StreamBuilder<String>(
           stream: bloc.displayName,
-          builder: (context, snapshot) =>
-              TextFormField(
-                onSaved: (String val) => this.user.displayName = val,
-                onChanged: bloc.displayNameChanged,
-                decoration: InputDecoration(
-                    labelText: 'DISPLAY NAME ',
-                    labelStyle: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey),
-                    focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.green)),
-                    errorText: snapshot.error),
-              ),
+          builder: (context, snapshot) => TextFormField(
+            onSaved: (String val) => this.user.displayName = val,
+            onChanged: bloc.displayNameChanged,
+            decoration: InputDecoration(
+                labelText: 'DISPLAY NAME ',
+                labelStyle: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey),
+                focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.green)),
+                errorText: snapshot.error),
+          ),
         ),
         //Register button container
         SizedBox(height: data.size.height / 20.0),
@@ -149,20 +146,19 @@ class _RegisterPageState extends State<RegisterPage>
               elevation: 7.0,
               child: StreamBuilder<bool>(
                 stream: bloc.submitCheck,
-                builder: (context, snapshot) =>
-                    RaisedButton(
-                      color: Colors.green,
-                      onPressed: snapshot.hasData ? () => _submit() : null,
-                      child: Center(
-                        child: Text(
-                          'REGISTER',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Montserrat'),
-                        ),
-                      ),
+                builder: (context, snapshot) => RaisedButton(
+                  color: Colors.green,
+                  onPressed: snapshot.hasData ? () => _submit() : null,
+                  child: Center(
+                    child: Text(
+                      'REGISTER',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Montserrat'),
                     ),
+                  ),
+                ),
               ),
             )),
         SizedBox(height: data.size.height / 30.0),
@@ -192,14 +188,13 @@ class _RegisterPageState extends State<RegisterPage>
 
   // Information snack bar. This is displayed if any errors happen during login
   void _showSnackBar(String text, Color color) {
-        _scaffoldKey.currentState.showSnackBar(new SnackBar(
-      content: new Text(
-        text,
-        textAlign: TextAlign.center,
-        style: TextStyle(color: Colors.white),
-      ),
-      backgroundColor: color
-    ));
+    _scaffoldKey.currentState.showSnackBar(new SnackBar(
+        content: new Text(
+          text,
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: color));
   } //End function
 
   @override
