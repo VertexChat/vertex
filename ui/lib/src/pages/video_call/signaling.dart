@@ -35,7 +35,7 @@ class Signaling {
   SimpleWebSocket _socket;
   var _sessionId;
   var _host;
-  var _port = 5000;
+  var _port = 4443;
 
   var _peerConnections = new Map<String, RTCPeerConnection>();
   var _dataChannels = new Map<String, RTCDataChannel>();
