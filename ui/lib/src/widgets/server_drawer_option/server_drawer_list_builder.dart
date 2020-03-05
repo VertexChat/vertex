@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:vertex_ui/src/models/channel_model.dart';
+import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
+import 'package:vertex_ui/src/utils/equals.dart';
 
 /// This class is used for building the lists of voice channels and text channels inside the
 /// drawer. This class requires a list of Channel Models which hold the name of the list, name of the channel
@@ -10,78 +11,96 @@ import 'package:vertex_ui/src/models/channel_model.dart';
 
 class ServerDrawerListBuilder extends StatelessWidget {
   //Variables
-  final List<ChannelModel> items;
+  const ServerDrawerListBuilder({Key key}) : super(key: key);
 
-  const ServerDrawerListBuilder({Key key, @required this.items})
-      : super(key: key);
+  ListView _channelsListView(channelData) {
+    return ListView.separated(
+      shrinkWrap: true,
+      padding: const EdgeInsets.all(8),
+      itemCount: channelData == null ? 1 : channelData.length + 1,
+      itemBuilder: (BuildContext context, int index) {
+        if (index == 0) {
+          //Display heading above the list
+          return new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                "CHANNELS",
+                //data[index].listName,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+              ),
+            ],
+          );
+        }
+        index -= 1;
+        // Display channels in container
+        return Container(
+            height: 40,
+            child: RaisedButton(
+                color: Colors.black26,
+                child: Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Icon(
+                            equalsIgnoreCase(channelData[index].type, "VOICE")
+                                ? Icons.volume_up
+                                : Icons.message,
+                            color: Colors.lightGreenAccent,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            channelData[index].name,
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+                onPressed: () => null));
+      },
+      separatorBuilder: (BuildContext context, int index) => const Divider(),
+    );
+  } //End ListView function
 
   @override
   Widget build(BuildContext context) {
-    final data = MediaQuery.of(context).size.height;
+    var api = ChannelApi();
     return Container(
-      height: data / 3,
       child: Row(
         children: <Widget>[
           Expanded(
-              child: ListView.separated(
-            padding: const EdgeInsets.all(8),
-            itemCount: items == null ? 1 : items.length + 1,
-            itemBuilder: (BuildContext context, int index) {
-              if (index == 0) {
-                //Display heading above the list
-                return new Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      items[index].listName,
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-                    ),
-                  ],
-                );
-              }
-              index -= 1;
-              // Display channels in container
-              return Container(
-                  height: 40,
-                  child: RaisedButton(
-                      color: Colors.black26,
-                      child: Row(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Icon(items[index].iconData, color: Colors.lightGreenAccent,),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  items[index].title,
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                      onPressed: () => null));
+              child: FutureBuilder<List<Channel>>(
+            future: api.getAllChannels(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                List<Channel> data = snapshot.data;
+                //Return list of channel widgets
+                return _channelsListView(data);
+              } else if (snapshot.hasError) {
+                //Return error if any
+                return Center(child: Text("${snapshot.error}"));
+              } //End if else
+              //Loading...
+              return CircularProgressIndicator();
             },
-            separatorBuilder: (BuildContext context, int index) =>
-                const Divider(),
           ))
         ],
       ),
     );
   } //End builder
-
 } //End class
