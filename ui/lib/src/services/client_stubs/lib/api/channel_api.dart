@@ -143,7 +143,6 @@ class ChannelApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, _decodeBodyBytes(response));
     } else if (response.body != null) {
-      print(response.body);
       return (apiClient.deserialize(_decodeBodyBytes(response), 'List<Channel>')
               as List)
           .map((item) => item as Channel)
