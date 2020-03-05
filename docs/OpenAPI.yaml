@@ -159,7 +159,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Channel'
+                $ref: '#/components/schemas/AllChannels'
                 
         '404':
           $ref: '#/components/responses/NotFound'
@@ -372,6 +372,12 @@ components:
         displayName:
           type: string
           example: John Doe
+          
+    AllChannels:
+     type: array
+     items:
+        $ref: '#/components/schemas/Channel'
+        
       
     Channel:
       type: object
