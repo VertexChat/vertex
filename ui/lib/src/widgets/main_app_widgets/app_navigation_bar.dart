@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:vertex_ui/src/models/settings_model.dart';
+import 'package:vertex_ui/src/pages/login/login_page.dart';
 import 'package:vertex_ui/src/pages/settings/settings_page.dart';
 import 'package:vertex_ui/src/pages/video_call/connect_call_page.dart';
 
@@ -51,6 +52,14 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
                   context,
                   new MaterialPageRoute(
                       builder: (context) => new SettingsPage()));
+            }),
+        IconButton(
+            icon: Icon(FontAwesomeIcons.lock),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) => new LoginPage()));
             })
       ],
     );

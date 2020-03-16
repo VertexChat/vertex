@@ -3,7 +3,7 @@ import 'package:responsive_builder/responsive_builder.dart';
 import 'package:vertex_ui/src/widgets/server_drawer_option/server_drawer_list_builder.dart';
 import 'package:vertex_ui/src/widgets/server_drawer_option/server_drawer_settings_bar.dart';
 
-import '../heading_widget.dart';
+import '../server_drawer_option/heading_widget.dart';
 import 'server_drawer_mobile.dart';
 import 'server_drawer_web.dart';
 
@@ -11,7 +11,8 @@ import 'server_drawer_web.dart';
 /// is running on. This is to allow for a response design across web, mobile & tablet.
 
 class ServerDrawer extends StatelessWidget {
-  const ServerDrawer({Key key}) : super(key: key);
+  final bool displayUsersInCall;
+  const ServerDrawer({Key key, this.displayUsersInCall}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

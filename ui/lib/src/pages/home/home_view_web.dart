@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:vertex_ui/src/widgets/app_navigation_bar.dart';
+import 'package:vertex_ui/src/pages/layout_template/home_layout_template.dart';
+import 'package:vertex_ui/src/widgets/main_app_widgets/app_navigation_bar.dart';
 import 'package:vertex_ui/src/widgets/server_app_drawer/server_drawer.dart';
-
-import '../text_chat_page.dart';
 
 class HomeViewWeb extends StatelessWidget {
   const HomeViewWeb({Key key}) : super(key: key);
@@ -15,7 +14,11 @@ class HomeViewWeb extends StatelessWidget {
       ServerDrawer(),
       Expanded(
           child: Container(
-              constraints: BoxConstraints.expand(), child: TextChatScreen())),
+        // The layout template wil allow for navigation of page within with container on the home page
+        // TODO: CB - Document design choices and how approached the issue I was having with navigation
+        constraints: BoxConstraints.expand(),
+        child: HomeLayoutTemplate(),
+      )),
     ];
 
     return Scaffold(

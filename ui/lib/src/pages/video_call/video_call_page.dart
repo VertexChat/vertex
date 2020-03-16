@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/webrtc.dart';
 import 'package:vertex_ui/src/pages/video_call/signaling.dart';
 
-
 class CallPage extends StatefulWidget {
   //Member Variables
   final String pageTitle;
   final String ip;
 
   // Constructor
-  CallPage({Key key, this.pageTitle, @required this.ip}) : super(key: key);
+  CallPage({Key key, this.pageTitle, this.ip}) : super(key: key);
 
   @override
-  _CallPageState createState() => _CallPageState(serverIP: ip);
+  //TODO: Not have the ip hard coded
+  _CallPageState createState() =>
+      _CallPageState(serverIP: "demo.cloudwebrtc.com");
 } //End class
 
 /// Stateless class
@@ -26,6 +27,7 @@ class _CallPageState extends State<CallPage> {
   bool _inCalling = false;
   final String serverIP;
 
+  // Constructor
   _CallPageState({Key key, @required this.serverIP});
 
   @override
@@ -36,6 +38,7 @@ class _CallPageState extends State<CallPage> {
   }
 
   initRenderers() async {
+    // Init local & remote Renders
     await _localRenderer.initialize();
     await _remoteRenderer.initialize();
   }
@@ -50,14 +53,13 @@ class _CallPageState extends State<CallPage> {
 
   void _connect() async {
     if (_signaling == null) {
+      // Connect with ip provided
       _signaling = new Signaling(serverIP)..connect();
 
       _signaling.onStateChange = (SignalingState state) {
         switch (state) {
           case SignalingState.CallStateNew:
-            this.setState(() {
-              _inCalling = true;
-            });
+            this.setState(() => _inCalling = true);
             break;
           case SignalingState.CallStateBye:
             this.setState(() {
@@ -73,9 +75,10 @@ class _CallPageState extends State<CallPage> {
           case SignalingState.ConnectionError:
           case SignalingState.ConnectionOpen:
             break;
-        }
-      };
+        } //End switch
+      }; //End onStateChange
 
+      // Update state for peers
       _signaling.onPeersUpdate = ((event) {
         this.setState(() {
           _selfId = event['self'];
@@ -83,45 +86,42 @@ class _CallPageState extends State<CallPage> {
         });
       });
 
+      // Set local stream
       _signaling.onLocalStream = ((stream) {
         _localRenderer.srcObject = stream;
       });
 
+      // Set remote stream
       _signaling.onAddRemoteStream = ((stream) {
         _remoteRenderer.srcObject = stream;
       });
 
+      // Remove remote stream
       _signaling.onRemoveRemoteStream = ((stream) {
         _remoteRenderer.srcObject = null;
       });
-    }
-  }
+    } //ENd if
+  } //End connect function
 
+  // Invite peer
+  // TODO: Implement this with just voice for channels
   _invitePeer(context, peerId, use_screen) async {
     if (_signaling != null && peerId != _selfId) {
       _signaling.invite(peerId, 'video', use_screen);
     }
-  }
+  } //End function
 
   _hangUp() {
-    if (_signaling != null) {
-      _signaling.bye();
-    }
+    if (_signaling != null) _signaling.bye();
   }
 
   _switchCamera() {
     _signaling.switchCamera();
   }
 
-  _muteMic() async {
-    //TODO: need to connect with audio settings page I feel
-  } //End function
-
-  _muteHeadset() async {
-    //TODO: need to connect with audio setting page I feel
-  } //End function
-
+  // Build List view of peers
   _buildRow(context, peer) {
+    // local users id
     var self = (peer['id'] == _selfId);
     return ListBody(children: <Widget>[
       ListTile(
@@ -149,7 +149,7 @@ class _CallPageState extends State<CallPage> {
       ),
       Divider()
     ]);
-  }
+  } //End buildRow
 
   @override
   Widget build(BuildContext context) {
@@ -183,7 +183,8 @@ class _CallPageState extends State<CallPage> {
                     ),
                     FloatingActionButton(
                       child: const Icon(Icons.mic_off),
-                      onPressed: _muteMic,
+                      // TODO: Implemented mute mic function
+                      onPressed: null,
                     )
                   ]))
           : null,

@@ -11,7 +11,9 @@ class SimpleWebSocket {
   OnMessageCallback onMessage;
   OnCloseCallback onClose;
 
-  SimpleWebSocket(this._url);
+  SimpleWebSocket(this._url) {
+    _url = _url.replaceAll('https:', 'wss:');
+  }
 
   connect() async {
     try {

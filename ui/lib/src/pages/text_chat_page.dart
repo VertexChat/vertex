@@ -1,9 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:vertex_ui/locator.dart';
+import 'package:vertex_ui/src/routing/route_names.dart';
+import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
+import 'package:vertex_ui/src/services/navigation_service.dart';
+import 'package:vertex_ui/src/widgets/home_widgets/channel_nane_widget.dart';
+import 'package:vertex_ui/src/widgets/home_widgets/channel_navigation_options_widget.dart';
 import '../models/text_chat_model.dart';
 
 class TextChatScreen extends StatefulWidget {
+  final Channel channel;
+
+  const TextChatScreen({Key key, @required this.channel}) : super(key: key);
+
   @override
-  State createState() => _TextChatScreenState();
+  State createState() => _TextChatScreenState(channel: channel);
 }
 
 class _TextChatScreenState extends State<TextChatScreen>
@@ -11,8 +22,10 @@ class _TextChatScreenState extends State<TextChatScreen>
   //Variables
   final List<ChatMessage> _messages = <ChatMessage>[];
   final TextEditingController _textEditingController = TextEditingController();
+  final Channel channel;
   bool _isComposing = false;
-  static final _formKey = new GlobalKey<FormState>();
+
+  _TextChatScreenState({this.channel});
 
   @override
   void dispose() {
@@ -24,6 +37,7 @@ class _TextChatScreenState extends State<TextChatScreen>
 
   /// -- Send a message --
   Widget _buildTextComposer() {
+    final _formKey = new GlobalKey<FormState>();
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Row(
@@ -51,13 +65,12 @@ class _TextChatScreenState extends State<TextChatScreen>
         ],
       ),
     );
-  }
+  } //End widget
 
   void _handleSubmitted(String text) {
     _textEditingController.clear();
-    setState(() {
-      _isComposing = false;
-    });
+    setState(() => _isComposing = false);
+
     ChatMessage message = ChatMessage(
       text: text,
       animationController: AnimationController(
@@ -65,51 +78,43 @@ class _TextChatScreenState extends State<TextChatScreen>
         vsync: this,
       ),
     );
-    setState(() {
-      _messages.insert(0, message);
-    });
+    setState(() => _messages.insert(0, message));
     message.animationController.forward();
-  }
+  } //End function
 
   @override
   Widget build(BuildContext context) {
     return Container(
+        color: Colors.black26,
         child: Column(
-      children: <Widget>[
-        //Heading
-        Container(
-          color: Colors.black26,
-          height: 40,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "Text Channel Name (General)",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.white),
+          children: <Widget>[
+            // Navigation buttons
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                ChannelNameWidget(channel: channel),
+                ChannelNavigationOptionsWidget(channel: channel),
+              ],
+            ),
+            //Heading
+            Container(
+              child: Flexible(
+                child: ListView.builder(
+                  padding: EdgeInsets.all(8.0),
+                  reverse: true,
+                  itemBuilder: (_, int index) => _messages[index],
+                  itemCount: _messages.length,
                 ),
-              )
-            ],
-          ),
-        ),
-        Flexible(
-          child: ListView.builder(
-            padding: EdgeInsets.all(8.0),
-            reverse: true,
-            itemBuilder: (_, int index) => _messages[index],
-            itemCount: _messages.length,
-          ),
-        ),
-        Divider(height: 1.0),
-        Container(
-          decoration: BoxDecoration(color: Theme.of(context).cardColor),
-          child: _buildTextComposer(),
-        ),
-      ],
-    ));
+              ),
+            ),
+            Divider(height: 1.0),
+            Container(
+              decoration: BoxDecoration(color: Theme.of(context).cardColor),
+              child: _buildTextComposer(),
+            ),
+          ],
+        ));
   }
 }
 

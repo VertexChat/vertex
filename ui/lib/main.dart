@@ -1,14 +1,17 @@
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:vertex_ui/src/pages/home/home_page.dart';
+import 'package:vertex_ui/locator.dart';
+import 'package:vertex_ui/src/pages/layout_template/main_layout_template.dart';
 import 'package:vertex_ui/src/pages/login/login_page.dart';
 import 'package:vertex_ui/src/routing/route_names.dart';
 import 'package:vertex_ui/src/routing/router.dart';
 import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
+import 'package:vertex_ui/src/services/navigation_service.dart';
 
 /// Call to run App Root
 void main() {
   // Run application start this class first
+  setupLocator();
   runApp(UI());
 }
 
@@ -29,7 +32,7 @@ class _UIState extends State<UI> {
   Widget build(BuildContext context) {
     bool _result = api.isLoggedIn;
     // if the user is logged in allow them access the home page
-    if (_result) _defaultRoute = new VertexHomePage();
+    //if (_result) _defaultRoute = new VertexHomePage();
 
     /// MaterialApp is the base Widget for your Flutter Application
     /// Gives us access to routing, context, and meta info functionality.
@@ -39,14 +42,20 @@ class _UIState extends State<UI> {
         brightness: brightness,
       ),
       themedWidgetBuilder: (context, theme) {
-        return new MaterialApp(
+        return MaterialApp(
           title: 'Vertex',
           theme: ThemeData(brightness: Brightness.dark),
-       //   home: _defaultRoute,
+          //home: _defaultRoute,
           debugShowCheckedModeBanner: false,
-          onGenerateRoute: Router.generateRoute,
-          initialRoute:
-              HomeRoute,
+          // Build that will also handle routing for us as its built into flutter
+          // Passing the MainLayout a child widget which is the view, this view will
+          // be rendered
+          // TODO: CB - Document this & ref
+          builder: (context, child) => MainLayoutTemplate(child: child),
+          // The child view return from the router
+          navigatorKey: locatorGlobal<NavigationService>().navigatorKey,
+          onGenerateRoute: generateRoute,
+          initialRoute: HomeRoute,
         );
       },
     );

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vertex_ui/src/pages/video_call/call_page.dart';
+import 'package:vertex_ui/src/pages/video_call/video_call_page.dart';
 
 //TODO: This page is currently temp till we discuses how we want it to look. It will prob be integrated somewhere down the line in the home page.
 

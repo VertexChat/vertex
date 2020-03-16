@@ -19,8 +19,8 @@ class ApiClient {
 
   ApiClient({this.basePath = "http://localhost:8080/api/v1"}) {
     // Setup authentications (key: authentication name, value: authentication).
-    _authentications['api_key'] = new ApiKeyAuth("header", "api_key");
-    _authentications['login_auth'] = new OAuth();
+    //_authentications['api_key'] = new ApiKeyAuth("header", "api_key");
+  //  _authentications['login_auth'] = new OAuth();
   }
 
   void addDefaultHeader(String key, String value) {

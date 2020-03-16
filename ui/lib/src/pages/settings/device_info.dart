@@ -62,7 +62,8 @@ class _DeviceInfoState extends State<DeviceInfo> {
           ListTile(
             title: Text("OS", style: TextStyle(fontWeight: FontWeight.bold)),
             trailing: Platform.isAndroid
-                ? Text(_androidInfo.version.toString())
+            //TODO: Check this on mobile
+                ? Text(_androidInfo.version.baseOS)
                 : Text(_iosDeviceInfo.name),
           ),
         ],

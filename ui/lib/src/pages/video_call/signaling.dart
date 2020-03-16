@@ -4,21 +4,26 @@ import 'package:flutter_webrtc/webrtc.dart';
 
 import 'random_string.dart';
 
+import '../../utils/turn.dart' if (dart.library.js) '../../utils/turn_web.dart';
+
 import '../../utils/device_info.dart'
     if (dart.library.js) '../../utils/device_info_web.dart';
 import '../../utils/websocket.dart'
     if (dart.library.js) '../../utils/websocket_web.dart';
 
+/// Enum for different states
 enum SignalingState {
-  CallStateNew,
-  CallStateRinging,
-  CallStateInvite,
-  CallStateConnected,
-  CallStateBye,
-  ConnectionOpen,
-  ConnectionClosed,
-  ConnectionError,
+  CallStateNew, // New call
+  CallStateRinging, // Ringing
+  CallStateInvite, //Invite to call
+  CallStateConnected, // Connected to call
+  CallStateBye, // End call 'bye'
+  ConnectionOpen, // Open call
+  ConnectionClosed, // Connection closed
+  ConnectionError, // Connection error
 }
+
+/// https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Connectivity
 
 /*
  * callbacks for Signaling API.
@@ -31,37 +36,58 @@ typedef void DataChannelMessageCallback(
 typedef void DataChannelCallback(RTCDataChannel dc);
 
 class Signaling {
-  String _selfId = randomNumeric(6);
-  SimpleWebSocket _socket;
+  // Variables
+  String _selfId = randomNumeric(6); // Random Number is generated for id
+  SimpleWebSocket _socket; // WebSocket
   var _sessionId;
   var _host;
-  var _port = 4443;
+  var _port = 8086;
 
+  /// Provides methods to connect to a remote peer, maintain and monitor the
+  /// connection, and close the connection once it's no longer needed.
   var _peerConnections = new Map<String, RTCPeerConnection>();
+
+  // The RTCDataChannel interface represents a network channel which can be used
+  // for bidirectional peer-to-peer transfers of arbitrary data. Every data channel
+  // is associated with an RTCPeerConnection, and each peer connection can have up
+  // to a theoretical maximum of 65,534 data channels (the actual limit may vary
+  // from browser to browser).
   var _dataChannels = new Map<String, RTCDataChannel>();
+
+  /// Users in the channel
   var _remoteCandidates = [];
 
+  var _turnCredential;
+
+  // Local client stream
   MediaStream _localStream;
+
+  // Remote user stream
   List<MediaStream> _remoteStreams;
+
+  // State Change callback
   SignalingStateCallback onStateChange;
+
+  // Local state callback
   StreamStateCallback onLocalStream;
+
+  // Remote state callback
   StreamStateCallback onAddRemoteStream;
   StreamStateCallback onRemoveRemoteStream;
+
+  // Peer updates
   OtherEventCallback onPeersUpdate;
+
+  // Channel message callback
   DataChannelMessageCallback onDataChannelMessage;
+
+  // Channel callback
   DataChannelCallback onDataChannel;
 
+  // https://anyconnect.com/stun-turn-ice/
   Map<String, dynamic> _iceServers = {
     'iceServers': [
       {'url': 'stun:stun.l.google.com:19302'},
-      /*
-       * turn server configuration example.
-      {
-        'url': 'turn:123.45.67.89:3478',
-        'username': 'change_to_real_user',
-        'credential': 'change_to_real_secret'
-      },
-       */
     ]
   };
 
@@ -72,6 +98,7 @@ class Signaling {
     ],
   };
 
+  // True for audio and video
   final Map<String, dynamic> _constraints = {
     'mandatory': {
       'OfferToReceiveAudio': true,
@@ -80,6 +107,7 @@ class Signaling {
     'optional': [],
   };
 
+  // False for audio and video
   final Map<String, dynamic> _dc_constraints = {
     'mandatory': {
       'OfferToReceiveAudio': false,
@@ -88,6 +116,7 @@ class Signaling {
     'optional': [],
   };
 
+  //Constructor
   Signaling(this._host);
 
   close() {
@@ -261,10 +290,26 @@ class Signaling {
   }
 
   void connect() async {
-    var url = 'wss://$_host:$_port';
+    var url = 'https://$_host:$_port/ws';
     _socket = SimpleWebSocket(url);
 
     print('connect to $url');
+
+    if (_turnCredential == null) {
+      try {
+        _turnCredential = await getTurnCredential(_host, _port);
+
+        _iceServers = {
+          'iceServers': [
+            {
+              'url': _turnCredential['uris'][0],
+              'username': _turnCredential['username'],
+              'credential': _turnCredential['password']
+            },
+          ]
+        };
+      } catch (e) {}
+    }
 
     _socket.onOpen = () {
       print('onOpen');
@@ -288,23 +333,13 @@ class Signaling {
         this.onStateChange(SignalingState.ConnectionClosed);
       }
     };
-
     await _socket.connect();
-  }
+  } //End connect function
 
   Future<MediaStream> createStream(media, user_screen) async {
     final Map<String, dynamic> mediaConstraints = {
       'audio': true,
-      'video': {
-        'mandatory': {
-          'minWidth':
-              '640', // Provide your own width, height and frame rate here
-          'minHeight': '480',
-          'minFrameRate': '30',
-        },
-        'facingMode': 'user',
-        'optional': [],
-      }
+      'video': false
     };
 
     MediaStream stream = user_screen
@@ -364,17 +399,20 @@ class Signaling {
     if (this.onDataChannel != null) this.onDataChannel(channel);
   }
 
+  //TODO: Look into dataChannels
   _createDataChannel(id, RTCPeerConnection pc, {label: 'fileTransfer'}) async {
     RTCDataChannelInit dataChannelDict = new RTCDataChannelInit();
     RTCDataChannel channel = await pc.createDataChannel(label, dataChannelDict);
     _addDataChannel(id, channel);
-  }
+  } //End function
 
+  // Function to Create a peer connection with a remote user
   _createOffer(String id, RTCPeerConnection pc, String media) async {
     try {
       RTCSessionDescription s = await pc
           .createOffer(media == 'data' ? _dc_constraints : _constraints);
       pc.setLocalDescription(s);
+
       _send('offer', {
         'to': id,
         'description': {'sdp': s.sdp, 'type': s.type},
@@ -388,9 +426,11 @@ class Signaling {
 
   _createAnswer(String id, RTCPeerConnection pc, media) async {
     try {
+      // Create a session
       RTCSessionDescription s = await pc
           .createAnswer(media == 'data' ? _dc_constraints : _constraints);
       pc.setLocalDescription(s);
+
       _send('answer', {
         'to': id,
         'description': {'sdp': s.sdp, 'type': s.type},
@@ -399,11 +439,11 @@ class Signaling {
     } catch (e) {
       print(e.toString());
     }
-  }
+  } //End function
 
   _send(event, data) {
     data['type'] = event;
     JsonEncoder encoder = new JsonEncoder();
     _socket.send(encoder.convert(data));
-  }
-}
+  } //End function
+} //End class

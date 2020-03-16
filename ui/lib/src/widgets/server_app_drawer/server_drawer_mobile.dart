@@ -13,7 +13,7 @@ class ServerDrawerMobile extends StatelessWidget {
     var orientation = MediaQuery.of(context).orientation;
     return Container(
       width: orientation == Orientation.portrait ? 250 : 250,
-      decoration: BoxDecoration(color: Colors.black54),
+      decoration: BoxDecoration(color: Colors.black),
       child: Column(
           children: ServerDrawer.getDrawerOptions()),
     );
