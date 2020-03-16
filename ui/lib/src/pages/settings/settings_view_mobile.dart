@@ -7,7 +7,7 @@ import 'package:vertex_ui/src/pages/settings/device_info.dart';
 import 'package:vertex_ui/src/widgets/settings_widgets/mute_card_widget.dart';
 import 'package:vertex_ui/src/widgets/settings_widgets/settings_card_widget.dart';
 import 'package:vertex_ui/src/widgets/settings_widgets/user_details_widget.dart';
-import 'package:vertex_ui/src/widgets/text_widget.dart';
+import 'package:vertex_ui/src/widgets/settings_widgets/text_widget.dart';
 
 ///  Main Settings view for mobile device
 class SettingsViewMobilePortrait extends StatefulWidget {
@@ -399,11 +399,15 @@ class _SettingsViewMobilePortrait extends State<SettingsViewMobilePortrait> {
       appBar: AppBar(title: Text("Settings")),
       body: Column(
         children: <Widget>[
-          Container(
-            height: 100,
-            color: Colors.black26,
-            child: UserDetails(userName: _loggedInUser),
-          ),
+          FutureBuilder(
+              future: restore(),
+              builder: (BuildContext context, snapshot) {
+                return Container(
+                  height: 100,
+                  color: Colors.black26,
+                  child: UserDetails(userName: snapshot.hasData ? _loggedInUser : "No User logged In"),
+                );
+              }),
           SizedBox(height: 20.0),
           Container(
             child: Expanded(

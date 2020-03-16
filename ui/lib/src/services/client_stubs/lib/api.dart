@@ -15,12 +15,14 @@ part 'auth/http_basic_auth.dart';
 
 part 'api/auth_api.dart';
 part 'api/channel_api.dart';
+part 'api/message_api.dart';
 part 'api/server_api.dart';
 part 'api/user_api.dart';
 
 part 'model/channel.dart';
 part 'model/error.dart';
 part 'model/login.dart';
+part 'model/message.dart';
 part 'model/server.dart';
 part 'model/user.dart';
 

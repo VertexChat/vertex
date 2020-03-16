@@ -13,12 +13,13 @@ class HomeViewWeb extends StatelessWidget {
       //App drawer
       ServerDrawer(),
       Expanded(
-          child: Container(
-        // The layout template wil allow for navigation of page within with container on the home page
-        // TODO: CB - Document design choices and how approached the issue I was having with navigation
-        constraints: BoxConstraints.expand(),
-        child: HomeLayoutTemplate(),
-      )),
+        child: Container(
+          // The layout template wil allow for navigation of page within with container on the home page
+          // TODO: CB - Document design choices and how approached the issue I was having with navigation
+          constraints: BoxConstraints.expand(),
+          child: HomeLayoutTemplate(),
+        ),
+      ),
     ];
 
     return Scaffold(

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:vertex_ui/locator.dart';
-import 'package:vertex_ui/src/routing/route_names.dart';
 import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
-import 'package:vertex_ui/src/services/navigation_service.dart';
 import 'package:vertex_ui/src/widgets/home_widgets/channel_nane_widget.dart';
 import 'package:vertex_ui/src/widgets/home_widgets/channel_navigation_options_widget.dart';
+
 import '../models/text_chat_model.dart';
 
 class TextChatScreen extends StatefulWidget {
@@ -37,14 +34,14 @@ class _TextChatScreenState extends State<TextChatScreen>
 
   /// -- Send a message --
   Widget _buildTextComposer() {
-    final _formKey = new GlobalKey<FormState>();
+  //  final _formKey = new GlobalKey<FormState>();
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Row(
         children: <Widget>[
           Flexible(
             child: TextField(
-              key: _formKey,
+            //  key: _formKey,
               controller: _textEditingController,
               onChanged: (String text) {
                 setState(() => _isComposing = text.length > 0);

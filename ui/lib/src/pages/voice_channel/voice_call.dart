@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/webrtc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:vertex_ui/locator.dart';
 import 'package:vertex_ui/src/pages/video_call/signaling.dart';
-import 'package:vertex_ui/src/routing/route_names.dart';
 import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
-import 'package:vertex_ui/src/services/navigation_service.dart';
 import 'package:vertex_ui/src/widgets/home_widgets/channel_nane_widget.dart';
 import 'package:vertex_ui/src/widgets/home_widgets/channel_navigation_options_widget.dart';
 
@@ -28,7 +24,7 @@ class _VoiceCallState extends State<VoiceCall> {
   RTCVideoRenderer _localRenderer = new RTCVideoRenderer();
   RTCVideoRenderer _remoteRenderer = new RTCVideoRenderer();
   bool _inCalling = false;
-  final String serverIP = "demo.cloudwebrtc.com"; //Hardcoded for now
+  final String serverIP = "167.99.197.106"; //Hardcoded for now
 
   //Constructor
   _VoiceCallState({Key key, this.channel});

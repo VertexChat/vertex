@@ -6,4 +6,4 @@ const String RegisterRoute = '/register';
 //Internal Routes
 const String MessageRoute = '/message';
 const String VoiceChannelRoute = '/channel';
-const String LandingPageRoute = '/home';
+const String LandingPageRoute = '/home';  

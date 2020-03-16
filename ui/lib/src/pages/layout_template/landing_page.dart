@@ -5,7 +5,7 @@ class LandingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Center(
-        child: Text("Welcome To Vertex"),
+        child: Text("\tWelcome To Vertex\n  Get The lastest news here!"),
       ),
     );
   }

@@ -37,7 +37,7 @@ Route<dynamic> internalRoutes(RouteSettings settings) {
     case VoiceChannelRoute:
       Channel channel = settings.arguments;
       return _getPageRoute(VoiceCall(channel: channel), settings);
-    case LandingPageRoute:
+      case LandingPageRoute:
       return _getPageRoute(LandingPage(), settings);
     default:
       return _getPageRoute(LandingPage(), settings);

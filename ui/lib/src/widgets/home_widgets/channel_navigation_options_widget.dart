@@ -23,12 +23,16 @@ class ChannelNavigationOptionsWidget extends StatelessWidget {
             icon: Icon(FontAwesomeIcons.commentDots),
             onPressed: () => locatorHome<NavigationServiceHome>()
                 .navigateTo(MessageRoute, arguments: channel)),
-        SizedBox(width: 30),
+        SizedBox(width: 25),
         IconButton(
             icon: Icon(FontAwesomeIcons.phone),
             onPressed: () => locatorHome<NavigationServiceHome>()
                 .navigateTo(VoiceChannelRoute, arguments: channel)),
-        SizedBox(width: 30),
+        SizedBox(width: 25),
+        IconButton(
+            icon: Icon(FontAwesomeIcons.home),
+            onPressed: () => locatorHome<NavigationServiceHome>()
+                .navigateTo(LandingPageRoute)),
       ],
     );
   }

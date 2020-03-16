@@ -17,7 +17,7 @@ class ChannelNameWidget extends StatelessWidget {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text(channel.name),
+          child: Text(channel.name, style: TextStyle(fontWeight: FontWeight.bold)),
         ),
       ],
     );
