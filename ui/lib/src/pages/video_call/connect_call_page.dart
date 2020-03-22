@@ -89,7 +89,7 @@ class _ConnectCallPageState extends State<ConnectCallPage> {
           //Build mew page:
           MaterialPageRoute(
               builder: (context) =>
-              new CallPage(pageTitle: _channelNameController.text, ip: "demo.cloudwebrtc.com")));
+              new CallPage(pageTitle: _channelNameController.text, ip: "vertex.chat")));
     } //End function
   } //End ify
 } //End class

@@ -12,8 +12,7 @@ class CallPage extends StatefulWidget {
 
   @override
   //TODO: Not have the ip hard coded
-  _CallPageState createState() =>
-      _CallPageState(serverIP: "demo.cloudwebrtc.com");
+  _CallPageState createState() => _CallPageState(serverIP: "vertex.chat");
 } //End class
 
 /// Stateless class
@@ -137,7 +136,7 @@ class _CallPageState extends State<CallPage> {
                   IconButton(
                     icon: const Icon(Icons.videocam),
                     onPressed: () => _invitePeer(context, peer['id'], false),
-                    tooltip: 'Video calling',
+                    tooltip: 'Call calling',
                   ),
                   IconButton(
                     icon: const Icon(Icons.screen_share),
@@ -155,14 +154,7 @@ class _CallPageState extends State<CallPage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text('P2P Call Sample'),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: null,
-            tooltip: 'setup',
-          ),
-        ],
+        title: new Text('Connect to a call'),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: _inCalling

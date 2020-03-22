@@ -71,6 +71,7 @@ class SimpleWebSocket {
       );
       return webSocket;
     } catch (e) {
+
       throw e;
     }
   }

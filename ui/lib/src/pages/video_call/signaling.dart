@@ -146,9 +146,12 @@ class Signaling {
 
     _createPeerConnection(peer_id, media, use_screen).then((pc) {
       _peerConnections[peer_id] = pc;
+      print(peer_id);
       if (media == 'data') {
         _createDataChannel(peer_id, pc);
       }
+      // Create an offer once a connection has been made
+      //HTTPS & WSS IS A MUST FOR THIS TO WORK
       _createOffer(peer_id, pc, media);
     });
   }
@@ -162,12 +165,15 @@ class Signaling {
 
   void onMessage(message) async {
     Map<String, dynamic> mapData = message;
-    var data = mapData['data'];
-
+    // List of peers returned from server including myself
+    var data = mapData['data']; // Data from message
     switch (mapData['type']) {
+      // Type from message
       case 'peers':
         {
+          print('inside peersssssssssssss');
           List<dynamic> peers = data;
+          // print("inside peer, printing peer data  " + data);
           if (this.onPeersUpdate != null) {
             Map<String, dynamic> event = new Map<String, dynamic>();
             event['self'] = _selfId;
@@ -178,6 +184,7 @@ class Signaling {
         break;
       case 'offer':
         {
+          print('inside offer' + data['from']);
           var id = data['from'];
           var description = data['description'];
           var media = data['media'];
@@ -195,7 +202,7 @@ class Signaling {
           await _createAnswer(id, pc, media);
           if (this._remoteCandidates.length > 0) {
             _remoteCandidates.forEach((candidate) async {
-              await pc.addCandidate(candidate);
+                await pc.addCandidate(candidate);
             });
             _remoteCandidates.clear();
           }
@@ -203,6 +210,7 @@ class Signaling {
         break;
       case 'answer':
         {
+          print('inside answer');
           var id = data['from'];
           var description = data['description'];
 
@@ -215,6 +223,7 @@ class Signaling {
         break;
       case 'candidate':
         {
+          print('inside candidate');
           var id = data['from'];
           var candidateMap = data['candidate'];
           var pc = _peerConnections[id];
@@ -231,6 +240,7 @@ class Signaling {
         break;
       case 'leave':
         {
+          print('inside leave');
           var id = data;
           var pc = _peerConnections.remove(id);
           _dataChannels.remove(id);
@@ -251,6 +261,7 @@ class Signaling {
         break;
       case 'bye':
         {
+          print('inside bye');
           var from = data['from'];
           var to = data['to'];
           var sessionId = data['session_id'];
@@ -290,27 +301,12 @@ class Signaling {
   }
 
   void connect() async {
-    var url = 'https://$_host:$_port/ws';
+    var url = 'https://$_host/ws';
     _socket = SimpleWebSocket(url);
 
     print('connect to $url');
 
-    if (_turnCredential == null) {
-      try {
-        _turnCredential = await getTurnCredential(_host, _port);
-
-        _iceServers = {
-          'iceServers': [
-            {
-              'url': _turnCredential['uris'][0],
-              'username': _turnCredential['username'],
-              'credential': _turnCredential['password']
-            },
-          ]
-        };
-      } catch (e) {}
-    }
-
+    // Send data about myself on connection to signaling server
     _socket.onOpen = () {
       print('onOpen');
       this?.onStateChange(SignalingState.ConnectionOpen);
@@ -339,7 +335,16 @@ class Signaling {
   Future<MediaStream> createStream(media, user_screen) async {
     final Map<String, dynamic> mediaConstraints = {
       'audio': true,
-      'video': false
+      'video': {
+        'mandatory': {
+          'minWidth':
+              '640', // Provide your own width, height and frame rate here
+          'minHeight': '480',
+          'minFrameRate': '30',
+        },
+        'facingMode': 'user',
+        'optional': [],
+      }
     };
 
     MediaStream stream = user_screen
@@ -358,6 +363,7 @@ class Signaling {
     pc.onIceCandidate = (candidate) {
       _send('candidate', {
         'to': id,
+        'from': _selfId,
         'candidate': {
           'sdpMLineIndex': candidate.sdpMlineIndex,
           'sdpMid': candidate.sdpMid,
@@ -384,7 +390,6 @@ class Signaling {
     pc.onDataChannel = (channel) {
       _addDataChannel(id, channel);
     };
-
     return pc;
   }
 
@@ -409,12 +414,18 @@ class Signaling {
   // Function to Create a peer connection with a remote user
   _createOffer(String id, RTCPeerConnection pc, String media) async {
     try {
+      // This interface describes one end of a connection by creating an offer
+      // with constrains passed of what type of connection it is:
+
       RTCSessionDescription s = await pc
           .createOffer(media == 'data' ? _dc_constraints : _constraints);
+      // Update local description
       pc.setLocalDescription(s);
 
+      // Send offer
       _send('offer', {
         'to': id,
+        'from': _selfId,
         'description': {'sdp': s.sdp, 'type': s.type},
         'session_id': this._sessionId,
         'media': media,
@@ -422,7 +433,7 @@ class Signaling {
     } catch (e) {
       print(e.toString());
     }
-  }
+  } //ENd _createOffer function
 
   _createAnswer(String id, RTCPeerConnection pc, media) async {
     try {
@@ -430,9 +441,10 @@ class Signaling {
       RTCSessionDescription s = await pc
           .createAnswer(media == 'data' ? _dc_constraints : _constraints);
       pc.setLocalDescription(s);
-
+      print("insdie create answer  " + id);
       _send('answer', {
         'to': id,
+        'from': _selfId,
         'description': {'sdp': s.sdp, 'type': s.type},
         'session_id': this._sessionId,
       });
@@ -442,8 +454,12 @@ class Signaling {
   } //End function
 
   _send(event, data) {
-    data['type'] = event;
+    var request = new Map();
+    // Event type
+    request["type"] = event;
+    // Data with type
+    request["data"] = data;
     JsonEncoder encoder = new JsonEncoder();
-    _socket.send(encoder.convert(data));
+    _socket.send(encoder.convert(request));
   } //End function
 } //End class

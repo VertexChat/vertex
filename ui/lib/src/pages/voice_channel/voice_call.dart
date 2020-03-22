@@ -24,7 +24,7 @@ class _VoiceCallState extends State<VoiceCall> {
   RTCVideoRenderer _localRenderer = new RTCVideoRenderer();
   RTCVideoRenderer _remoteRenderer = new RTCVideoRenderer();
   bool _inCalling = false;
-  final String serverIP = "167.99.197.106"; //Hardcoded for now
+  final String serverIP = "vertex.chat"; //Hardcoded for now
 
   //Constructor
   _VoiceCallState({Key key, this.channel});
@@ -125,9 +125,10 @@ class _VoiceCallState extends State<VoiceCall> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   IconButton(
-                    icon: const Icon(Icons.videocam),
+                    icon: const Icon(Icons.phone),
+                    //Invite id to audio call;
                     onPressed: () => _invitePeer(context, peer['id'], false),
-                    tooltip: 'Video calling',
+                    tooltip: 'Voice Call',
                   ),
                 ])),
         subtitle: Text('id: ' + peer['id']),
@@ -166,5 +167,3 @@ class _VoiceCallState extends State<VoiceCall> {
     );
   } //End builder
 }
-
-

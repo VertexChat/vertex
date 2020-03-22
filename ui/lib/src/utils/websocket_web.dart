@@ -13,11 +13,12 @@ class SimpleWebSocket {
 
   SimpleWebSocket(this._url) {
     _url = _url.replaceAll('https:', 'wss:');
+    print(_url);
   }
 
   connect() async {
     try {
-      _socket = WebSocket(_url);
+      _socket = WebSocket(_url, 'json');
       _socket.onOpen.listen((e) {
         this?.onOpen();
       });
