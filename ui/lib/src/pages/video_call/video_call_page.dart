@@ -55,7 +55,6 @@ class _VideoCallPageState extends State<VideoCallPage> {
     if (_signaling == null) {
       // Connect with ip provided
       _signaling = new Signaling(serverIP)..connect();
-
       // Handle state changes wih signalling:
       _signaling.onStateChange = (SignalingState state) {
         switch (state) {

@@ -15,6 +15,7 @@
     "@types/react": "^16.9.23",
     "@types/react-dom": "^16.9.5",
     "https": "^1.0.0",
+    "node-turn": "0.0.4",
     "require": "^2.4.20",
     "tslint": "^6.1.0",
     "typescript": "^3.8.3",

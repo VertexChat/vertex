@@ -38,7 +38,7 @@ typedef void DataChannelCallback(RTCDataChannel dc);
 class Signaling {
   // Variables
   String _selfId = randomNumeric(6); // Random Number is generated for id
-  WebRTCWebSocket _socket; // WebSocket
+  WebSocket _socket; // WebSocket
   var _sessionId;
   var _host;
   var _port = 8086;
@@ -304,7 +304,7 @@ class Signaling {
 
   void connect() async {
     var url = 'https://$_host:$_port/ws';
-    _socket = WebRTCWebSocket(url);
+    _socket = WebSocket(url);
 
     print('connect to $url');
 
