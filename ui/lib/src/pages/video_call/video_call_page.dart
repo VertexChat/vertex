@@ -56,12 +56,15 @@ class _VideoCallPageState extends State<VideoCallPage> {
       // Connect with ip provided
       _signaling = new Signaling(serverIP)..connect();
 
+      // Handle state changes wih signalling:
       _signaling.onStateChange = (SignalingState state) {
         switch (state) {
           case SignalingState.CallStateNew:
+            // Update state to display in call UI with video elements:
             this.setState(() => _inCalling = true);
             break;
           case SignalingState.CallStateBye:
+            // Update state to remove video elements
             this.setState(() {
               _localRenderer.srcObject = null;
               _remoteRenderer.srcObject = null;
@@ -77,6 +80,8 @@ class _VideoCallPageState extends State<VideoCallPage> {
           case SignalingState.CallStateRinging:
           case SignalingState.ConnectionClosed:
           case SignalingState.ConnectionError:
+            print(state.toString()); // Print error
+            break;
           case SignalingState.ConnectionOpen:
             break;
         } //End switch
@@ -109,9 +114,9 @@ class _VideoCallPageState extends State<VideoCallPage> {
 
   // Invite peer
   // TODO: Implement this with just voice for channels
-  _invitePeer(context, peerId, use_screen) async {
+  _invitePeer(context, peerId, useScreen) async {
     if (_signaling != null && peerId != _selfId) {
-      _signaling.invite(peerId, 'video', use_screen);
+      _signaling.invite(peerId, 'video', useScreen);
     }
   } //End function
 

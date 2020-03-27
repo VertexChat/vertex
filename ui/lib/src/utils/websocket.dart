@@ -7,14 +7,14 @@ typedef void OnMessageCallback(dynamic msg);
 typedef void OnCloseCallback(int code, String reason);
 typedef void OnOpenCallback();
 
-class SimpleWebSocket {
+class WebRTCWebSocket {
   String _url;
   var _socket;
   OnOpenCallback onOpen;
   OnMessageCallback onMessage;
   OnCloseCallback onClose;
 
-  SimpleWebSocket(this._url);
+  WebRTCWebSocket(this._url);
 
   connect() async {
     try {

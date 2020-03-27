@@ -1,5 +1,9 @@
 import 'dart:html';
 
+/// Web WebSocket class, this class called when the application is running on a
+/// web browser client. The reasons for this is because Flutter Web is still in a beta
+/// and the dart:html package is required.
+
 typedef void OnMessageCallback(dynamic msg);
 typedef void OnCloseCallback(int code, String reason);
 typedef void OnOpenCallback();

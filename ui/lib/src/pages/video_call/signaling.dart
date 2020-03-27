@@ -38,7 +38,7 @@ typedef void DataChannelCallback(RTCDataChannel dc);
 class Signaling {
   // Variables
   String _selfId = randomNumeric(6); // Random Number is generated for id
-  SimpleWebSocket _socket; // WebSocket
+  WebRTCWebSocket _socket; // WebSocket
   var _sessionId;
   var _host;
   var _port = 8086;
@@ -304,7 +304,7 @@ class Signaling {
 
   void connect() async {
     var url = 'https://$_host:$_port/ws';
-    _socket = SimpleWebSocket(url);
+    _socket = WebRTCWebSocket(url);
 
     print('connect to $url');
 
@@ -334,7 +334,7 @@ class Signaling {
     await _socket.connect();
   } //End connect function
 
-  Future<MediaStream> createStream(media, user_screen) async {
+  Future<MediaStream> createStream(media, userScreen) async {
     final Map<String, dynamic> mediaConstraints = {
       'audio': true,
       'video': {
@@ -349,7 +349,7 @@ class Signaling {
       }
     };
 
-    MediaStream stream = user_screen
+    MediaStream stream = userScreen
         ? await navigator.getDisplayMedia(mediaConstraints)
         : await navigator.getUserMedia(mediaConstraints);
 
