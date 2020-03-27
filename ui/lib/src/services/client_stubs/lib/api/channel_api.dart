@@ -35,6 +35,7 @@ class ChannelApi {
 
     var response = await apiClient.invokeAPI(path, 'POST', queryParams,
         postBody, headerParams, formParams, contentType, authNames);
+
     return response;
   }
 

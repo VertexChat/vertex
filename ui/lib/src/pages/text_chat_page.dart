@@ -34,14 +34,14 @@ class _TextChatScreenState extends State<TextChatScreen>
 
   /// -- Send a message --
   Widget _buildTextComposer() {
-  //  final _formKey = new GlobalKey<FormState>();
+    //  final _formKey = new GlobalKey<FormState>();
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Row(
         children: <Widget>[
           Flexible(
             child: TextField(
-            //  key: _formKey,
+              //  key: _formKey,
               controller: _textEditingController,
               onChanged: (String text) {
                 setState(() => _isComposing = text.length > 0);

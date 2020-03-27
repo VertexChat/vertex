@@ -1,10 +1,15 @@
+'use strict';
+
 let http = require('http');
 let https = require('https');
 let WebSocketServer = require('websocket').server;
 
-// @author Cathal Butler - 19/03/2020
 /*
  * https://docs.w3cub.com/dom/webrtc_api/signaling_and_video_calling/
+ * https://www.tutorialspoint.com/webrtc/webrtc_signaling.htm
+ * https://www.w3.org/TR/webrtc/#offer-answer-options
+ * https://codelabs.developers.google.com/codelabs/webrtc-web/#0
+ * https://testrtc.com/webrtc-api-trace/ : DEBUGGER
 */
 
 let connectionArray = [];
@@ -30,28 +35,12 @@ function originIsAllowed(origin) {
  */
 function sendToPeer(target, request) {
     for (let i = 0; i < connectionArray.length; i++) {
-        if (connectionArray[i].data.to === target) {
-            console.log("SEND TO PEER ID " + connectionArray[i].data.to);
+        if (connectionArray[i].id === target) {
+            console.log("REMOTE ADDRESS WHEN SENDING TO PEER" + connectionArray[i].remoteAddress);
             connectionArray[i].sendUTF(request);
             break;
         }
     }
-}
-
-/**
- * Function returns a connection by its id from the array
- * of connections
- * @param id, connection id
- */
-function getConnectionForID(id) {
-    let connect = null;
-    for (let i = 0; i < connectionArray.length; i++) {
-        if (connectionArray[i].id === id) {
-            connect = connectionArray[i];
-            break;
-        }
-    }
-    return connect;
 }
 
 /**
@@ -66,9 +55,7 @@ function buildPeerList() {
     for (let i = 0; i < connectionArray.length; i++) {
         let peer = {};
         peer['id'] = connectionArray[i].data.id;
-        console.log(connectionArray[i].data.id);
         peer['name'] = connectionArray[i].data.name;
-        console.log(connectionArray[i].data.name);
         peer['user_agent'] = connectionArray[i].data.user_agent;
         peersResponse.data.push(peer); // Add a peer to data array of peers
     }
@@ -130,12 +117,10 @@ wsServer.on('request', function (request) {
     // Add the new connection to our list of connections.
     log("Connection accepted from " + connection.remoteAddress + ".");
 
+    // Request message inbound from client
     let requestMessage = {
         type: 'type',
         data: 'data'
-        // id: 'id',
-        // name: 'name',
-        // user_agent: 'user_agent',
     };
 
     //Send back a message to the client
@@ -144,43 +129,32 @@ wsServer.on('request', function (request) {
     // Set up a handler for the "message" event received over WebSocket. This
     // is a message sent by a client.
     connection.on('message', function (message) {
-        console.log(message.toString());
         if (message.type === 'utf8') {
             log("Received Message: " + message.utf8Data);
-            // Process incoming data
-            //   let sendToClients = true;
-            //Request type & data:
             requestMessage = JSON.parse(message.utf8Data);
-            // Add new connection the array on connections (Peers)
-            connectionArray.push(connection);
-            // Add data to connection
+            //Assign id and data to connection from request
+            connection.id = requestMessage.data.id;
             connection.data = requestMessage.data;
-            // Get connection by ID
-            let connect = getConnectionForID(requestMessage.data.id);
+
+            // let connect = getConnectionForID(requestMessage.data.to);
+            let msgString = JSON.stringify(requestMessage);
 
             //TODO - Complete this
             //Handle incoming request by there type
             switch (requestMessage.type) {
                 case 'new':
                     // Send peers to all connected
-                    console.log('inside new');
+                    connectionArray.push(connection);
+                    // Add data to current connection
+                    // Add new connection the array on connections (Peers)
                     sendPeerListToAll();
                     break;
                 case 'offer': //Fallthrough
                 case 'answer': //Fallthrough
                 case 'candidate': //Fallthrough
-                    // handle if a user goes away, the return message to the peer trying to start the call
-                    //TODO - CB Handle this case, important for finalising connection to candidate
-                    console.log('Inside candidate');
                     // Convert to an object to send:
-                    let msgString = JSON.stringify(requestMessage);
-                    console.log(msgString);
-
                     // Check that a id exists in the request sent from a client:
-                    if (requestMessage.data.to.length && requestMessage.data.to.length !== 0) {
-                        // Send on the request to that peer
-                        console.log(requestMessage.data.to);
-                        console.log(msgString);
+                    if (requestMessage.data.to && requestMessage.data.to.length !== 0) {
                         sendToPeer(requestMessage.data.to, msgString);
                     } else {
                         //Return an error if no ID is found
@@ -190,18 +164,20 @@ wsServer.on('request', function (request) {
                             reason: 'Peer to id not found'
                         };
                         let response = JSON.stringify(errorMessage);
-                        //Return all connections
-                        connect.sendUTF(response);
+                        //Return error
+                        connection.sendUTF(response);
                     }
                     break;
                 case 'leave':
-                    // Update when a user leave s call
+                    // Update when a user leaves a call
+                    //TODO - CB
                     break;
                 case 'bye':
                     //Disconnect from server
+                    //TODO - CB
                     break;
             }//End switch
-        }
+        }//End if
     });
 
     // Handle the WebSocket "close" event; this means a user has logged off

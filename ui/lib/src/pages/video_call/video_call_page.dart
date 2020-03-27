@@ -2,21 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/webrtc.dart';
 import 'package:vertex_ui/src/pages/video_call/signaling.dart';
 
-class CallPage extends StatefulWidget {
+class VideoCallPage extends StatefulWidget {
   //Member Variables
   final String pageTitle;
   final String ip;
 
   // Constructor
-  CallPage({Key key, this.pageTitle, this.ip}) : super(key: key);
+  VideoCallPage({Key key, this.pageTitle, this.ip}) : super(key: key);
 
   @override
-  //TODO: Not have the ip hard coded
-  _CallPageState createState() => _CallPageState(serverIP: "vertex.chat");
+//TODO: Not have the ip hard coded : 167.99.197.106
+  _VideoCallPageState createState() =>
+      _VideoCallPageState(serverIP: "167.99.197.106");
 } //End class
 
 /// Stateless class
-class _CallPageState extends State<CallPage> {
+class _VideoCallPageState extends State<VideoCallPage> {
   // Variables
   Signaling _signaling;
   List<dynamic> _peers;
@@ -26,8 +27,8 @@ class _CallPageState extends State<CallPage> {
   bool _inCalling = false;
   final String serverIP;
 
-  // Constructor
-  _CallPageState({Key key, @required this.serverIP});
+  // Constructors
+  _VideoCallPageState({Key key, @required this.serverIP});
 
   @override
   initState() {
@@ -68,7 +69,11 @@ class _CallPageState extends State<CallPage> {
             });
             break;
           case SignalingState.CallStateInvite:
+            print(SignalingState.CallStateInvite);
+            break;
           case SignalingState.CallStateConnected:
+            print(SignalingState.CallStateConnected);
+            break;
           case SignalingState.CallStateRinging:
           case SignalingState.ConnectionClosed:
           case SignalingState.ConnectionError:

@@ -24,7 +24,7 @@ class _VoiceCallState extends State<VoiceCall> {
   RTCVideoRenderer _localRenderer = new RTCVideoRenderer();
   RTCVideoRenderer _remoteRenderer = new RTCVideoRenderer();
   bool _inCalling = false;
-  final String serverIP = "vertex.chat"; //Hardcoded for now
+  final String serverIP = "18.203.171.99"; //Hardcoded for now
 
   //Constructor
   _VoiceCallState({Key key, this.channel});

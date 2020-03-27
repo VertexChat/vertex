@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:vertex_ui/src/models/settings_model.dart';
 import 'package:vertex_ui/src/pages/login/login_page.dart';
 import 'package:vertex_ui/src/pages/settings/settings_page.dart';
-import 'package:vertex_ui/src/pages/video_call/connect_call_page.dart';
+import 'package:vertex_ui/src/pages/video_call/video_call_page.dart';
 
 /// This class is used to create a custom AppBar for this application.
 /// This allows for navigation around the application
@@ -42,7 +42,7 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
                 context,
                 new MaterialPageRoute(
                     builder: (context) =>
-                        new ConnectCallPage("Connect to a call")));
+                        new VideoCallPage()));
           },
         ),
         IconButton(

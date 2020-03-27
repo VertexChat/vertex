@@ -157,7 +157,6 @@ class ApiClient {
 
   T getAuthentication<T extends Authentication>(String name) {
     var authentication = _authentications[name];
-
     return authentication is T ? authentication : null;
   }
 }

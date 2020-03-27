@@ -5,6 +5,7 @@ typedef void OnCloseCallback(int code, String reason);
 typedef void OnOpenCallback();
 
 class SimpleWebSocket {
+  //Variables
   String _url;
   var _socket;
   OnOpenCallback onOpen;
@@ -35,6 +36,7 @@ class SimpleWebSocket {
     }
   }
 
+  /// Function to send data
   send(data) {
     if (_socket != null && _socket.readyState == WebSocket.OPEN) {
       _socket.send(data);
@@ -44,7 +46,8 @@ class SimpleWebSocket {
     }
   }
 
+  /// Close WebSocket
   close() {
     _socket.close();
   }
-}
+}//End class
