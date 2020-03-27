@@ -8,6 +8,7 @@ import '../../utils/turn.dart' if (dart.library.js) '../../utils/turn_web.dart';
 
 import '../../utils/device_info.dart'
     if (dart.library.js) '../../utils/device_info_web.dart';
+
 import '../../utils/websocket.dart'
     if (dart.library.js) '../../utils/websocket_web.dart';
 
@@ -38,7 +39,7 @@ typedef void DataChannelCallback(RTCDataChannel dc);
 class Signaling {
   // Variables
   String _selfId = randomNumeric(6); // Random Number is generated for id
-  WebSocket _socket; // WebSocket
+  SimpleWebSocket _socket; // WebSocket
   var _sessionId;
   var _host;
   var _port = 8086;
@@ -304,7 +305,7 @@ class Signaling {
 
   void connect() async {
     var url = 'https://$_host:$_port/ws';
-    _socket = WebSocket(url);
+    _socket = SimpleWebSocket(url);
 
     print('connect to $url');
 
