@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../text_widget.dart';
+import 'text_widget.dart';
 
 class MuteCard extends StatelessWidget {
   const MuteCard(

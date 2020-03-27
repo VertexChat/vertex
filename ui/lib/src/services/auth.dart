@@ -1,4 +1,3 @@
-
 import 'client_stubs/lib/api.dart';
 
 //Enum
@@ -53,3 +52,4 @@ class AuthStateProvider {
     _subscribers.forEach((AuthStateListener s) => s.onAuthStateChanged(state));
   }
 } //End class
+

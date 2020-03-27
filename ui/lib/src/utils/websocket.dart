@@ -7,18 +7,19 @@ typedef void OnMessageCallback(dynamic msg);
 typedef void OnCloseCallback(int code, String reason);
 typedef void OnOpenCallback();
 
-class SimpleWebSocket {
+class WebSocket {
   String _url;
   var _socket;
   OnOpenCallback onOpen;
   OnMessageCallback onMessage;
   OnCloseCallback onClose;
-  SimpleWebSocket(this._url);
+
+  WebSocket(this._url);
 
   connect() async {
     try {
-      _socket = await WebSocket.connect(_url);
-      //socket = await _connectForSelfSignedCert(_host, _port);
+      //_socket = await WebSocket.connect(_url);
+      _socket = await _connectForSelfSignedCert(_url);
       this?.onOpen();
       _socket.listen((data) {
         this?.onMessage(data);
@@ -41,7 +42,7 @@ class SimpleWebSocket {
     _socket.close();
   }
 
-  Future<WebSocket> _connectForSelfSignedCert(String host, int port) async {
+  Future<WebSocket> _connectForSelfSignedCert(url) async {
     try {
       Random r = new Random();
       String key = base64.encode(List<int>.generate(8, (_) => r.nextInt(255)));
@@ -54,7 +55,7 @@ class SimpleWebSocket {
       };
 
       HttpClientRequest request = await client.getUrl(
-          Uri.parse('https://$host:$port/ws')); // form the correct url here
+          Uri.parse(url)); // form the correct url here
       request.headers.add('Connection', 'Upgrade');
       request.headers.add('Upgrade', 'websocket');
       request.headers.add(
@@ -68,9 +69,9 @@ class SimpleWebSocket {
         protocol: 'signaling',
         serverSide: false,
       );
-
       return webSocket;
     } catch (e) {
+
       throw e;
     }
   }

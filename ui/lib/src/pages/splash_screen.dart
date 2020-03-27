@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:vertex_ui/src/widgets/custom_gradient.dart';
+import 'package:vertex_ui/src/widgets/main_app_widgets/custom_gradient.dart';
 
 import 'home/home_page.dart';
 

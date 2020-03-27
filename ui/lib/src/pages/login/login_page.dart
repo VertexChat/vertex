@@ -5,7 +5,7 @@ import 'package:vertex_ui/src/pages/register/register_page.dart';
 import 'package:vertex_ui/src/routing/route_names.dart';
 import 'package:vertex_ui/src/services/auth.dart';
 import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
-import 'package:vertex_ui/src/widgets/icon_card.dart';
+import 'package:vertex_ui/src/widgets/login_register_widgets/icon_card.dart';
 import 'login_screen_presenter.dart';
 
 class LoginPage extends StatefulWidget {
@@ -273,7 +273,6 @@ class _LoginPageState extends State<LoginPage>
   @override
   void onLoginSuccess(Login login) {
     var authStateProvider = new AuthStateProvider();
-
     _showSnackBar("Successful Login redirecting...", Colors.green);
     authStateProvider.notify(AuthState.LOGGED_IN);
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:vertex_ui/src/pages/layout_template/home_layout_template.dart';
 import 'package:vertex_ui/src/pages/text_chat_page.dart';
-import 'package:vertex_ui/src/widgets/app_navigation_bar.dart';
+import 'package:vertex_ui/src/widgets/main_app_widgets/app_navigation_bar.dart';
 import 'package:vertex_ui/src/widgets/server_app_drawer/server_drawer.dart';
 
 class HomeMobilePortrait extends StatelessWidget {
@@ -13,8 +14,8 @@ class HomeMobilePortrait extends StatelessWidget {
       key: _scaffoldKey,
       appBar: AppNavigationBar(),
       drawer: ServerDrawer(),
-      body: TextChatScreen(),
+      body: HomeLayoutTemplate(),
       //More widgets to add here
     );
-  }
-}
+  } //End Widget builder
+} //End class

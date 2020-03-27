@@ -26,9 +26,9 @@ class AuthApi {
     List<String> contentTypes = ["application/json"];
 
     String contentType =
-    contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
     // Added login_auth
-    List<String> authNames = ['login_auth'];
+    List<String> authNames = []; //'login_auth'
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -36,15 +36,8 @@ class AuthApi {
       if (hasFields) postBody = mp;
     } else {}
 
-    var response = await apiClient.invokeAPI(
-        path,
-        'POST',
-        queryParams,
-        postBody,
-        headerParams,
-        formParams,
-        contentType,
-        authNames);
+    var response = await apiClient.invokeAPI(path, 'POST', queryParams,
+        postBody, headerParams, formParams, contentType, authNames);
     return response;
   }
 
@@ -71,16 +64,15 @@ class AuthApi {
       // Store currently logged in user information
       userDetails.setString('username', user.username);
       userDetails.setInt('id', user.id);
-      print(user);
     } else {
 //      // Logged in without any information about the user
 //      isLoggedIn = true;
 //      // Store currently logged in user information
 //      userDetails.setString('username', login.username);
       return;
-    }//End if else
+    } //End if else
     return;
-  }//End login function
+  } //End login function
 
   bool get isLoggedIn => _isLoggedIn;
 
@@ -107,7 +99,7 @@ class AuthApi {
     List<String> contentTypes = ["application/json"];
 
     String contentType =
-    contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
+        contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
     List<String> authNames = [];
 
     if (contentType.startsWith("multipart/form-data")) {
@@ -116,15 +108,8 @@ class AuthApi {
       if (hasFields) postBody = mp;
     } else {}
 
-    var response = await apiClient.invokeAPI(
-        path,
-        'POST',
-        queryParams,
-        postBody,
-        headerParams,
-        formParams,
-        contentType,
-        authNames);
+    var response = await apiClient.invokeAPI(path, 'POST', queryParams,
+        postBody, headerParams, formParams, contentType, authNames);
     return response;
   }
 
@@ -135,7 +120,8 @@ class AuthApi {
     Response response = await registerWithHttpInfo(user: user);
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, _decodeBodyBytes(response));
-    } else if (response.body != null) {} else {
+    } else if (response.body != null) {
+    } else {
       return;
     }
   }

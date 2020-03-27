@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vertex_ui/src/widgets/settings_widgets/mute_card_widget.dart';
 import 'package:vertex_ui/src/widgets/settings_widgets/settings_card_widget.dart';
 import 'package:vertex_ui/src/widgets/settings_widgets/user_details_widget.dart';
-import 'package:vertex_ui/src/widgets/text_widget.dart';
+import 'package:vertex_ui/src/widgets/settings_widgets/text_widget.dart';
 
 // Settings view for web
 class SettingsViewWeb extends StatefulWidget {
@@ -16,7 +16,6 @@ class SettingsViewWeb extends StatefulWidget {
 } //End class
 
 class _SettingsViewWeb extends State<SettingsViewWeb> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   String _audioInput;
   String _audioOutput;
   double _audioInputSensitivity = 0.0;
@@ -124,7 +123,7 @@ class _SettingsViewWeb extends State<SettingsViewWeb> {
               ),
               onChanged: (String value) {
                 setState(() {
-                    _audioInput = value;
+                  _audioInput = value;
                 });
                 // Save as key value pair
                 save('audioInput', value);
@@ -332,7 +331,6 @@ class _SettingsViewWeb extends State<SettingsViewWeb> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _scaffoldKey,
         appBar: AppBar(title: Text("Settings")),
         body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 70, vertical: 60),
@@ -344,75 +342,61 @@ class _SettingsViewWeb extends State<SettingsViewWeb> {
         ));
   } //End builder
 
-  Widget appInfo() {
-    return Row(
-      children: <Widget>[],
-    );
-  }
-
   Widget settings() {
-    return FutureBuilder(
-        future: restore(),
-        builder: (BuildContext context, snapshot) {
-          return Column(
-            children: <Widget>[
-              Container(
-                height: 100,
-                color: Colors.black26,
-
-                /// TODO: Revisit this
-                child: UserDetails(
-                    userName: snapshot.hasData ? _loggedInUser : ""),
-              ),
-              SizedBox(height: 20.0),
-              Container(
-                child: Expanded(
-                  child: ListView(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          "VOICE SETTINGS",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          SettingsCard(
-                            optionsDropdownBox: audioInputDropBox,
-                            settingsTypeHeading: "Input Audio",
-                            width: 600,
-                          ),
-                          // Audio Output Settings
-                          SettingsCard(
-                            optionsDropdownBox: audioOutputDropBox,
-                            settingsTypeHeading: "Output Audio",
-                            width: 600,
-                          ),
-                        ],
-                      ),
-                      audioInputSensitivityCard,
-                      SettingsCard(
-                          optionsDropdownBox: videoInputDropBox,
-                          settingsTypeHeading: "Webcam Device"),
-                      // Audio Mute Settings output & input
-                      MuteCard(
-                        audioMuteToggle: audioInputIsMuteToggle,
-                        muteSourceTypeHeading: "Mute Audio Input",
-                      ),
-                      MuteCard(
-                        audioMuteToggle: audioOutputIsMuteToggle,
-                        muteSourceTypeHeading: "Mute Audio Output",
-                      )
-                    ],
+    return Column(
+      children: <Widget>[
+        Container(
+          height: 100,
+          color: Colors.black26,
+          child: UserDetails(userName: _loggedInUser),
+        ),
+        SizedBox(height: 20.0),
+        Container(
+          child: Expanded(
+            child: ListView(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    "VOICE SETTINGS",
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
-              )
-            ],
-          );
-        } //End builder
-        );
-  } //End widget
-} //End class
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    SettingsCard(
+                      optionsDropdownBox: audioInputDropBox,
+                      settingsTypeHeading: "Input Audio",
+                      width: 600,
+                    ),
+                    // Audio Output Settings
+                    SettingsCard(
+                      optionsDropdownBox: audioOutputDropBox,
+                      settingsTypeHeading: "Output Audio",
+                      width: 600,
+                    ),
+                  ],
+                ),
+                audioInputSensitivityCard,
+                SettingsCard(
+                    optionsDropdownBox: videoInputDropBox,
+                    settingsTypeHeading: "Webcam Device"),
+                // Audio Mute Settings output & input
+                MuteCard(
+                  audioMuteToggle: audioInputIsMuteToggle,
+                  muteSourceTypeHeading: "Mute Audio Input",
+                ),
+                MuteCard(
+                  audioMuteToggle: audioOutputIsMuteToggle,
+                  muteSourceTypeHeading: "Mute Audio Output",
+                )
+              ],
+            ),
+          ),
+        )
+      ],
+    );
+  } //End builder
+}

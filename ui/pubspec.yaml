@@ -20,7 +20,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  shared_preferences:
+  shared_preferences: ^0.5.6+3
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -36,7 +36,7 @@ dependencies:
   # HTTP
   http: '>=0.12.0 <0.13.0'
 
-  connectivity:
+  #connectivity: ^0.4.8+2
 
   # https://pubdev/packages/connection_status_bar#-installing-tab-:
   connection_status_bar: ^1.1.2
@@ -57,12 +57,15 @@ dependencies:
 
   # WebRTC
   # https://pub.dev/packages/flutter_webrtc
-  flutter_webrtc: ^0.2.6
+  flutter_webrtc: ^0.2.7
 
   # RxDart adds additional capabilities to Dart Streams and StreamControllers.
   # https://pub.dev/packages/rxdart#-readme-tab-
   # NOTE: https://pub.dev/packages/rxdart_codemod
   rxdart: ^0.23.1
+
+  # https://pub.dev/packages/get_it
+  get_it:
 
 dev_dependencies:
   flutter_test:

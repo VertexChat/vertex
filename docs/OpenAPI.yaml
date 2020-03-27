@@ -17,6 +17,9 @@ tags:
     
   - name: Channel
     description: Operation available for channels
+  
+  - name: Message
+    description: Operation available for user messages
     
   - name: Server
     description: Operation available for server info
@@ -193,7 +196,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Channel'
          
-          
         '404':
             $ref: '#/components/responses/NotFound'
             
@@ -236,6 +238,125 @@ paths:
       responses:
         '204':
           description: Channel has been deleted
+          
+        '404':
+            $ref: '#/components/responses/NotFound'
+            
+        default:
+            $ref: '#/components/responses/Unexpected'
+  
+ /messages:
+    post:
+      tags:
+        - Message
+      summary: Message has been created
+      operationId: addMessage
+      description: Message has been created
+      responses:
+        '201':
+          description: Message has been created
+          headers:
+            Location:
+              schema:
+                type: string
+                format: uri
+        default:
+          $ref: '#/components/responses/Unexpected'
+          
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+        description: Message to be added
+    
+    get:
+      tags:
+        - Message
+      summary: Returns all messages
+      operationId: getAllMessages
+      description: Returns all messages in a channel
+      responses:
+        '200':
+          description: Messages have been returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllMessages'
+                
+        '404':
+          $ref: '#/components/responses/NotFound'
+          
+        default:
+            $ref: '#/components/responses/Unexpected'
+            
+ /messages/{id}:
+    parameters:
+      - in: path 
+        name: id
+        required: true
+        schema:
+          type: integer
+        description: The message ID
+        
+    get:
+      tags:
+        - Message
+        
+      summary: Get a message by its ID
+      operationId: getMessageByID
+      description: 'Returns a single message if it exists'
+      
+      responses:
+        '200':
+         description: The message has been found 
+         content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+         
+        '404':
+            $ref: '#/components/responses/NotFound'
+            
+        default:
+            $ref: '#/components/responses/Unexpected'
+          
+    put:
+      tags:
+        - Message
+        
+      summary: Updates an existing message
+      operationId: updateMessageByID
+      description: Updates an existing message
+      
+      responses:
+        '204':
+          description: Message sucessfully updated
+          
+        '404':
+          $ref: '#/components/responses/NotFound' 
+          
+        default:
+          $ref: '#/components/responses/Unexpected'
+          
+      requestBody:
+        description: Message to be added
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+              
+    delete:
+      tags:
+        - Message
+      
+      summary: Deletes an existing message
+      operationId: deleteMessageByID
+      description: Deletes an existing message
+      
+      responses:
+        '204':
+          description: Message has been deleted
           
         '404':
             $ref: '#/components/responses/NotFound'
@@ -382,11 +503,12 @@ components:
     Channel:
       type: object
       required:
-        - id
-        - name  # The name of the channel 
-        - capacity  # Id of the DM creator  
-        - type # the user limit of the voice channel
-        - position  # the recipients of the DM
+        - id # id of the channel
+        - name  # The name of the channel
+        - user_id # user id of who created the channel
+        - capacity  # capacity of channel
+        - type # enum type of channel
+        - position  # position in list of channels
         
       properties:
         id:
@@ -396,6 +518,10 @@ components:
         name:
           type: string
           example: General
+          
+        user_id:
+          type: string
+          example: Hello
           
         capacity:
           type: integer
@@ -410,6 +536,46 @@ components:
           type: integer
           example: 3
           
+    AllMessages:
+     type: array
+     items:
+        $ref: '#/components/schemas/Message'
+          
+    Message:
+      type: object
+      required: 
+        - id # message id
+        - channel_id # channel id of where message lives
+        - user_id # user id from whom the message came
+        - content # message content / body
+        - timestamp # when the message was sent
+        - edited_timestamp # when / if the message was updated
+        
+      properties:
+        id:
+          type: integer
+          example: 4
+          
+        channel_id:
+          type: integer
+          example: 2
+        
+        user_id:
+          type: integer
+          example: 0
+        
+        content:
+          type: string
+          example: Hello, World!
+        
+        timestamp:
+          type: string
+          example: '16:21 04/03/2020'
+          
+        edited_timestamp:
+          type: string
+          example: '17:59 13/03/2020'
+        
           
     Server: 
       type: object

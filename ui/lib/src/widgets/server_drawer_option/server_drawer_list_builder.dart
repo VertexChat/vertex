@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:vertex_ui/locator.dart';
+import 'package:vertex_ui/src/routing/route_names.dart';
 import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
+import 'package:vertex_ui/src/services/navigation_service.dart';
 import 'package:vertex_ui/src/utils/equals.dart';
 
 /// This class is used for building the lists of voice channels and text channels inside the
@@ -71,7 +74,17 @@ class ServerDrawerListBuilder extends StatelessWidget {
                     )
                   ],
                 ),
-                onPressed: () => null));
+                onPressed: () =>
+                    equalsIgnoreCase(channelData[index].type, "VOICE")
+                        // Return Voice Channel information to VoiceCall() Page
+                        ? locatorHome<NavigationServiceHome>().navigateTo(
+                            VoiceChannelRoute,
+                            arguments: channelData[
+                                index]) // Pass channel data to VoiceCall
+                        // Return Message Channel information to TextChatPage()
+                        : locatorHome<NavigationServiceHome>().navigateTo(
+                            MessageRoute,
+                            arguments: channelData[index])));
       },
       separatorBuilder: (BuildContext context, int index) => const Divider(),
     );
@@ -93,6 +106,7 @@ class ServerDrawerListBuilder extends StatelessWidget {
                 return _channelsListView(data);
               } else if (snapshot.hasError) {
                 //Return error if any
+                ///TODO: Look at something this more of a user readable message
                 return Center(child: Text("${snapshot.error}"));
               } //End if else
               //Loading...
