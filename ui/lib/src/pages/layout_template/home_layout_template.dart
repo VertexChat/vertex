@@ -24,7 +24,7 @@ class HomeLayoutTemplate extends StatelessWidget {
             // Use the NavigationServiceHome to allow for navigation between
             // Voice call page and message.
             child: Navigator(
-              key: locatorHome<NavigationServiceHome>().navigatorKey,
+              key: locatorGlobal<NavigationServiceHome>().navigatorKey,
               onGenerateRoute: internalRoutes,
               initialRoute: LandingPageRoute,
             ),

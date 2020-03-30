@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'dart:async';
 import 'package:flutter_webrtc/webrtc.dart';
-
-import 'random_string.dart';
+import 'package:vertex_ui/src/services/random_string.dart';
 
 import '../../utils/turn.dart' if (dart.library.js) '../../utils/turn_web.dart';
 
@@ -305,7 +304,7 @@ class Signaling {
 
   void connect() async {
     var url = 'https://$_host:$_port/ws';
-    _socket = SimpleWebSocket(url);
+    _socket = SimpleWebSocket(url, 'json');
 
     print('connect to $url');
 

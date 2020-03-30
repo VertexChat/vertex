@@ -9,23 +9,26 @@ typedef void OnOpenCallback();
 
 class SimpleWebSocket {
   String _url;
+  String _protocol;
   var _socket;
   OnOpenCallback onOpen;
   OnMessageCallback onMessage;
   OnCloseCallback onClose;
 
-  SimpleWebSocket(this._url);
+  SimpleWebSocket(this._url, this._socket);
 
   connect() async {
     try {
       //_socket = await WebSocket.connect(_url);
       _socket = await _connectForSelfSignedCert(_url);
       this?.onOpen();
+
       _socket.listen((data) {
         this?.onMessage(data);
       }, onDone: () {
         this?.onClose(_socket.closeCode, _socket.closeReason);
       });
+
     } catch (e) {
       this.onClose(500, e.toString());
     }

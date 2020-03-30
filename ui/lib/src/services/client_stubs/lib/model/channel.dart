@@ -3,6 +3,7 @@ part of openapi.api;
 class Channel {
   int id;
   String name;
+  int userId;
   int capacity;
 
   /* Type determines what whether the channel is voice, text, or some specialised char e.g. direct                message N.B. This will be updated in future once the appropiate ENUM values have been finalised. */
@@ -13,13 +14,14 @@ class Channel {
 
   @override
   String toString() {
-    return 'Channel[id=$id, name=$name, capacity=$capacity, type=$type, position=$position, ]';
+    return 'Channel[id=$id, name=$name, userId=$userId, capacity=$capacity, type=$type, position=$position, ]';
   }
 
   Channel.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
     id = json['id'];
     name = json['name'];
+    userId = json['user_id'];
     capacity = json['capacity'];
     type = json['type'];
     position = json['position'];
@@ -29,6 +31,7 @@ class Channel {
     Map<String, dynamic> json = {};
     if (id != null) json['id'] = id;
     if (name != null) json['name'] = name;
+    if (userId != null) json['user_id'] = userId;
     if (capacity != null) json['capacity'] = capacity;
     if (type != null) json['type'] = type;
     if (position != null) json['position'] = position;

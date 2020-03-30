@@ -52,7 +52,7 @@ dependencies:
   device_info:
 
   # For information about the application
-  # https://pubdev/packages/package_info:
+  # https://pub.dev/packages/package_info:
   package_info:
 
   # WebRTC
@@ -66,6 +66,9 @@ dependencies:
 
   # https://pub.dev/packages/get_it
   get_it:
+
+  # https://pub.dev/packages/provider:
+  provider: ^4.0.4
 
 dev_dependencies:
   flutter_test:

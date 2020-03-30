@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vertex_ui/locator.dart';
+import 'package:vertex_ui/src/pages/base_view.dart';
+import 'package:vertex_ui/src/providers/channels_view_model.dart';
 import 'package:vertex_ui/src/routing/route_names.dart';
-import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
 import 'package:vertex_ui/src/services/navigation_service.dart';
 import 'package:vertex_ui/src/utils/equals.dart';
 
@@ -11,6 +12,7 @@ import 'package:vertex_ui/src/utils/equals.dart';
 /// and the icon that will be used.
 // https://stackoverflow.com/questions/45669202/how-to-add-a-listview-to-a-column-in-flutter
 // https://api.flutter.dev/flutter/widgets/ListView-class.html
+// https://flutter.dev/docs/development/data-and-backend/state-mgmt/simple
 
 class ServerDrawerListBuilder extends StatelessWidget {
   //Variables
@@ -77,12 +79,12 @@ class ServerDrawerListBuilder extends StatelessWidget {
                 onPressed: () =>
                     equalsIgnoreCase(channelData[index].type, "VOICE")
                         // Return Voice Channel information to VoiceCall() Page
-                        ? locatorHome<NavigationServiceHome>().navigateTo(
+                        ? locatorGlobal<NavigationServiceHome>().navigateTo(
                             VoiceChannelRoute,
                             arguments: channelData[
                                 index]) // Pass channel data to VoiceCall
                         // Return Message Channel information to TextChatPage()
-                        : locatorHome<NavigationServiceHome>().navigateTo(
+                        : locatorGlobal<NavigationServiceHome>().navigateTo(
                             MessageRoute,
                             arguments: channelData[index])));
       },
@@ -92,25 +94,14 @@ class ServerDrawerListBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var api = ChannelApi();
     return Container(
       child: Row(
         children: <Widget>[
           Expanded(
-              child: FutureBuilder<List<Channel>>(
-            future: api.getAllChannels(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                List<Channel> data = snapshot.data;
-                //Return list of channel widgets
-                return _channelsListView(data);
-              } else if (snapshot.hasError) {
-                //Return error if any
-                ///TODO: Look at something this more of a user readable message
-                return Center(child: Text("${snapshot.error}"));
-              } //End if else
-              //Loading...
-              return CircularProgressIndicator();
+              child: BaseView<ChannelsViewModel>(
+            onModelReady: (model) => model.getChannels(), //Get channels
+            builder: (context, model, child) {
+              return _channelsListView(model.channels);
             },
           ))
         ],

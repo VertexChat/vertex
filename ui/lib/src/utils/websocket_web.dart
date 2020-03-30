@@ -11,19 +11,20 @@ typedef void OnOpenCallback();
 class SimpleWebSocket {
   //Variables
   String _url;
+  String _protocol;
   var _socket;
   OnOpenCallback onOpen;
   OnMessageCallback onMessage;
   OnCloseCallback onClose;
 
-  SimpleWebSocket(this._url) {
+  SimpleWebSocket(this._url, this._protocol) {
     _url = _url.replaceAll('https:', 'wss:');
-    print(_url);
   }
 
   connect() async {
     try {
-      _socket = WebSocket(_url, 'json');
+      // json
+      _socket = WebSocket(_url, _protocol);
       _socket.onOpen.listen((e) {
         this?.onOpen();
       });
@@ -38,7 +39,7 @@ class SimpleWebSocket {
     } catch (e) {
       this?.onClose(e.code, e.reason);
     }
-  }
+  } //End connect function
 
   /// Function to send data
   send(data) {
@@ -54,4 +55,4 @@ class SimpleWebSocket {
   close() {
     _socket.close();
   }
-}//End class
+} //End class
