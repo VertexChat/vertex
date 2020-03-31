@@ -5,10 +5,10 @@ import 'package:vertex_ui/src/models/settings_model.dart';
 import 'package:vertex_ui/src/pages/home/home_view_mobile.dart';
 import 'package:vertex_ui/src/pages/home/home_view_web.dart';
 
-/// This class displays the UI differently depending on the device the application
-/// is running on. This is to allow for a response design across web, mobile & tablet.
+/// This class with the aid of [ResponsiveBuilder] builds a the Home UI for this
+/// application depending on the device its running on.
 ///
-///
+
 class VertexHomePage extends StatefulWidget {
   //Variables
   final String title;

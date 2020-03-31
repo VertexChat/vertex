@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vertex_ui/src/pages/settings/app_info.dart';
-import 'package:vertex_ui/src/pages/settings/device_info.dart';
 import 'package:vertex_ui/src/widgets/settings_widgets/mute_card_widget.dart';
 import 'package:vertex_ui/src/widgets/settings_widgets/settings_card_widget.dart';
 import 'package:vertex_ui/src/widgets/settings_widgets/user_details_widget.dart';
@@ -204,14 +203,15 @@ class _SettingsViewMobilePortrait extends State<SettingsViewMobilePortrait> {
   Widget get audioInputSensitivitySliderCard {
     return Container(
       child: Container(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            audioInputSensitivitySlider,
-            TextWidget(_audioInputSensitivity.floor().toString()),
-//            SliderWidget(_audioInputSensitivity),
-          ],
+        child: Expanded(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              audioInputSensitivitySlider,
+              TextWidget(_audioInputSensitivity.floor().toString()),
+            ],
+          ),
         ),
       ),
     );
@@ -405,7 +405,10 @@ class _SettingsViewMobilePortrait extends State<SettingsViewMobilePortrait> {
                 return Container(
                   height: 100,
                   color: Colors.black26,
-                  child: UserDetails(userName: snapshot.hasData ? _loggedInUser : "No User logged In"),
+                  child: UserDetails(
+                      userName: snapshot.hasData
+                          ? _loggedInUser
+                          : "No User logged In"),
                 );
               }),
           SizedBox(height: 20.0),
@@ -435,7 +438,6 @@ class _SettingsViewMobilePortrait extends State<SettingsViewMobilePortrait> {
                             ? new Text("")
                             : Column(children: <Widget>[
                                 //Device info
-                                DeviceInfo(),
                                 AppInfo(),
                               ])),
                   )

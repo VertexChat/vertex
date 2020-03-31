@@ -304,7 +304,7 @@ class Signaling {
 
   void connect() async {
     var url = 'https://$_host:$_port/ws';
-    _socket = SimpleWebSocket(url, 'json');
+    _socket = SimpleWebSocket(url);
 
     print('connect to $url');
 

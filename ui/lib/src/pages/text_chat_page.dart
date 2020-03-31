@@ -3,7 +3,6 @@ import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
 import 'package:vertex_ui/src/widgets/home_widgets/channel_nane_widget.dart';
 import 'package:vertex_ui/src/widgets/home_widgets/channel_navigation_options_widget.dart';
 
-import '../models/text_chat_model.dart';
 
 class TextChatScreen extends StatefulWidget {
   final Channel channel;
@@ -144,8 +143,6 @@ class ChatMessage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(dummyData[0].name,
-                      style: Theme.of(context).textTheme.subhead),
                   Container(
                     margin: const EdgeInsets.only(top: 5.0),
                     child: Text(text), // Body of message to display

@@ -37,13 +37,14 @@ Route<dynamic> internalRoutes(RouteSettings settings) {
     case VoiceChannelRoute:
       Channel channel = settings.arguments;
       return _getPageRoute(VoiceCall(channel: channel), settings);
-      case LandingPageRoute:
+    case LandingPageRoute:
       return _getPageRoute(LandingPage(), settings);
     default:
       return _getPageRoute(LandingPage(), settings);
   } //End switch
 } //End function
 
+/// Returns a page which is a [Widget] and [RouteSettings]
 PageRoute _getPageRoute(Widget child, RouteSettings settings) {
   return MaterialPageRoute(builder: (context) => child, settings: settings);
 } //End function

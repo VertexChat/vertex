@@ -22,31 +22,28 @@ class NotificationService {
   var _host = "localhost";
   var _port = 8765;
 
-  //Instances of notifier
-  final notify = ChannelsViewModel();
-
-
   //Constructor
   NotificationService();
 
   void connect() async {
     var url = 'ws://$_host:$_port';
-    _socket = SimpleWebSocket(url, null);
+    _socket = SimpleWebSocket(url);
 
     print('Connect to $url');
 
     _socket.onOpen = () {
-      print('open');
+      print('yurttttt');
+      //print('open');
       _send(_sessionId); //Send session id
     };
 
     _socket.onMessage = (message) {
-      print('Reviced Notification: ' + message);
+      //print('Received Notification: ' + message);
       this.onMessage(decoder.convert(message));
     };
 
     _socket.onClose = (int code, String reason) {
-      print('Closed by server [$code => $reason]!');
+      //print('Closed by server [$code => $reason]!');
     };
 
     await _socket.connect();
@@ -54,21 +51,19 @@ class NotificationService {
 
   void onMessage(message) async {
     Map<String, dynamic> mapData = message;
-    print(mapData['target']);
     switch (mapData['type']) {
       case 'get_channels':
         {
           // Update channels list
           // may require more data soon
           // lets the widget know to update
-          await Future.delayed(const Duration(seconds: 10), (){});
+          await Future.delayed(const Duration(seconds: 10), () {});
           locatorGlobal<ChannelsViewModel>().addChannel();
           //notify.addChannel();
           break;
         }
       case 'get_message':
         {
-
           break;
         }
       default:

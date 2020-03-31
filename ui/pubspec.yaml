@@ -38,7 +38,7 @@ dependencies:
 
   #connectivity: ^0.4.8+2
 
-  # https://pubdev/packages/connection_status_bar#-installing-tab-:
+  # https://pub.dev/packages/connection_status_bar#-installing-tab-:
   connection_status_bar: ^1.1.2
 
   # Used for allow the creation of a responsive design on mobile, web and tablet devices
@@ -48,7 +48,7 @@ dependencies:
   font_awesome_flutter:
 
   # For information about devices
-  # https://pubdev/packages/device_info:
+  # https://pub.dev/packages/device_info:
   device_info:
 
   # For information about the application

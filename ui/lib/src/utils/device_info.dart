@@ -1,5 +1,7 @@
 import 'dart:io';
 
+/// Class Return information about the device it is running on
+
 class DeviceInfo {
   static String get label {
     return Platform.localHostname + '(' + Platform.operatingSystem + ")";

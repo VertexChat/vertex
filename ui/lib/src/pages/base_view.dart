@@ -9,8 +9,8 @@ import 'package:vertex_ui/locator.dart';
 /// Ref: https://www.filledstacks.com/post/flutter-architecture-my-provider-implementation-guide/
 /// https://flutter.dev/docs/development/data-and-backend/state-mgmt/simple
 
-
 class BaseView<T extends ChangeNotifier> extends StatefulWidget {
+  // Variables
   final Widget Function(BuildContext context, T value, Widget child) builder;
   final Function(T) onModelReady;
 

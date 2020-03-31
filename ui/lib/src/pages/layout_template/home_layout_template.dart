@@ -10,7 +10,8 @@ import 'package:vertex_ui/src/services/navigation_service.dart';
 /// if a main layout is implemented with a navigation bar.
 /// For the use case of this application it will be used with the home page to allow
 /// page changes inside the Expanded(Container()). This will allow for changing between
-/// text messaging and in-current call page.
+/// text messaging and in-current call page using [NavigationServiceHome] service
+/// and [internalRoutes].
 
 class HomeLayoutTemplate extends StatelessWidget {
   const HomeLayoutTemplate({Key key}) : super(key: key);
@@ -24,7 +25,9 @@ class HomeLayoutTemplate extends StatelessWidget {
             // Use the NavigationServiceHome to allow for navigation between
             // Voice call page and message.
             child: Navigator(
+              /// Navigation key used from NavigationServiceHome class
               key: locatorGlobal<NavigationServiceHome>().navigatorKey,
+              /// internalRoutes
               onGenerateRoute: internalRoutes,
               initialRoute: LandingPageRoute,
             ),

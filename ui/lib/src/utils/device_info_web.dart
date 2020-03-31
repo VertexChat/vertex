@@ -1,5 +1,7 @@
 import 'dart:html' as HTML;
 
+/// Class Return information about the web browser it is running on
+
 class DeviceInfo {
   static String get label {
     return 'Flutter Web ( ' + HTML.window.navigator.userAgent + ' )';

@@ -15,5 +15,5 @@ void setupLocator() {
   locatorGlobal.registerLazySingleton(() => NavigationService());
   locatorGlobal.registerLazySingleton(() => NavigationServiceHome());
   // Register Provider State Management Services
-  locatorGlobal.registerLazySingleton(() => ChannelsViewModel());
+  locatorGlobal.registerFactory(() => ChannelsViewModel());
 }//End

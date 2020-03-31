@@ -8,11 +8,11 @@ import 'server_drawer_mobile.dart';
 import 'server_drawer_web.dart';
 
 /// This class displays the server app drawer differently depending on the device the application
-/// is running on. This is to allow for a response design across web, mobile & tablet.
+/// is running on. This is to allow for a response design across web, mobile & tablet with the aid of
+/// [ResponsiveBuilder] & [ScreenTypeLayout]
 
 class ServerDrawer extends StatelessWidget {
-  final bool displayUsersInCall;
-  const ServerDrawer({Key key, this.displayUsersInCall}) : super(key: key);
+  const ServerDrawer({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,5 +37,5 @@ class ServerDrawer extends StatelessWidget {
       SizedBox(height: 50),
       ServerDrawerSettingsBar(),
     ];
-  }//End function =
-}//End class
+  } //End function =
+} //End class

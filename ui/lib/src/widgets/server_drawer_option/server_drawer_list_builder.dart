@@ -1,6 +1,8 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vertex_ui/locator.dart';
+import 'package:vertex_ui/src/enums/view_state_enum.dart';
 import 'package:vertex_ui/src/pages/base_view.dart';
 import 'package:vertex_ui/src/providers/channels_view_model.dart';
 import 'package:vertex_ui/src/routing/route_names.dart';
@@ -8,8 +10,7 @@ import 'package:vertex_ui/src/services/navigation_service.dart';
 import 'package:vertex_ui/src/utils/equals.dart';
 
 /// This class is used for building the lists of voice channels and text channels inside the
-/// drawer. This class requires a list of Channel Models which hold the name of the list, name of the channel
-/// and the icon that will be used.
+/// drawer. This class requires a list of [Channel] objects.
 // https://stackoverflow.com/questions/45669202/how-to-add-a-listview-to-a-column-in-flutter
 // https://api.flutter.dev/flutter/widgets/ListView-class.html
 // https://flutter.dev/docs/development/data-and-backend/state-mgmt/simple
@@ -30,10 +31,14 @@ class ServerDrawerListBuilder extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(
+              AutoSizeText(
                 "CHANNELS",
                 //data[index].listName,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
+                overflow: TextOverflow.fade,
               ),
             ],
           );
@@ -67,9 +72,11 @@ class ServerDrawerListBuilder extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          Text(
+                          AutoSizeText(
                             channelData[index].name,
                             textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                            softWrap: true,
                           ),
                         ],
                       ),
@@ -101,7 +108,9 @@ class ServerDrawerListBuilder extends StatelessWidget {
               child: BaseView<ChannelsViewModel>(
             onModelReady: (model) => model.getChannels(), //Get channels
             builder: (context, model, child) {
-              return _channelsListView(model.channels);
+              return model.state == ViewState.Idle
+                  ? _channelsListView(model.channels)
+                  : Center(child: CircularProgressIndicator());
             },
           ))
         ],

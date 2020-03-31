@@ -1,6 +1,9 @@
 import 'dart:async';
 
+/// Class that define validators for login and register forms
+
 class Validators {
+  // Validate display name:
   var validateName =
       StreamTransformer<String, String>.fromHandlers(handleData: (name, sink) {
     if (name.length == 0)
@@ -9,6 +12,7 @@ class Validators {
       sink.add(name);
   });
 
+  // Validate username:
   var validateUsername = StreamTransformer<String, String>.fromHandlers(
       handleData: (username, sink) {
       String pattern = r'(^[a-zA-Z0-9]*$)';

@@ -51,6 +51,9 @@ class _VideoCallPageState extends State<VideoCallPage> {
     _remoteRenderer.dispose();
   }
 
+
+  // Connect to WebRTC server to allow for peers to handshake if
+  // they wish to connect a call
   void _connect() async {
     if (_signaling == null) {
       // Connect with ip provided
@@ -161,13 +164,13 @@ class _VideoCallPageState extends State<VideoCallPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('Connect to a call'),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Connect to a call'),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: _inCalling
-          ? new SizedBox(
+          ? SizedBox(
               width: 200.0,
               child: new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

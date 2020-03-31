@@ -5,6 +5,11 @@ import 'package:vertex_ui/src/routing/route_names.dart';
 import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
 import 'package:vertex_ui/src/services/navigation_service.dart';
 
+/// Class that builds and returns a custom navigation [Widget]
+/// [@required] [Channel] object
+/// [NavigationServiceHome] is used to allow for navigation between
+/// [MessageRoute], [VoiceChannelRoute] & [LandingPageRoute]
+
 class ChannelNavigationOptionsWidget extends StatelessWidget {
   const ChannelNavigationOptionsWidget({
     Key key,
