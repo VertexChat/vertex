@@ -32,7 +32,6 @@ class NotificationService {
     print('Connect to $url');
 
     _socket.onOpen = () {
-      print('yurttttt');
       //print('open');
       _send(_sessionId); //Send session id
     };

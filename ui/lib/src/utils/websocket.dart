@@ -28,9 +28,9 @@ class SimpleWebSocket {
     try {
 //      if (kIsWeb) {
 //        print('isWeb');
-//        _socket = await _connectForSelfSignedCert(_url);
+       _socket = await _connectForSelfSignedCert(_url);
 //      } else
-      _socket = await WebSocket.connect(_url);
+      //_socket = await WebSocket.connect(_url);
       this?.onOpen();
 
       _socket.listen((data) {

@@ -140,7 +140,7 @@ wsServer.on('request', function (request) {
     }
 
     // Connection
-    let connection = request.accept('json', request.origin);
+    let connection = request.accept();
     // Add the new connection to our list of connections.
     log("Connection accepted from " + connection.remoteAddress + ".");
 
