@@ -5,35 +5,42 @@
 import 'package:openapi/api.dart';
 ```
 
-All URIs are relative to *https://localhost/api/v1*
+All URIs are relative to *http://localhost/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**addChannel**](ChannelApi.md#addChannel) | **POST** /channels | Channel has been created
-[**deleteChannelByID**](ChannelApi.md#deleteChannelByID) | **DELETE** /channels/{id} | Deletes an existing channel
-[**getAllChannels**](ChannelApi.md#getAllChannels) | **GET** /channels | Returns all channels
-[**getChannelByID**](ChannelApi.md#getChannelByID) | **GET** /channels/{id} | Get a channel by its ID
-[**updateChannelByID**](ChannelApi.md#updateChannelByID) | **PUT** /channels/{id} | Updates an existing channel
+[**addUserToChannel**](ChannelApi.md#addUserToChannel) | **POST** /channels/{channelId}/members | 
+[**createChannel**](ChannelApi.md#createChannel) | **POST** /channels | Create a Channel
+[**createMessage**](ChannelApi.md#createMessage) | **POST** /channels/{channelId}/messages | Create a Message
+[**deleteChannel**](ChannelApi.md#deleteChannel) | **DELETE** /channels/{channelId} | Delete a Channel
+[**deleteMessage**](ChannelApi.md#deleteMessage) | **DELETE** /channels/{channelId}/messages/{messageId} | Delete a Message
+[**getChannel**](ChannelApi.md#getChannel) | **GET** /channels/{channelId} | Get a Channel
+[**getChannelMembers**](ChannelApi.md#getChannelMembers) | **GET** /channels/{channelId}/members | List All members
+[**getChannels**](ChannelApi.md#getChannels) | **GET** /channels | List All channels
+[**getMessage**](ChannelApi.md#getMessage) | **GET** /channels/{channelId}/messages/{messageId} | Get a Message
+[**getMessages**](ChannelApi.md#getMessages) | **GET** /channels/{channelId}/messages | List All messages
+[**removeChannelMember**](ChannelApi.md#removeChannelMember) | **DELETE** /channels/{channelId}/members/{userId} | Remove as User
+[**updateChannel**](ChannelApi.md#updateChannel) | **PUT** /channels/{channelId} | Update a Channel
+[**updateMessage**](ChannelApi.md#updateMessage) | **PUT** /channels/{channelId}/messages/{messageId} | Update a Message
 
 
-# **addChannel**
-> addChannel(channel)
+# **addUserToChannel**
+> addUserToChannel(channelId, user)
 
-Channel has been created
 
-Channel has been created
 
 ### Example 
 ```dart
 import 'package:openapi/api.dart';
 
 var api_instance = ChannelApi();
-var channel = Channel(); // Channel | The Channel to be create
+var channelId = 56; // int | 
+var user = User(); // User | 
 
 try { 
-    api_instance.addChannel(channel);
+    api_instance.addUserToChannel(channelId, user);
 } catch (e) {
-    print("Exception when calling ChannelApi->addChannel: $e\n");
+    print("Exception when calling ChannelApi->addUserToChannel: $e\n");
 }
 ```
 
@@ -41,7 +48,8 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **channel** | [**Channel**](Channel.md)| The Channel to be create | [optional] 
+ **channelId** | **int**|  | [default to null]
+ **user** | [**User**](User.md)|  | 
 
 ### Return type
 
@@ -58,24 +66,28 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **deleteChannelByID**
-> deleteChannelByID(id)
+# **createChannel**
+> createChannel(channel)
 
-Deletes an existing channel
+Create a Channel
 
-Deletes an existing channel
+Creates a new instance of a Channel.
 
 ### Example 
 ```dart
 import 'package:openapi/api.dart';
+// TODO Configure API key authorization: LoginRequired
+//defaultApiClient.getAuthentication<ApiKeyAuth>('LoginRequired').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('LoginRequired').apiKeyPrefix = 'Bearer';
 
 var api_instance = ChannelApi();
-var id = 56; // int | The channel ID
+var channel = Channel(); // Channel | A new Channel to be created.
 
 try { 
-    api_instance.deleteChannelByID(id);
+    api_instance.createChannel(channel);
 } catch (e) {
-    print("Exception when calling ChannelApi->deleteChannelByID: $e\n");
+    print("Exception when calling ChannelApi->createChannel: $e\n");
 }
 ```
 
@@ -83,7 +95,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **int**| The channel ID | [default to null]
+ **channel** | [**Channel**](Channel.md)| A new Channel to be created. | 
 
 ### Return type
 
@@ -91,7 +103,101 @@ void (empty response body)
 
 ### Authorization
 
-No authorization required
+[LoginRequired](../README.md#LoginRequired)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **createMessage**
+> createMessage(channelId, message)
+
+Create a Message
+
+Creates a new instance of a Message.
+
+### Example 
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure API key authorization: LoginRequired
+//defaultApiClient.getAuthentication<ApiKeyAuth>('LoginRequired').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('LoginRequired').apiKeyPrefix = 'Bearer';
+
+var api_instance = ChannelApi();
+var channelId = 56; // int | 
+var message = Message(); // Message | A new Message to be created.
+
+try { 
+    api_instance.createMessage(channelId, message);
+} catch (e) {
+    print("Exception when calling ChannelApi->createMessage: $e\n");
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **channelId** | **int**|  | [default to null]
+ **message** | [**Message**](Message.md)| A new Message to be created. | 
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+[LoginRequired](../README.md#LoginRequired)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **deleteChannel**
+> deleteChannel(channelId)
+
+Delete a Channel
+
+Deletes an existing Channel.
+
+### Example 
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure API key authorization: LoginRequired
+//defaultApiClient.getAuthentication<ApiKeyAuth>('LoginRequired').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('LoginRequired').apiKeyPrefix = 'Bearer';
+
+var api_instance = ChannelApi();
+var channelId = channelId_example; // String | A unique identifier for a Channel.
+
+try { 
+    api_instance.deleteChannel(channelId);
+} catch (e) {
+    print("Exception when calling ChannelApi->deleteChannel: $e\n");
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **channelId** | **String**| A unique identifier for a Channel. | [default to null]
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+[LoginRequired](../README.md#LoginRequired)
 
 ### HTTP request headers
 
@@ -100,24 +206,170 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getAllChannels**
-> List<Channel> getAllChannels()
+# **deleteMessage**
+> deleteMessage(channelId, messageId)
 
-Returns all channels
+Delete a Message
 
-Returns all channels in a server
+Deletes an existing Message.
 
 ### Example 
 ```dart
 import 'package:openapi/api.dart';
+// TODO Configure API key authorization: LoginRequired
+//defaultApiClient.getAuthentication<ApiKeyAuth>('LoginRequired').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('LoginRequired').apiKeyPrefix = 'Bearer';
+
+var api_instance = ChannelApi();
+var channelId = channelId_example; // String | A unique identifier for a Message.
+var messageId = 56; // int | 
+
+try { 
+    api_instance.deleteMessage(channelId, messageId);
+} catch (e) {
+    print("Exception when calling ChannelApi->deleteMessage: $e\n");
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **channelId** | **String**| A unique identifier for a Message. | [default to null]
+ **messageId** | **int**|  | [default to null]
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+[LoginRequired](../README.md#LoginRequired)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **getChannel**
+> Channel getChannel(channelId)
+
+Get a Channel
+
+Gets the details of a single instance of a Channel.
+
+### Example 
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure API key authorization: LoginRequired
+//defaultApiClient.getAuthentication<ApiKeyAuth>('LoginRequired').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('LoginRequired').apiKeyPrefix = 'Bearer';
+
+var api_instance = ChannelApi();
+var channelId = channelId_example; // String | A unique identifier for a Channel.
+
+try { 
+    var result = api_instance.getChannel(channelId);
+    print(result);
+} catch (e) {
+    print("Exception when calling ChannelApi->getChannel: $e\n");
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **channelId** | **String**| A unique identifier for a Channel. | [default to null]
+
+### Return type
+
+[**Channel**](Channel.md)
+
+### Authorization
+
+[LoginRequired](../README.md#LoginRequired)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **getChannelMembers**
+> List<User> getChannelMembers(channelId)
+
+List All members
+
+Gets a list of all Users in a given Channel.
+
+### Example 
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure API key authorization: LoginRequired
+//defaultApiClient.getAuthentication<ApiKeyAuth>('LoginRequired').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('LoginRequired').apiKeyPrefix = 'Bearer';
+
+var api_instance = ChannelApi();
+var channelId = 56; // int | 
+
+try { 
+    var result = api_instance.getChannelMembers(channelId);
+    print(result);
+} catch (e) {
+    print("Exception when calling ChannelApi->getChannelMembers: $e\n");
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **channelId** | **int**|  | [default to null]
+
+### Return type
+
+[**List<User>**](User.md)
+
+### Authorization
+
+[LoginRequired](../README.md#LoginRequired)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **getChannels**
+> List<Channel> getChannels()
+
+List All channels
+
+Gets a list of all Channel entities.
+
+### Example 
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure API key authorization: LoginRequired
+//defaultApiClient.getAuthentication<ApiKeyAuth>('LoginRequired').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('LoginRequired').apiKeyPrefix = 'Bearer';
 
 var api_instance = ChannelApi();
 
 try { 
-    var result = api_instance.getAllChannels();
+    var result = api_instance.getChannels();
     print(result);
 } catch (e) {
-    print("Exception when calling ChannelApi->getAllChannels: $e\n");
+    print("Exception when calling ChannelApi->getChannels: $e\n");
 }
 ```
 
@@ -130,7 +382,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-No authorization required
+[LoginRequired](../README.md#LoginRequired)
 
 ### HTTP request headers
 
@@ -139,25 +391,30 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getChannelByID**
-> Channel getChannelByID(id)
+# **getMessage**
+> Message getMessage(channelId, messageId)
 
-Get a channel by its ID
+Get a Message
 
-Returns a single Channel if it exists
+Gets the details of a single instance of a Message.
 
 ### Example 
 ```dart
 import 'package:openapi/api.dart';
+// TODO Configure API key authorization: LoginRequired
+//defaultApiClient.getAuthentication<ApiKeyAuth>('LoginRequired').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('LoginRequired').apiKeyPrefix = 'Bearer';
 
 var api_instance = ChannelApi();
-var id = 56; // int | The channel ID
+var channelId = channelId_example; // String | A unique identifier for a Message.
+var messageId = 56; // int | 
 
 try { 
-    var result = api_instance.getChannelByID(id);
+    var result = api_instance.getMessage(channelId, messageId);
     print(result);
 } catch (e) {
-    print("Exception when calling ChannelApi->getChannelByID: $e\n");
+    print("Exception when calling ChannelApi->getMessage: $e\n");
 }
 ```
 
@@ -165,15 +422,16 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **int**| The channel ID | [default to null]
+ **channelId** | **String**| A unique identifier for a Message. | [default to null]
+ **messageId** | **int**|  | [default to null]
 
 ### Return type
 
-[**Channel**](Channel.md)
+[**Message**](Message.md)
 
 ### Authorization
 
-No authorization required
+[LoginRequired](../README.md#LoginRequired)
 
 ### HTTP request headers
 
@@ -182,25 +440,29 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **updateChannelByID**
-> updateChannelByID(id, channel)
+# **getMessages**
+> List<Message> getMessages(channelId)
 
-Updates an existing channel
+List All messages
 
-Updates an existing channel
+Gets a list of all Message entities.
 
 ### Example 
 ```dart
 import 'package:openapi/api.dart';
+// TODO Configure API key authorization: LoginRequired
+//defaultApiClient.getAuthentication<ApiKeyAuth>('LoginRequired').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('LoginRequired').apiKeyPrefix = 'Bearer';
 
 var api_instance = ChannelApi();
-var id = 56; // int | The channel ID
-var channel = Channel(); // Channel | Channel to be added
+var channelId = 56; // int | 
 
 try { 
-    api_instance.updateChannelByID(id, channel);
+    var result = api_instance.getMessages(channelId);
+    print(result);
 } catch (e) {
-    print("Exception when calling ChannelApi->updateChannelByID: $e\n");
+    print("Exception when calling ChannelApi->getMessages: $e\n");
 }
 ```
 
@@ -208,8 +470,55 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **int**| The channel ID | [default to null]
- **channel** | [**Channel**](Channel.md)| Channel to be added | [optional] 
+ **channelId** | **int**|  | [default to null]
+
+### Return type
+
+[**List<Message>**](Message.md)
+
+### Authorization
+
+[LoginRequired](../README.md#LoginRequired)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **removeChannelMember**
+> removeChannelMember(channelId, userId)
+
+Remove as User
+
+Removes a User for a Channel
+
+### Example 
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure API key authorization: LoginRequired
+//defaultApiClient.getAuthentication<ApiKeyAuth>('LoginRequired').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('LoginRequired').apiKeyPrefix = 'Bearer';
+
+var api_instance = ChannelApi();
+var channelId = 56; // int | 
+var userId = 56; // int | 
+
+try { 
+    api_instance.removeChannelMember(channelId, userId);
+} catch (e) {
+    print("Exception when calling ChannelApi->removeChannelMember: $e\n");
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **channelId** | **int**|  | [default to null]
+ **userId** | **int**|  | [default to null]
 
 ### Return type
 
@@ -217,7 +526,105 @@ void (empty response body)
 
 ### Authorization
 
-No authorization required
+[LoginRequired](../README.md#LoginRequired)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **updateChannel**
+> updateChannel(channelId, channel)
+
+Update a Channel
+
+Updates an existing Channel.
+
+### Example 
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure API key authorization: LoginRequired
+//defaultApiClient.getAuthentication<ApiKeyAuth>('LoginRequired').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('LoginRequired').apiKeyPrefix = 'Bearer';
+
+var api_instance = ChannelApi();
+var channelId = channelId_example; // String | A unique identifier for a Channel.
+var channel = Channel(); // Channel | Updated Channel information.
+
+try { 
+    api_instance.updateChannel(channelId, channel);
+} catch (e) {
+    print("Exception when calling ChannelApi->updateChannel: $e\n");
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **channelId** | **String**| A unique identifier for a Channel. | [default to null]
+ **channel** | [**Channel**](Channel.md)| Updated Channel information. | 
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+[LoginRequired](../README.md#LoginRequired)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **updateMessage**
+> updateMessage(channelId, messageId, message)
+
+Update a Message
+
+Updates an existing Message.
+
+### Example 
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure API key authorization: LoginRequired
+//defaultApiClient.getAuthentication<ApiKeyAuth>('LoginRequired').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('LoginRequired').apiKeyPrefix = 'Bearer';
+
+var api_instance = ChannelApi();
+var channelId = channelId_example; // String | A unique identifier for a Message.
+var messageId = 56; // int | 
+var message = Message(); // Message | Updated Message information.
+
+try { 
+    api_instance.updateMessage(channelId, messageId, message);
+} catch (e) {
+    print("Exception when calling ChannelApi->updateMessage: $e\n");
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **channelId** | **String**| A unique identifier for a Message. | [default to null]
+ **messageId** | **int**|  | [default to null]
+ **message** | [**Message**](Message.md)| Updated Message information. | 
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+[LoginRequired](../README.md#LoginRequired)
 
 ### HTTP request headers
 

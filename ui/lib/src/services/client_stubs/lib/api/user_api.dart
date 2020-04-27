@@ -7,13 +7,16 @@ class UserApi {
 
   UserApi([ApiClient apiClient]) : apiClient = apiClient ?? defaultApiClient;
 
-  /// User has been created with HTTP info returned
+  /// Create a User with HTTP info returned
   ///
-  /// User has been created
-  Future addUserWithHttpInfo({ User user }) async {
+  /// Creates a new instance of a User.
+  Future createUserWithHttpInfo(User user) async {
     Object postBody = user;
 
     // verify required params are set
+    if(user == null) {
+     throw ApiException(400, "Missing required param: user");
+    }
 
     // create path and map variables
     String path = "/users".replaceAll("{format}","json");
@@ -48,11 +51,11 @@ class UserApi {
     return response;
   }
 
-  /// User has been created
+  /// Create a User
   ///
-  /// User has been created
-  Future addUser({ User user }) async {
-    Response response = await addUserWithHttpInfo( user: user );
+  /// Creates a new instance of a User.
+  Future createUser(User user) async {
+    Response response = await createUserWithHttpInfo(user);
     if(response.statusCode >= 400) {
       throw ApiException(response.statusCode, _decodeBodyBytes(response));
     } else if(response.body != null) {
@@ -61,19 +64,19 @@ class UserApi {
     }
   }
 
-  /// Deletes an existing User with HTTP info returned
+  /// Delete a User with HTTP info returned
   ///
-  /// Deletes a user from the database
-  Future deleteUserByIDWithHttpInfo(int id) async {
+  /// Deletes an existing User.
+  Future deleteUserWithHttpInfo(String userId) async {
     Object postBody;
 
     // verify required params are set
-    if(id == null) {
-     throw ApiException(400, "Missing required param: id");
+    if(userId == null) {
+     throw ApiException(400, "Missing required param: userId");
     }
 
     // create path and map variables
-    String path = "/users/{id}".replaceAll("{format}","json").replaceAll("{" + "id" + "}", id.toString());
+    String path = "/users/{userId}".replaceAll("{format}","json").replaceAll("{" + "userId" + "}", userId.toString());
 
     // query params
     List<QueryParam> queryParams = [];
@@ -105,11 +108,11 @@ class UserApi {
     return response;
   }
 
-  /// Deletes an existing User
+  /// Delete a User
   ///
-  /// Deletes a user from the database
-  Future deleteUserByID(int id) async {
-    Response response = await deleteUserByIDWithHttpInfo(id);
+  /// Deletes an existing User.
+  Future deleteUser(String userId) async {
+    Response response = await deleteUserWithHttpInfo(userId);
     if(response.statusCode >= 400) {
       throw ApiException(response.statusCode, _decodeBodyBytes(response));
     } else if(response.body != null) {
@@ -118,19 +121,19 @@ class UserApi {
     }
   }
 
-  /// Returns a single User if it exists with HTTP info returned
+  /// Get a User with HTTP info returned
   ///
-  /// Returns a single User if it exists
-  Future<Response> getUserByIDWithHttpInfo(int id) async {
+  /// Gets the details of a single instance of a User.
+  Future<Response> getUserWithHttpInfo(String userId) async {
     Object postBody;
 
     // verify required params are set
-    if(id == null) {
-     throw ApiException(400, "Missing required param: id");
+    if(userId == null) {
+     throw ApiException(400, "Missing required param: userId");
     }
 
     // create path and map variables
-    String path = "/users/{id}".replaceAll("{format}","json").replaceAll("{" + "id" + "}", id.toString());
+    String path = "/users/{userId}".replaceAll("{format}","json").replaceAll("{" + "userId" + "}", userId.toString());
 
     // query params
     List<QueryParam> queryParams = [];
@@ -140,7 +143,7 @@ class UserApi {
     List<String> contentTypes = [];
 
     String contentType = contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
-    List<String> authNames = [];
+    List<String> authNames = ["LoginRequired"];
 
     if(contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -162,11 +165,11 @@ class UserApi {
     return response;
   }
 
-  /// Returns a single User if it exists
+  /// Get a User
   ///
-  /// Returns a single User if it exists
-  Future<User> getUserByID(int id) async {
-    Response response = await getUserByIDWithHttpInfo(id);
+  /// Gets the details of a single instance of a User.
+  Future<User> getUser(String userId) async {
+    Response response = await getUserWithHttpInfo(userId);
     if(response.statusCode >= 400) {
       throw ApiException(response.statusCode, _decodeBodyBytes(response));
     } else if(response.body != null) {
@@ -176,19 +179,77 @@ class UserApi {
     }
   }
 
-  /// Updates an existing User with HTTP info returned
+  /// List All users with HTTP info returned
   ///
-  /// Updates an existing User
-  Future updateUserByIDWithHttpInfo(int id, { User user }) async {
+  /// Gets a list of all User entities.
+  Future<Response> getUsersWithHttpInfo() async {
+    Object postBody;
+
+    // verify required params are set
+
+    // create path and map variables
+    String path = "/users".replaceAll("{format}","json");
+
+    // query params
+    List<QueryParam> queryParams = [];
+    Map<String, String> headerParams = {};
+    Map<String, String> formParams = {};
+
+    List<String> contentTypes = [];
+
+    String contentType = contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
+    List<String> authNames = ["LoginRequired"];
+
+    if(contentType.startsWith("multipart/form-data")) {
+      bool hasFields = false;
+      MultipartRequest mp = MultipartRequest(null, null);
+      if(hasFields)
+        postBody = mp;
+    }
+    else {
+    }
+
+    var response = await apiClient.invokeAPI(path,
+                                             'GET',
+                                             queryParams,
+                                             postBody,
+                                             headerParams,
+                                             formParams,
+                                             contentType,
+                                             authNames);
+    return response;
+  }
+
+  /// List All users
+  ///
+  /// Gets a list of all User entities.
+  Future<List<User>> getUsers() async {
+    Response response = await getUsersWithHttpInfo();
+    if(response.statusCode >= 400) {
+      throw ApiException(response.statusCode, _decodeBodyBytes(response));
+    } else if(response.body != null) {
+      return (apiClient.deserialize(_decodeBodyBytes(response), 'List<User>') as List).map((item) => item as User).toList();
+    } else {
+      return null;
+    }
+  }
+
+  /// Update a User with HTTP info returned
+  ///
+  /// Updates an existing User.
+  Future updateUserWithHttpInfo(String userId, User user) async {
     Object postBody = user;
 
     // verify required params are set
-    if(id == null) {
-     throw ApiException(400, "Missing required param: id");
+    if(userId == null) {
+     throw ApiException(400, "Missing required param: userId");
+    }
+    if(user == null) {
+     throw ApiException(400, "Missing required param: user");
     }
 
     // create path and map variables
-    String path = "/users/{id}".replaceAll("{format}","json").replaceAll("{" + "id" + "}", id.toString());
+    String path = "/users/{userId}".replaceAll("{format}","json").replaceAll("{" + "userId" + "}", userId.toString());
 
     // query params
     List<QueryParam> queryParams = [];
@@ -220,11 +281,11 @@ class UserApi {
     return response;
   }
 
-  /// Updates an existing User
+  /// Update a User
   ///
-  /// Updates an existing User
-  Future updateUserByID(int id, { User user }) async {
-    Response response = await updateUserByIDWithHttpInfo(id,  user: user );
+  /// Updates an existing User.
+  Future updateUser(String userId, User user) async {
+    Response response = await updateUserWithHttpInfo(userId, user);
     if(response.statusCode >= 400) {
       throw ApiException(response.statusCode, _decodeBodyBytes(response));
     } else if(response.body != null) {

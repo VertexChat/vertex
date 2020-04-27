@@ -1,28 +1,29 @@
 part of openapi.api;
 
 class Error {
-  String code;
-  String message;
+  
+  int code;
+  String messages;
 
   Error();
 
   @override
   String toString() {
-    return 'Error[code=$code, message=$message, ]';
+    return 'Error[code=$code, messages=$messages, ]';
   }
 
   Error.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
     code = json['code'];
-    message = json['message'];
+    messages = json['messages'];
   }
 
   Map<String, dynamic> toJson() {
     Map <String, dynamic> json = {};
     if (code != null)
       json['code'] = code;
-    if (message != null)
-      json['message'] = message;
+    if (messages != null)
+      json['messages'] = messages;
     return json;
   }
 

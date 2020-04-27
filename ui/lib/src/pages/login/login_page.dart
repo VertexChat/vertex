@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:vertex_ui/src/blocs/login_bloc.dart';
 import 'package:vertex_ui/src/pages/register/register_page.dart';
 import 'package:vertex_ui/src/routing/route_names.dart';
-import 'package:vertex_ui/src/services/auth.dart';
+import 'package:vertex_ui/src/services/authentication.dart';
 import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
 import 'package:vertex_ui/src/widgets/login_register_widgets/icon_card.dart';
 import 'login_screen_presenter.dart';
@@ -28,7 +28,7 @@ class _LoginPageState extends State<LoginPage>
   final formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool _validate = false;
-  Login login = Login();
+  InlineObject _login = InlineObject();
   LoginScreenPresenter _presenter;
 
   //Constructor
@@ -42,7 +42,7 @@ class _LoginPageState extends State<LoginPage>
     final form = formKey.currentState;
     if (form.validate()) {
       form.save();
-      _presenter.doLogin(login);
+      _presenter.doLogin(_login);
     }
   } //End function
 
@@ -131,7 +131,7 @@ class _LoginPageState extends State<LoginPage>
           stream: bloc.username,
           builder: (context, snapshot) => TextFormField(
             onChanged: bloc.usernameChanged,
-            onSaved: (String val) => this.login.username = val,
+            onSaved: (String val) => this._login.username = val,
             decoration: InputDecoration(
               labelText: 'USERNAME',
               labelStyle: TextStyle(
@@ -149,7 +149,7 @@ class _LoginPageState extends State<LoginPage>
           builder: (context, snapshot) => TextFormField(
             obscureText: true,
             onChanged: bloc.passwordChanged,
-            onSaved: (String val) => this.login.password = val,
+            onSaved: (String val) => this._login.password = val,
             decoration: InputDecoration(
               labelText: 'PASSWORD',
               labelStyle: TextStyle(
@@ -271,7 +271,7 @@ class _LoginPageState extends State<LoginPage>
   }
 
   @override
-  void onLoginSuccess(Login login) {
+  void onLoginSuccess(InlineObject login) {
     var authStateProvider = new AuthStateProvider();
     _showSnackBar("Successful Login redirecting...", Colors.green);
     authStateProvider.notify(AuthState.LOGGED_IN);

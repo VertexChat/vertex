@@ -1,21 +1,21 @@
 import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
 
 abstract class LoginScreenContract {
-  void onLoginSuccess(Login login);
+  void onLoginSuccess(InlineObject login);
+
   void onLoginError(String errorTxt);
 }
 
 class LoginScreenPresenter {
   LoginScreenContract _view;
-  var api = AuthApi();
+  var api = AccountApi();
 
   LoginScreenPresenter(this._view);
 
-  doLogin(Login login) {
+  doLogin(InlineObject login) {
     print(login);
-    api.login(login: login).then((login) {
+    api.login(login).then((login) {
       _view.onLoginSuccess(login);
-
     }).catchError((Object error) {
       _view.onLoginError(error.toString());
     });

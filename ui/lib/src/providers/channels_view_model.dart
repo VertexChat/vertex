@@ -26,7 +26,7 @@ class ChannelsViewModel extends BaseModel {
   /// completes, this allows the listeners to rebuild [notifyListeners]
   Future getChannels() async {
     setState(ViewState.Busy);
-    var channelsData = await _api.getAllChannels();
+    var channelsData = await _api.getChannels();
     _channels = channelsData; // Update local channels list
     setState(ViewState.Idle);
   } //End getChannels function

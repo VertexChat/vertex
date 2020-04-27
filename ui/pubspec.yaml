@@ -57,18 +57,18 @@ dependencies:
 
   # WebRTC
   # https://pub.dev/packages/flutter_webrtc
-  flutter_webrtc: ^0.2.7
+  flutter_webrtc: ^0.2.8
 
   # RxDart adds additional capabilities to Dart Streams and StreamControllers.
   # https://pub.dev/packages/rxdart#-readme-tab-
   # NOTE: https://pub.dev/packages/rxdart_codemod
-  rxdart: ^0.23.1
+  rxdart: ^0.24.0
 
   # https://pub.dev/packages/get_it
   get_it:
 
   # https://pub.dev/packages/provider:
-  provider: ^4.0.4
+  provider: ^4.0.5
 
 dev_dependencies:
   flutter_test:

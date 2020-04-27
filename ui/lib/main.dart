@@ -7,11 +7,14 @@ import 'package:vertex_ui/src/routing/route_names.dart';
 import 'package:vertex_ui/src/routing/router.dart';
 import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
 import 'package:vertex_ui/src/services/navigation_service.dart';
+import 'package:vertex_ui/src/services/notification_service.dart';
 
-/// Call to run App Root
+/// Main Class
 void main() {
   // Run application start this class first
-  setupLocator();
+  setupLocator(); // Register Services with [GetIt]
+//  NotificationService notificationService = new NotificationService();
+//  notificationService.connect();
   runApp(UI());
 }
 
@@ -25,12 +28,12 @@ class _UIState extends State<UI> {
   //Variables
   bool offline = false;
   Brightness brightness;
-  var api = AuthApi();
+//  var api = AuthApi();
   Widget _defaultRoute = new LoginPage();
 
   @override
   Widget build(BuildContext context) {
-    bool _result = api.isLoggedIn;
+//    bool _result = api.isLoggedIn;
     // if the user is logged in allow them access the home page
     //if (_result) _defaultRoute = new VertexHomePage();
 

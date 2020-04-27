@@ -1,19 +1,22 @@
 part of openapi.api;
 
-class AuthApi {
-  //Variables
+class AccountApi {
   final ApiClient apiClient;
-  bool _isLoggedIn = false;
+  bool isLoggedIn = false;
 
-  AuthApi([ApiClient apiClient]) : apiClient = apiClient ?? defaultApiClient;
 
-  /// Allows a user that is registered to login with HTTP info returned
+  AccountApi([ApiClient apiClient]) : apiClient = apiClient ?? defaultApiClient;
+
+  /// Log in with HTTP info returned
   ///
-  /// Allows a user that is register to login to the application
-  Future loginWithHttpInfo({Login login}) async {
-    Object postBody = login;
+  /// Attempts to log a user in
+  Future loginWithHttpInfo(InlineObject inlineObject) async {
+    Object postBody = inlineObject;
 
     // verify required params are set
+    if (inlineObject == null) {
+      throw ApiException(400, "Missing required param: inlineObject");
+    }
 
     // create path and map variables
     String path = "/login".replaceAll("{format}", "json");
@@ -27,8 +30,7 @@ class AuthApi {
 
     String contentType =
         contentTypes.isNotEmpty ? contentTypes[0] : "application/json";
-    // Added login_auth
-    List<String> authNames = []; //'login_auth'
+    List<String> authNames = [];
 
     if (contentType.startsWith("multipart/form-data")) {
       bool hasFields = false;
@@ -41,52 +43,30 @@ class AuthApi {
     return response;
   }
 
-  /// Allows a user that is registered to login
+  /// Log in
   ///
-  /// Allows a user that is register to login to the application
-  Future login({Login login}) async {
-    Response response = await loginWithHttpInfo(login: login);
-    final userDetails = await SharedPreferences.getInstance();
-    User user;
+  /// Attempts to log a user in
+  Future login(InlineObject inlineObject) async {
 
+    Response response = await loginWithHttpInfo(inlineObject);
     if (response.statusCode >= 400) {
-      print(response.statusCode);
-      isLoggedIn = false;
       throw ApiException(response.statusCode, _decodeBodyBytes(response));
     } else if (response.body != null) {
-      // Update logged in
-      isLoggedIn = true;
-      // TODO: Revisit this once oauth is implemented
-      // Deserialize user from the body of the login response. This is done to
-      // allow the application store details on a user so it can be used
-      // later on to make requests
-      user = apiClient.deserialize(_decodeBodyBytes(response), 'User') as User;
-      // Store currently logged in user information
-      userDetails.setString('username', user.username);
-      userDetails.setInt('id', user.id);
     } else {
-//      // Logged in without any information about the user
-//      isLoggedIn = true;
-//      // Store currently logged in user information
-//      userDetails.setString('username', login.username);
       return;
-    } //End if else
-    return;
-  } //End login function
-
-  bool get isLoggedIn => _isLoggedIn;
-
-  set isLoggedIn(bool value) {
-    _isLoggedIn = value;
+    }
   }
 
-  /// Allows a user register a new account with HTTP info returned
+  /// Registers User with HTTP info returned
   ///
-  /// Allow a user register a new account with the server
-  Future registerWithHttpInfo({User user}) async {
-    Object postBody = user;
+  /// Attempts to register a new user
+  Future registerWithHttpInfo(InlineObject inlineObject) async {
+    Object postBody = inlineObject;
 
     // verify required params are set
+    if (inlineObject == null) {
+      throw ApiException(400, "Missing required param: inlineObject1");
+    }
 
     // create path and map variables
     String path = "/register".replaceAll("{format}", "json");
@@ -113,14 +93,16 @@ class AuthApi {
     return response;
   }
 
-  /// Allows a user register a new account
+  /// Registers User
   ///
-  /// Allow a user register a new account with the server
-  Future register({User user}) async {
-    Response response = await registerWithHttpInfo(user: user);
+  /// Attempts to register a new user
+  Future register(InlineObject inlineObject) async {
+    print(inlineObject);
+    Response response = await registerWithHttpInfo(inlineObject);
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, _decodeBodyBytes(response));
     } else if (response.body != null) {
+      //TODO - Sort out session cookie with David
     } else {
       return;
     }

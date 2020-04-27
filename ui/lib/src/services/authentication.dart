@@ -28,7 +28,7 @@ class AuthStateProvider {
   }
 
   void initState() async {
-    var api = AuthApi();
+    var api = AccountApi();
     var isLoggedIn = api.isLoggedIn;
 
     if (isLoggedIn)
