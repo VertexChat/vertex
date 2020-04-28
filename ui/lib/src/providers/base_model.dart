@@ -13,6 +13,7 @@ class BaseModel extends ChangeNotifier {
 
   //Update the state and notify listeners
   void setState(ViewState viewState) {
+    print(viewState);
     _state = viewState;
     notifyListeners();
   }

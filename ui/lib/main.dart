@@ -5,9 +5,7 @@ import 'package:vertex_ui/src/pages/layout_template/main_layout_template.dart';
 import 'package:vertex_ui/src/pages/login/login_page.dart';
 import 'package:vertex_ui/src/routing/route_names.dart';
 import 'package:vertex_ui/src/routing/router.dart';
-import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
 import 'package:vertex_ui/src/services/navigation_service.dart';
-import 'package:vertex_ui/src/services/notification_service.dart';
 
 /// Main Class
 void main() {

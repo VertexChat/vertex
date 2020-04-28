@@ -15,5 +15,6 @@ void setupLocator() {
   locatorGlobal.registerLazySingleton(() => NavigationService());
   locatorGlobal.registerLazySingleton(() => NavigationServiceHome());
   // Register Provider State Management Services
-  locatorGlobal.registerFactory(() => ChannelsViewModel());
+  //TODO - Test these with Listening widget as it may break them
+  locatorGlobal.registerLazySingleton(() => ChannelsViewModel());
 }//End

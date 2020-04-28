@@ -57,7 +57,7 @@ class NotificationService {
           // may require more data soon
           // lets the widget know to update
           await Future.delayed(const Duration(seconds: 10), () {});
-          locatorGlobal<ChannelsViewModel>().addChannel();
+          locatorGlobal<ChannelsViewModel>().getChannels();
           //notify.addChannel();
           break;
         }

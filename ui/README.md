@@ -1,16 +1,22 @@
-# ui
+# Vertex
 
-A new Flutter project.
+Vertex is a self-hosted chat application based on WebRTC and is built with Flutter for the front end and Python for the backend.
 
-## Getting Started
+### Requirements
 
-This project is a starting point for a Flutter application.
+`Flutter 1.15.22 • channel dev`
+`Dart 2.8.0`
 
-A few resources to get you started if this is your first Flutter project:
+### Development & Testing
+This project was developed and tested using
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### IDE
+* [Android Studio 3.6.3](https://developer.android.com/studio)
+  - Build #AI-192.7142.36.36.6392135, built on April 14, 2020
+* [IntelliJ IDEA 2020.1](https://www.jetbrains.com/idea/)
+  - Build #IU-201.6668.121, built on April 8, 2020
+  
+### Devices
+* Samsung - SM-G360F - Android 5.0.2
+* Google Pixel 2 VM - Android 10
+* Web - Google Chrome & Firefox

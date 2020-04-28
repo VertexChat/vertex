@@ -6,19 +6,20 @@ import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
 /// ties in with [ChannelApi]. This class extends [BaseModel] which handles
 /// [notifyListeners]. When listing widgets are notified they will rebuild,
 /// this allows for the abstraction of the UI and business logical.
+///
 /// https://flutter.dev/docs/development/data-and-backend/state-mgmt/simple
+/// https://dart.dev/guides/libraries/futures-error-handling
 
 class ChannelsViewModel extends BaseModel {
   // Variables
   final _api = ChannelApi(); //Access to api
   List<Channel> _channels;
+
   List<Channel> get channels => _channels;
 
   bool _busy;
-  bool get busy => _busy;
 
-  String _errorMessage;
-  String get errorMessage => _errorMessage;
+  bool get busy => _busy;
 
   //TODO - CB - Error handling
   /// Function uses the [ChannelApi] to get all channels in the database
@@ -34,24 +35,17 @@ class ChannelsViewModel extends BaseModel {
   /// Function to add a new channel to the database.
   /// a new channel create within the UI is passed to the API
   /// to be sent onto the database
-  void addChannel() async {
+  Future addChannel(Channel channel) async {
     setState(ViewState.Busy);
-
-    //Testing
-//    Channel channel = new Channel();
-//    channel.id = 832;
-//    channel.name = "n00bss";
-//    channel.type = "VOICE";
-//    channel.capacity = 20;
-//    channel.position = 1;
-//    channel.userId = 3;
-
-//    _api.addChannel(channel: channel);
-//    await Future.delayed(const Duration(seconds: 3), () {});
-//    getChannels();
-    
-    setState(ViewState.Idle);
+    //POST new channel
+    try {
+      await _api.createChannel(channel);
+      setState(ViewState.Idle); // update state
+    } catch (ApiException) {
+      print(ApiException);
+      setState(ViewState.Idle);
+      throw ApiException;
+    }
+    setState(ViewState.Idle); // update state
   }
-
-
 } //End class
