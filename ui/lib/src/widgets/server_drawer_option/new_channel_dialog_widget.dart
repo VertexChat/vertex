@@ -1,9 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:vertex_ui/locator.dart';
 import 'package:vertex_ui/src/providers/channels_view_model.dart';
 import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
+import 'package:vertex_ui/src/widgets/api_exception_alert_dialog.dart';
 
 /// Class that builds a [Dialog] that is used as a [Form] to create
 /// a new [Channel].
@@ -128,33 +127,8 @@ class _NewChannelDialogState extends State<NewChannelDialog> {
         .addChannel(channel)
         .then((value) => Navigator.of(context).pop())
         .catchError((error) {
-      _showErrorDialog(error);
+      ApiExceptionAlertDialog(apiException: error, context: context)
+          .displayDialog();
     });
-  }
-
-  /// Function that will display a [AlertDialog] if
-  /// any errors occur during posting the new [Channel]
-  void _showErrorDialog(ApiException error) {
-    Map<String, dynamic> parsedError = json.decode(error.message.toString());
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return AlertDialog(
-          title: new Text("Request Error"),
-          content: new Text(parsedError['messages']),
-          actions: <Widget>[
-            // usually buttons at the bottom of the dialog
-            new FlatButton(
-              child: new Text("Close"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  } //end _showErrorDialog
-} //End classApiException
+  } //End function
+} //End class

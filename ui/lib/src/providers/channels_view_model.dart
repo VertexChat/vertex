@@ -39,10 +39,24 @@ class ChannelsViewModel extends BaseModel {
     setState(ViewState.Busy);
     //POST new channel
     try {
-      await _api.createChannel(channel);
+      await _api
+          .createChannel(channel)
+          .then((value) => getChannels()); //Get channels
+
       setState(ViewState.Idle); // update state
     } catch (ApiException) {
-      print(ApiException);
+      setState(ViewState.Idle);
+      throw ApiException;
+    }
+    setState(ViewState.Idle); // update state
+  }
+
+  Future deleteChannel(int channelId) async {
+    setState(ViewState.Busy);
+    try {
+      await _api.deleteChannel(channelId).then((value) => getChannels());
+      setState(ViewState.Idle);
+    } catch (ApiException) {
       setState(ViewState.Idle);
       throw ApiException;
     }

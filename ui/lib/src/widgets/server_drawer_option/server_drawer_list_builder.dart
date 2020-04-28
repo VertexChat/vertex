@@ -11,6 +11,7 @@ import 'package:vertex_ui/src/utils/equals.dart';
 
 /// This class is used for building the lists of voice channels and text channels inside the
 /// drawer. This class requires a list of [Channel] objects.
+///
 // https://stackoverflow.com/questions/45669202/how-to-add-a-listview-to-a-column-in-flutter
 // https://api.flutter.dev/flutter/widgets/ListView-class.html
 // https://flutter.dev/docs/development/data-and-backend/state-mgmt/simple

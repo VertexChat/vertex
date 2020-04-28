@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vertex_ui/src/pages/edit_channel/edit_channel.dart';
 import 'package:vertex_ui/src/pages/home/home_page.dart';
 import 'package:vertex_ui/src/pages/layout_template/landing_page.dart';
 import 'package:vertex_ui/src/pages/login/login_page.dart';
@@ -39,6 +40,9 @@ Route<dynamic> internalRoutes(RouteSettings settings) {
       return _getPageRoute(VoiceCall(channel: channel), settings);
     case LandingPageRoute:
       return _getPageRoute(LandingPage(), settings);
+    case EditChannelRoute:
+      Channel channel = settings.arguments;
+      return _getPageRoute(EditChannel(channel: channel), settings);
     default:
       return _getPageRoute(LandingPage(), settings);
   } //End switch

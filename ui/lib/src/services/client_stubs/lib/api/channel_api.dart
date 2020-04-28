@@ -165,7 +165,7 @@ class ChannelApi {
   /// Delete a Channel with HTTP info returned
   ///
   /// Deletes an existing Channel.
-  Future deleteChannelWithHttpInfo(String channelId) async {
+  Future deleteChannelWithHttpInfo(int channelId) async {
     Object postBody;
 
     // verify required params are set
@@ -203,7 +203,7 @@ class ChannelApi {
   /// Delete a Channel
   ///
   /// Deletes an existing Channel.
-  Future deleteChannel(String channelId) async {
+  Future deleteChannel(int channelId) async {
     Response response = await deleteChannelWithHttpInfo(channelId);
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, _decodeBodyBytes(response));
@@ -216,7 +216,7 @@ class ChannelApi {
   /// Delete a Message with HTTP info returned
   ///
   /// Deletes an existing Message.
-  Future deleteMessageWithHttpInfo(String channelId, int messageId) async {
+  Future deleteMessageWithHttpInfo(int channelId, int messageId) async {
     Object postBody;
 
     // verify required params are set
@@ -258,7 +258,7 @@ class ChannelApi {
   /// Delete a Message
   ///
   /// Deletes an existing Message.
-  Future deleteMessage(String channelId, int messageId) async {
+  Future deleteMessage(int channelId, int messageId) async {
     Response response = await deleteMessageWithHttpInfo(channelId, messageId);
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, _decodeBodyBytes(response));
@@ -271,7 +271,7 @@ class ChannelApi {
   /// Get a Channel with HTTP info returned
   ///
   /// Gets the details of a single instance of a Channel.
-  Future<Response> getChannelWithHttpInfo(String channelId) async {
+  Future<Response> getChannelWithHttpInfo(int channelId) async {
     Object postBody;
 
     // verify required params are set
@@ -309,7 +309,7 @@ class ChannelApi {
   /// Get a Channel
   ///
   /// Gets the details of a single instance of a Channel.
-  Future<Channel> getChannel(String channelId) async {
+  Future<Channel> getChannel(int channelId) async {
     Response response = await getChannelWithHttpInfo(channelId);
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, _decodeBodyBytes(response));
@@ -435,7 +435,7 @@ class ChannelApi {
   ///
   /// Gets the details of a single instance of a Message.
   Future<Response> getMessageWithHttpInfo(
-      String channelId, int messageId) async {
+      int channelId, int messageId) async {
     Object postBody;
 
     // verify required params are set
@@ -477,7 +477,7 @@ class ChannelApi {
   /// Get a Message
   ///
   /// Gets the details of a single instance of a Message.
-  Future<Message> getMessage(String channelId, int messageId) async {
+  Future<Message> getMessage(int channelId, int messageId) async {
     Response response = await getMessageWithHttpInfo(channelId, messageId);
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, _decodeBodyBytes(response));
@@ -603,7 +603,7 @@ class ChannelApi {
   /// Update a Channel with HTTP info returned
   ///
   /// Updates an existing Channel.
-  Future updateChannelWithHttpInfo(String channelId, Channel channel) async {
+  Future updateChannelWithHttpInfo(int channelId, Channel channel) async {
     Object postBody = channel;
 
     // verify required params are set
@@ -644,7 +644,7 @@ class ChannelApi {
   /// Update a Channel
   ///
   /// Updates an existing Channel.
-  Future updateChannel(String channelId, Channel channel) async {
+  Future updateChannel(int channelId, Channel channel) async {
     Response response = await updateChannelWithHttpInfo(channelId, channel);
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, _decodeBodyBytes(response));

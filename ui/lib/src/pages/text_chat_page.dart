@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
-import 'package:vertex_ui/src/widgets/home_widgets/channel_nane_widget.dart';
+import 'package:vertex_ui/src/widgets/home_widgets/channel_name_widget.dart';
 import 'package:vertex_ui/src/widgets/home_widgets/channel_navigation_options_widget.dart';
 
 
