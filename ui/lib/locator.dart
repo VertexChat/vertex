@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:vertex_ui/src/providers/channel_members_view_model.dart';
 import 'package:vertex_ui/src/providers/channels_view_model.dart';
 import 'package:vertex_ui/src/services/navigation_service.dart';
 
@@ -17,4 +18,5 @@ void setupLocator() {
   // Register Provider State Management Services
   //TODO - Test these with Listening widget as it may break them
   locatorGlobal.registerLazySingleton(() => ChannelsViewModel());
+  locatorGlobal.registerLazySingleton(() => ChannelMembersViewModel());
 }//End

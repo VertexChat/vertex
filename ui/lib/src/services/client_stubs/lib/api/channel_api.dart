@@ -420,6 +420,7 @@ class ChannelApi {
     Response response = await getChannelsWithHttpInfo();
 
     if (response.statusCode >= 400) {
+      print("here");
       throw ApiException(response.statusCode, _decodeBodyBytes(response));
     } else if (response.body != null) {
       return (apiClient.deserialize(_decodeBodyBytes(response), 'List<Channel>')

@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 /// This class is used to allow for the use of navigation without a context in flutter
 /// A GlobalKey is registered to use for the navigatorKey, this key is used to route
 /// to different pages in the application
+///
 // https://www.filledstacks.com/post/navigate-without-build-context-in-flutter-using-a-navigation-service/
 
 /// These classes are registered as a service in locator.dart. [GetIt] package

@@ -6,11 +6,18 @@ import 'package:vertex_ui/src/enums/view_state_enum.dart';
 import 'package:vertex_ui/src/pages/base_view.dart';
 import 'package:vertex_ui/src/providers/channels_view_model.dart';
 import 'package:vertex_ui/src/routing/route_names.dart';
+import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
 import 'package:vertex_ui/src/services/navigation_service.dart';
 import 'package:vertex_ui/src/utils/equals.dart';
+import 'package:vertex_ui/src/widgets/api_exception_alert_dialog.dart';
+import 'package:vertex_ui/src/widgets/exception_alert_dialog.dart';
 
-/// This class is used for building the lists of voice channels and text channels inside the
-/// drawer. This class requires a list of [Channel] objects.
+/// This class is used for building a [Widget] with a lists of voice channels
+/// and text channels that are received from the database with the help of
+/// [ChannelsViewModel] class. [buildBaseView] takes advantage of this class.
+///
+/// [NavigationServiceHome] is used to allow for navigation between
+/// [VoiceChannelRoute] & [MessageRoute]
 ///
 // https://stackoverflow.com/questions/45669202/how-to-add-a-listview-to-a-column-in-flutter
 // https://api.flutter.dev/flutter/widgets/ListView-class.html
@@ -20,6 +27,13 @@ class ServerDrawerListBuilder extends StatelessWidget {
   //Variables
   const ServerDrawerListBuilder({Key key}) : super(key: key);
 
+  /// Function builds a list of Channels UI elements that the user can interact with.
+  /// These elements are made with the [Channel.name] and [Channel.type]. The type will
+  /// be used to display either a volume_up icon for voice channels or a message
+  /// icon for text channels.
+  ///
+  /// The [RaisedButton] onPressed event will [NavigationServiceHome] with the help
+  /// of a [locatorGlobal] provider to navigate to [VoiceChannelRoute] or [MessageRoute]
   ListView _channelsListView(channelData) {
     return ListView.separated(
       shrinkWrap: true,
@@ -100,22 +114,40 @@ class ServerDrawerListBuilder extends StatelessWidget {
     );
   } //End ListView function
 
+  /// This [Widget] uses the [BaseView] class which converts this [StatelessWidget]
+  /// into a [StatefulWidget] so it can pass a Function(t) that returns a model.
+  /// In this class the [ChannelsViewModel] is needed as this widget builds a list of
+  /// voice and text channels from that data received from [ChannelsViewModel.getChannels].
+  ///
+  /// Should an exceptions be throw during the [ChannelsViewModel.getChannels] the error
+  /// is caught and a [AlertDialog] is displayed to the user informing them of an
+  /// exception.
+  ///
+  /// The [BaseView.onModelReady] is super useful as now the UI element can know
+  /// if it can display a progress indicator or the data depending on the [BaseModel.state].
+  BaseView<ChannelsViewModel> buildBaseView(BuildContext context) {
+    return BaseView<ChannelsViewModel>(
+      onModelReady: (model) => model.getChannels().catchError((onError) {
+        showDialog(
+            context: context,
+            child: onError == ApiException
+                ? ApiExceptionAlertDialog(apiException: onError)
+                : ExceptionAlertDialog(exception: onError));
+      }), //Get channels
+      builder: (context, model, child) {
+        return model.state == ViewState.Idle
+            ? _channelsListView(model.channels)
+            : Center(child: CircularProgressIndicator());
+      },
+    );
+  } //End builder
+
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Row(
-        children: <Widget>[
-          Expanded(
-              child: BaseView<ChannelsViewModel>(
-            onModelReady: (model) => model.getChannels(), //Get channels
-            builder: (context, model, child) {
-              return model.state == ViewState.Idle
-                  ? _channelsListView(model.channels)
-                  : Center(child: CircularProgressIndicator());
-            },
-          ))
-        ],
+        children: <Widget>[Expanded(child: buildBaseView(context))],
       ),
     );
-  } //End builder
+  }
 } //End class

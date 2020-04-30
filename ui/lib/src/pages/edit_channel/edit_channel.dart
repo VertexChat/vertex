@@ -120,9 +120,7 @@ class _EditChannelState extends State<EditChannel> {
                 style:
                     TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
-              onPressed: () {
-                deleteChannel(channel.id);
-              },
+              onPressed: () => deleteChannel(channel.id),
             ),
           ],
         );
@@ -141,8 +139,9 @@ class _EditChannelState extends State<EditChannel> {
         .then((value) =>
             locatorGlobal<NavigationServiceHome>().navigateTo(LandingPageRoute))
         .catchError((error) {
-      ApiExceptionAlertDialog(apiException: error, context: context)
-          .displayDialog();
+      showDialog(
+          context: context,
+          child: ApiExceptionAlertDialog(apiException: error));
     });
   }
 } //End class

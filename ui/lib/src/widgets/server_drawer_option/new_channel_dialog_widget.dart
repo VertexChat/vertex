@@ -127,8 +127,9 @@ class _NewChannelDialogState extends State<NewChannelDialog> {
         .addChannel(channel)
         .then((value) => Navigator.of(context).pop())
         .catchError((error) {
-      ApiExceptionAlertDialog(apiException: error, context: context)
-          .displayDialog();
+      showDialog(
+          context: context,
+          child: ApiExceptionAlertDialog(apiException: error));
     });
   } //End function
 } //End class
