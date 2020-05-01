@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:vertex_ui/locator.dart';
 import 'package:vertex_ui/src/enums/view_state_enum.dart';
 import 'package:vertex_ui/src/pages/base_view.dart';
 import 'package:vertex_ui/src/providers/channel_members_view_model.dart';
@@ -12,10 +13,20 @@ import 'package:vertex_ui/src/widgets/exception_alert_dialog.dart';
 /// help of the [ChannelMembersViewModel] class. [buildBaseView] takes advantage
 /// of this class
 
-class ChannelMembersWidget extends StatelessWidget {
+class ChannelMembersWidget extends StatefulWidget {
   final Channel channel;
 
   const ChannelMembersWidget({Key key, @required this.channel});
+
+  @override
+  _ChannelMembersWidgetState createState() =>
+      _ChannelMembersWidgetState(channel: channel);
+}
+
+class _ChannelMembersWidgetState extends State<ChannelMembersWidget> {
+  final Channel channel;
+
+  _ChannelMembersWidgetState({Key key, this.channel});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +36,7 @@ class ChannelMembersWidget extends StatelessWidget {
   /// This [Widget] uses the [BaseView] class which converts this [StatelessWidget]
   /// into a [StatefulWidget] so it can pass a Function(t) that returns a model.
   /// In this class the [ChannelMembersViewModel] is needed as this widget builds a list of
-  /// voice and text channels from that data received from [ChannelMembersViewModel.getChannelMembers].
+  /// channel members from that data received from [ChannelMembersViewModel.getChannelMembers].
   ///
   /// Should an exceptions be throw during the [ChannelMembersViewModel.getChannelMembers] the error
   /// is caught and a [AlertDialog] is displayed to the user informing them of an
@@ -36,7 +47,7 @@ class ChannelMembersWidget extends StatelessWidget {
   BaseView<ChannelMembersViewModel> buildBaseView(BuildContext context) {
     return BaseView<ChannelMembersViewModel>(
       onModelReady: (model) =>
-          model.getChannelMembers(channel.id).catchError((onError) {
+          model.getChannelMembers(widget.channel.id).catchError((onError) {
         showDialog(
             context: context,
             child: onError == ApiException
@@ -49,7 +60,7 @@ class ChannelMembersWidget extends StatelessWidget {
             : Center(child: CircularProgressIndicator());
       },
     );
-  } //End builder
+  }
 
   /// Widget creates a custom [AlertDialog] to display the list of
   /// [User]s / members in a [Channel]
@@ -113,9 +124,22 @@ class ChannelMembersWidget extends StatelessWidget {
         //TODO - CB - Review this,
         // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
         trailing: IconButton(
-            onPressed: () => null,
+            onPressed: () => removeUser(channel.id, membersData.id),
             hoverColor: Colors.red,
             icon: Icon(FontAwesomeIcons.userSlash,
                 color: Colors.white, size: 20.0)));
   }
+
+  /// Function makes a remove request to the [ChannelsViewModel]
+  /// where that will handle making the HTTP reset and update the
+  /// state of the Listens
+  void removeUser(int channelId, int userId) {
+    locatorGlobal<ChannelMembersViewModel>()
+        .removeMember(channelId, userId)
+        .catchError((onError) => showDialog(
+            context: context,
+            child: ApiExceptionAlertDialog(
+              apiException: onError,
+            )));
+  } //End removeUser
 } //End class

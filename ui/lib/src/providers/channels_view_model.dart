@@ -51,6 +51,7 @@ class ChannelsViewModel extends BaseModel {
     try {
       var channelsData = await _api.getChannels();
       _channels = channelsData; // Update local channels list
+      setState(ViewState.Idle);
     } on ApiException {
       setState(ViewState.Idle);
       throw ApiException;
@@ -58,7 +59,6 @@ class ChannelsViewModel extends BaseModel {
       setState(ViewState.Idle);
       throw ClientException;
     }
-    setState(ViewState.Idle);
   } //End getChannels function
 
   /// Function to add a new channel to the database.
@@ -77,7 +77,6 @@ class ChannelsViewModel extends BaseModel {
       setState(ViewState.Idle);
       throw ApiException;
     }
-    setState(ViewState.Idle); // update state
   }
 
   /// Future function to make a api request to delete a channel by its id
@@ -90,6 +89,5 @@ class ChannelsViewModel extends BaseModel {
       setState(ViewState.Idle);
       throw ApiException;
     }
-    setState(ViewState.Idle); // update state
   }
 } //End class

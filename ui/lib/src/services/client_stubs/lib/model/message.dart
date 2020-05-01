@@ -8,7 +8,8 @@ class Message {
   String content;
   int timestamp;
 
-  Message();
+
+  Message({this.channel, this.author, this.content, this.timestamp});
 
   @override
   String toString() {

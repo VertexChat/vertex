@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:vertex_ui/src/providers/channel_members_view_model.dart';
 import 'package:vertex_ui/src/providers/channels_view_model.dart';
+import 'package:vertex_ui/src/providers/message_view_model.dart';
 import 'package:vertex_ui/src/services/navigation_service.dart';
 
 /// This class registers services into the application on startup
@@ -19,4 +20,5 @@ void setupLocator() {
   //TODO - Test these with Listening widget as it may break them
   locatorGlobal.registerLazySingleton(() => ChannelsViewModel());
   locatorGlobal.registerLazySingleton(() => ChannelMembersViewModel());
+  locatorGlobal.registerLazySingleton(() => MessageViewModel());
 }//End

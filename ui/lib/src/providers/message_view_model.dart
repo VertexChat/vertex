@@ -10,6 +10,7 @@ import 'package:vertex_ui/src/widgets/home_widgets/channel_members_widget.dart';
 /// [notifyListeners]. When listing widgets are notified using [setState]
 /// they will rebuild rendering the new data.
 ///
+/// TODO - Tidy
 /// Each view has it's own model that extends the [ChangeNotifier].
 /// Each view only has 2 states. Idle and Busy. Any other piece of UI contained
 /// in a view, that requires logic and state / UI updates will have it's own model
@@ -24,21 +25,20 @@ import 'package:vertex_ui/src/widgets/home_widgets/channel_members_widget.dart';
 /// notify the client that new data is available in the database. Please refer to the
 /// [NotificationService] for more information about this
 
-class ChannelMembersViewModel extends BaseModel {
+class MessageViewModel extends BaseModel {
   // Variables
   final _api = ChannelApi(); //Access to api
   //Members of a channel
-  List<User> _channelMembers;
+  List<Message> _messages;
 
-  List<User> get channelMembers => _channelMembers;
+  List<Message> get messages => _messages;
 
-  /// Future function to make a call to get channels members in a channel
-  /// using the [channelId].
-  Future getChannelMembers(int channelId) async {
+  /// Future function to make a call to the API to get all [Message]s
+  Future getMessages(int channelId) async {
     setState(ViewState.Busy);
     try {
-      var membersData = await _api.getChannelMembers(channelId);
-      _channelMembers = membersData;
+      var message = await _api.getMessages(channelId);
+      _messages = message;
       setState(ViewState.Idle);
     } catch (ApiException) {
       setState(ViewState.Idle);
@@ -46,17 +46,14 @@ class ChannelMembersViewModel extends BaseModel {
     }
   }
 
-  /// Future function to make a api request to remove a user from a channel
-  Future removeMember(int channelId, int userId) async {
+  Future sendMessage(int channelId, Message message) async {
     setState(ViewState.Busy);
     try {
-      await _api.removeChannelMember(channelId, userId)
-          .then((value) => getChannelMembers(channelId));
+      await _api.createMessage(channelId, message);
       setState(ViewState.Idle);
     } catch (ApiException) {
       setState(ViewState.Idle);
       throw ApiException;
     }
   }
-
-}
+} //End class

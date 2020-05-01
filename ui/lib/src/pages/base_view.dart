@@ -37,6 +37,14 @@ class _BaseViewState<T extends ChangeNotifier> extends State<BaseView<T>> {
     super.initState();
   }
 
+
+  //Clean up
+  @override
+  void dispose() {
+    print('I have been disposed!!');
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<T>.value(

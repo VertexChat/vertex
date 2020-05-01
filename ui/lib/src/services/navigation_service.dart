@@ -20,8 +20,9 @@ class NavigationService {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   /// Navigates to a page by [routeName
-  Future<dynamic> navigateTo(String routeName) {
-    return navigatorKey.currentState.pushNamed(routeName);
+  Future<dynamic> navigateTo(String routeName) async {
+    return await navigatorKey.currentState
+        .pushNamedAndRemoveUntil(routeName, (_) => false);
   }
 } //End class
 
@@ -37,7 +38,8 @@ class NavigationServiceHome {
 
   /// Navigates to a page by [routeName] and can take dynamic [arguments]
   /// These arguments are used to pass data from one page to another
-  Future<dynamic> navigateTo(String routeName, {dynamic arguments}) {
-    return navigatorKey.currentState.pushNamed(routeName, arguments: arguments);
+  Future<dynamic> navigateTo(String routeName, {dynamic arguments}) async {
+    return await navigatorKey.currentState
+        .pushNamedAndRemoveUntil(routeName, (_) => false, arguments: arguments);
   }
 } //End class
