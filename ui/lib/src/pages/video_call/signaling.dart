@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:flutter_webrtc/webrtc.dart';
 import 'package:vertex_ui/src/services/random_string.dart';
 
-import '../../utils/turn.dart' if (dart.library.js) '../../utils/turn_web.dart';
-
 import '../../utils/device_info.dart'
     if (dart.library.js) '../../utils/device_info_web.dart';
 

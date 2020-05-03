@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
+import 'package:openapi/api.dart';
 
 /// Class that builds and returns a custom channel name [Widget]
 /// [@required] [Channel] object

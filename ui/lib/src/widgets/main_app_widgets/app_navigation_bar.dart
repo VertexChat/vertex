@@ -33,7 +33,7 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
     return AppBar(
       /// Setting AppBar title here
       title: Text(title), //TODO: Removed hardcoded input
-      automaticallyImplyLeading: false,
+//      automaticallyImplyLeading: false,
       //Added scaffoldKey so all child widgets can call on it
       actions: <Widget>[
         IconButton(

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:openapi/api.dart';
 import 'package:vertex_ui/locator.dart';
 import 'package:vertex_ui/src/enums/view_state_enum.dart';
 import 'package:vertex_ui/src/pages/base_view.dart';
 import 'package:vertex_ui/src/providers/message_view_model.dart';
-import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
 import 'package:vertex_ui/src/widgets/api_exception_alert_dialog.dart';
 import 'package:vertex_ui/src/widgets/exception_alert_dialog.dart';
 import 'package:vertex_ui/src/widgets/home_widgets/channel_name_widget.dart';

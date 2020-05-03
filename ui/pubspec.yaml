@@ -20,6 +20,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  openapi:
+    path: /home/cathal/norton-api-client
+
   shared_preferences: ^0.5.7
 
   # The following adds the Cupertino Icons font to your application.

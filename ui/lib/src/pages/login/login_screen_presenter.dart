@@ -1,4 +1,5 @@
-import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
+
+import 'package:openapi/api.dart';
 
 abstract class LoginScreenContract {
   void onLoginSuccess(InlineObject login);

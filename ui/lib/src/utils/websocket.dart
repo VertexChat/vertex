@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
+
 /// WebSocket class used for connecting to eternal servers
 /// This class handles connections for mobile devices
 
@@ -26,9 +28,10 @@ class SimpleWebSocket {
   connect() async {
     reconnectScheduled = true;
     try {
+      print("INSIDE MOBILE WEBSOCKET");
 //      if (kIsWeb) {
 //        print('isWeb');
-       _socket = await _connectForSelfSignedCert(_url);
+      _socket = await _connectForSelfSignedCert(_url);
 //      } else
       //_socket = await WebSocket.connect(_url);
       this?.onOpen();
@@ -66,6 +69,8 @@ class SimpleWebSocket {
 
   // https://stackoverflow.com/questions/53721745/dart-upgrade-client-socket-to-websocket
   Future<WebSocket> _connectForSelfSignedCert(url) async {
+    print("PRINTING URL " + url);
+
     try {
       Random r = new Random();
       String key = base64.encode(List<int>.generate(8, (_) => r.nextInt(255)));
@@ -87,6 +92,8 @@ class SimpleWebSocket {
       //request.headers.add('Sec-WebSocket-Protocol', protocol);
 
       HttpClientResponse response = await request.close();
+      print(response);
+
       Socket socket = await response.detachSocket();
       var webSocket = WebSocket.fromUpgradedSocket(
         socket,
@@ -95,6 +102,7 @@ class SimpleWebSocket {
       );
       return webSocket;
     } catch (e) {
+      print(e);
       throw e;
     }
   }

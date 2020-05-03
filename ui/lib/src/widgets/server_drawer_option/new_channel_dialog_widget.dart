@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:openapi/api.dart';
 import 'package:vertex_ui/locator.dart';
 import 'package:vertex_ui/src/providers/channels_view_model.dart';
-import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
 import 'package:vertex_ui/src/widgets/api_exception_alert_dialog.dart';
 
 /// Class that builds a [Dialog] that is used as a [Form] to create

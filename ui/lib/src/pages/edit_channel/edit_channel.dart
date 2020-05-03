@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:openapi/api.dart';
 import 'package:vertex_ui/locator.dart';
 import 'package:vertex_ui/src/providers/channels_view_model.dart';
 import 'package:vertex_ui/src/routing/route_names.dart';
-import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
 import 'package:vertex_ui/src/services/navigation_service.dart';
 import 'package:vertex_ui/src/widgets/api_exception_alert_dialog.dart';
 import 'package:vertex_ui/src/widgets/home_widgets/channel_navigation_options_widget.dart';

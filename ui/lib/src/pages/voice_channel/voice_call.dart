@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/webrtc.dart';
+import 'package:openapi/api.dart';
 import 'package:vertex_ui/src/pages/video_call/signaling.dart';
-import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
 import 'package:vertex_ui/src/widgets/home_widgets/channel_name_widget.dart';
 import 'package:vertex_ui/src/widgets/home_widgets/channel_navigation_options_widget.dart';
 
@@ -23,7 +23,7 @@ class _VoiceCallState extends State<VoiceCall> {
   var _selfId;
   RTCVideoRenderer _localRenderer = new RTCVideoRenderer();
   RTCVideoRenderer _remoteRenderer = new RTCVideoRenderer();
-  final String serverIP = "167.99.197.106"; //Hardcoded for now
+  final String serverIP = "63.35.234.33"; //Hardcoded for now
 
   //Constructor
   _VoiceCallState({Key key, this.channel});

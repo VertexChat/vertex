@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:openapi/api.dart';
 import 'package:vertex_ui/src/enums/view_state_enum.dart';
 import 'package:vertex_ui/src/providers/base_model.dart';
-import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
 import 'package:vertex_ui/src/services/notification_service.dart';
 import 'package:vertex_ui/src/widgets/home_widgets/channel_members_widget.dart';
 

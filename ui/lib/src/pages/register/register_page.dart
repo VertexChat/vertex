@@ -1,8 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:openapi/api.dart';
 import 'package:vertex_ui/src/blocs/registration_bloc.dart';
 import 'package:vertex_ui/src/pages/register/register_screen_presenter.dart';
-import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
 import 'package:vertex_ui/src/widgets/login_register_widgets/icon_card.dart';
 
 class RegisterPage extends StatefulWidget {

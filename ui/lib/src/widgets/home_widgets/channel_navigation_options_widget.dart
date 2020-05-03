@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:openapi/api.dart';
 import 'package:vertex_ui/locator.dart';
 import 'package:vertex_ui/src/routing/route_names.dart';
-import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
 import 'package:vertex_ui/src/services/navigation_service.dart';
 import 'package:vertex_ui/src/widgets/home_widgets/channel_members_widget.dart';
 

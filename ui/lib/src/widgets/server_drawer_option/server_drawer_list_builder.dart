@@ -1,12 +1,12 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:openapi/api.dart';
 import 'package:vertex_ui/locator.dart';
 import 'package:vertex_ui/src/enums/view_state_enum.dart';
 import 'package:vertex_ui/src/pages/base_view.dart';
 import 'package:vertex_ui/src/providers/channels_view_model.dart';
 import 'package:vertex_ui/src/routing/route_names.dart';
-import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
 import 'package:vertex_ui/src/services/navigation_service.dart';
 import 'package:vertex_ui/src/utils/equals.dart';
 import 'package:vertex_ui/src/widgets/api_exception_alert_dialog.dart';

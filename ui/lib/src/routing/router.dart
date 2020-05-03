@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:openapi/api.dart';
 import 'package:vertex_ui/src/pages/edit_channel/edit_channel.dart';
 import 'package:vertex_ui/src/pages/home/home_page.dart';
 import 'package:vertex_ui/src/pages/layout_template/landing_page.dart';
@@ -8,7 +9,6 @@ import 'package:vertex_ui/src/pages/settings/settings_page.dart';
 import 'package:vertex_ui/src/pages/text_chat_page.dart';
 import 'package:vertex_ui/src/pages/voice_channel/voice_call.dart';
 import 'package:vertex_ui/src/routing/route_names.dart';
-import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
 
 /// Switch statement that is used to return the page a user is trying to navigate to
 /// Global Routes

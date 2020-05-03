@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
+import 'package:openapi/api.dart';
 
 /// Function that will display a [AlertDialog] if
 /// any errors occur during posting the new [Channel]

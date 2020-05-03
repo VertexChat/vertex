@@ -13,7 +13,7 @@ class VideoCallPage extends StatefulWidget {
   @override
 //TODO: Not have the ip hard coded : 167.99.197.106
   _VideoCallPageState createState() =>
-      _VideoCallPageState(serverIP: "18.203.171.99");
+      _VideoCallPageState(serverIP: "63.35.234.33");
 } //End class
 
 /// Stateless class

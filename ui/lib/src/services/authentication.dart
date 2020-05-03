@@ -1,4 +1,4 @@
-import 'client_stubs/lib/api.dart';
+import 'package:openapi/api.dart';
 
 //Enum
 enum AuthState { LOGGED_IN, LOGGED_OUT }
@@ -29,12 +29,12 @@ class AuthStateProvider {
 
   void initState() async {
     var api = AccountApi();
-    var isLoggedIn = api.isLoggedIn;
-
-    if (isLoggedIn)
-      notify(AuthState.LOGGED_IN);
-    else
-      notify(AuthState.LOGGED_OUT);
+//    var isLoggedIn = api.isLoggedIn;
+//
+//    if (isLoggedIn)
+//      notify(AuthState.LOGGED_IN);
+//    else
+//      notify(AuthState.LOGGED_OUT);
   }
 
   void subscribe(AuthStateListener listener) {
