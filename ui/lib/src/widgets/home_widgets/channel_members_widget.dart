@@ -124,7 +124,7 @@ class _ChannelMembersWidgetState extends State<ChannelMembersWidget> {
         //TODO - CB - Review this,
         // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
         trailing: IconButton(
-            onPressed: () => removeUser(channel.id, membersData.id),
+            onPressed: () => removeUser(channel.id, membersData.userId),
             hoverColor: Colors.red,
             icon: Icon(FontAwesomeIcons.userSlash,
                 color: Colors.white, size: 20.0)));

@@ -30,7 +30,6 @@ class MessageViewModel extends BaseModel {
   final _api = ChannelApi(); //Access to api
   //Members of a channel
   List<Message> _messages;
-
   List<Message> get messages => _messages;
 
   /// Future function to make a call to the API to get all [Message]s

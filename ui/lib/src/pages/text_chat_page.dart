@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:openapi/api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vertex_ui/locator.dart';
 import 'package:vertex_ui/src/enums/view_state_enum.dart';
 import 'package:vertex_ui/src/pages/base_view.dart';
@@ -23,18 +24,30 @@ class _TextChatScreenState extends State<TextChatScreen>
     with TickerProviderStateMixin {
   //Variables
   final TextEditingController _textEditingController = TextEditingController();
-  final Channel channel;
-
-  int id = 102; // TODO - Unhardened the id.
-
-  //Variables
   ScrollController listScrollController = new ScrollController();
+  final FocusNode focusNode = new FocusNode();
   AnimationController animationController;
   List<Message> localMessageList;
-  String text;
-  final FocusNode focusNode = new FocusNode();
+  final Channel channel;
+  SharedPreferences userDetails;
+  int userId = 102;
+  String username;
 
   _TextChatScreenState({this.channel});
+
+  @override
+  void initState() {
+    _init();
+    super.initState();
+  }
+
+  _init() async {
+    userDetails = await SharedPreferences.getInstance();
+    userId = userDetails.getInt('id');
+    username = userDetails.getString('username');
+
+    print(username);
+  }
 
   /// This [Widget] uses the [BaseView] class which converts this [StatelessWidget]
   /// into a [StatefulWidget] so it can pass a Function(t) that returns a model.
@@ -148,7 +161,7 @@ class _TextChatScreenState extends State<TextChatScreen>
 
       Message message = new Message(
           channel: channel.id,
-          author: id,
+          author: userId,
           content: content,
           timestamp: DateTime.now().millisecondsSinceEpoch);
 
@@ -168,10 +181,9 @@ class _TextChatScreenState extends State<TextChatScreen>
     }
   }
 
-
   /// Widget to build UI message elements with their content inside them
   Widget buildItem(int index, message) {
-    if (message.author == id) {
+    if (message.author == userId) {
       // Right (my message)
       return Row(
         children: <Widget>[
@@ -223,7 +235,7 @@ class _TextChatScreenState extends State<TextChatScreen>
                 ? Container(
                     child: Row(
                       children: <Widget>[
-                        Text("Cathal",
+                        Text(username,
                             style: TextStyle(
                                 color: Colors.grey,
                                 fontSize: 12.0,
@@ -258,7 +270,7 @@ class _TextChatScreenState extends State<TextChatScreen>
   bool isLastMessageLeft(int index) {
     if ((index > 0 &&
             localMessageList != null &&
-            localMessageList[index - 1].author == id) ||
+            localMessageList[index - 1].author == userId) ||
         index == 0) {
       return true;
     } else {
@@ -271,7 +283,7 @@ class _TextChatScreenState extends State<TextChatScreen>
   bool isLastMessageRight(int index) {
     if ((index > 0 &&
             localMessageList != null &&
-            localMessageList[index - 1].author != id) ||
+            localMessageList[index - 1].author != userId) ||
         index == 0) {
       return true;
     } else {

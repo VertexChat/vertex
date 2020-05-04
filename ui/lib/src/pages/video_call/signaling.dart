@@ -224,6 +224,9 @@ class Signaling {
           }
         }
         break;
+      case 'add_peer':
+
+        break;
       case 'candidate':
         {
           var id = data['id'];
