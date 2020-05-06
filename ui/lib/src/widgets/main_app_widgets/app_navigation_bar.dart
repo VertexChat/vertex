@@ -5,7 +5,7 @@ import 'package:vertex_ui/src/pages/login/login_page.dart';
 import 'package:vertex_ui/src/pages/settings/settings_page.dart';
 import 'package:vertex_ui/src/pages/video_call/video_call_page.dart';
 
-/// This class is used to create a custom AppBar for this application.
+/// This class is used to create a custom [AppBar] for this application.
 /// This allows for navigation around the application
 //https://stackoverflow.com/questions/53294006/how-to-create-a-custom-appbar-widget
 
@@ -33,6 +33,7 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
     return AppBar(
       /// Setting AppBar title here
       title: Text(title), //TODO: Removed hardcoded input
+//      automaticallyImplyLeading: false,
       //Added scaffoldKey so all child widgets can call on it
       actions: <Widget>[
         IconButton(
@@ -41,8 +42,7 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
             Navigator.push(
                 context,
                 new MaterialPageRoute(
-                    builder: (context) =>
-                        new VideoCallPage()));
+                    builder: (context) => new VideoCallPage()));
           },
         ),
         IconButton(
@@ -56,10 +56,8 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
         IconButton(
             icon: Icon(FontAwesomeIcons.lock),
             onPressed: () {
-              Navigator.push(
-                  context,
-                  new MaterialPageRoute(
-                      builder: (context) => new LoginPage()));
+              Navigator.push(context,
+                  new MaterialPageRoute(builder: (context) => new LoginPage()));
             })
       ],
     );

@@ -1,11 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:openapi/api.dart';
 import 'package:vertex_ui/src/blocs/login_bloc.dart';
+import 'package:vertex_ui/src/enums/authentication_enum.dart';
 import 'package:vertex_ui/src/pages/register/register_page.dart';
 import 'package:vertex_ui/src/routing/route_names.dart';
-import 'package:vertex_ui/src/services/auth.dart';
-import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
-import 'package:vertex_ui/src/widgets/login_register_widgets/icon_card.dart';
+import 'package:vertex_ui/src/services/authentication.dart';
 import 'login_screen_presenter.dart';
 
 class LoginPage extends StatefulWidget {
@@ -28,7 +28,7 @@ class _LoginPageState extends State<LoginPage>
   final formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool _validate = false;
-  Login login = Login();
+  InlineObject _login = InlineObject();
   LoginScreenPresenter _presenter;
 
   //Constructor
@@ -42,7 +42,7 @@ class _LoginPageState extends State<LoginPage>
     final form = formKey.currentState;
     if (form.validate()) {
       form.save();
-      _presenter.doLogin(login);
+      _presenter.doLogin(_login);
     }
   } //End function
 
@@ -96,25 +96,7 @@ class _LoginPageState extends State<LoginPage>
                 child: formUi(),
               ),
             ),
-            //"Connect with" with text container
-            //SizedBox(height: data.size.height / 1.0),
-            Container(
-                //https://github.com/flutter/flutter/issues/10156
-                padding: EdgeInsets.only(
-                    top: 10.0, left: 20.0, right: 20.0, bottom: 10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      'or connect with',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Montserrat'),
-                    ),
-                  ],
-                )),
             //Call IconCard Widget
-            new IconCard()
           ],
         ));
   } //end widget builder
@@ -131,7 +113,7 @@ class _LoginPageState extends State<LoginPage>
           stream: bloc.username,
           builder: (context, snapshot) => TextFormField(
             onChanged: bloc.usernameChanged,
-            onSaved: (String val) => this.login.username = val,
+            onSaved: (String val) => this._login.username = val,
             decoration: InputDecoration(
               labelText: 'USERNAME',
               labelStyle: TextStyle(
@@ -149,7 +131,7 @@ class _LoginPageState extends State<LoginPage>
           builder: (context, snapshot) => TextFormField(
             obscureText: true,
             onChanged: bloc.passwordChanged,
-            onSaved: (String val) => this.login.password = val,
+            onSaved: (String val) => this._login.password = val,
             decoration: InputDecoration(
               labelText: 'PASSWORD',
               labelStyle: TextStyle(
@@ -209,7 +191,7 @@ class _LoginPageState extends State<LoginPage>
               stream: bloc.submitCheck,
               builder: (context, snapshot) => RaisedButton(
                 color: Colors.green,
-                onPressed: snapshot.hasData ? () => _submit() : null,
+                onPressed: () => _submit(),
                 child: Center(
                   child: Text(
                     'LOGIN',
@@ -271,7 +253,7 @@ class _LoginPageState extends State<LoginPage>
   }
 
   @override
-  void onLoginSuccess(Login login) {
+  void onLoginSuccess(InlineObject login) {
     var authStateProvider = new AuthStateProvider();
     _showSnackBar("Successful Login redirecting...", Colors.green);
     authStateProvider.notify(AuthState.LOGGED_IN);

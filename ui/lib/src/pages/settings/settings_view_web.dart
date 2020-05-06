@@ -366,16 +366,20 @@ class _SettingsViewWeb extends State<SettingsViewWeb> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    SettingsCard(
-                      optionsDropdownBox: audioInputDropBox,
-                      settingsTypeHeading: "Input Audio",
-                      width: 600,
+                    Expanded(
+                      child: SettingsCard(
+                        optionsDropdownBox: audioInputDropBox,
+                        settingsTypeHeading: "Input Audio",
+                        width: 600,
+                      ),
                     ),
                     // Audio Output Settings
-                    SettingsCard(
-                      optionsDropdownBox: audioOutputDropBox,
-                      settingsTypeHeading: "Output Audio",
-                      width: 600,
+                    Expanded(
+                      child: SettingsCard(
+                        optionsDropdownBox: audioOutputDropBox,
+                        settingsTypeHeading: "Output Audio",
+                        width: 600,
+                      ),
                     ),
                   ],
                 ),

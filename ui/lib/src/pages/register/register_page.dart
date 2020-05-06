@@ -1,9 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:openapi/api.dart';
 import 'package:vertex_ui/src/blocs/registration_bloc.dart';
 import 'package:vertex_ui/src/pages/register/register_screen_presenter.dart';
-import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
-import 'package:vertex_ui/src/widgets/login_register_widgets/icon_card.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -18,7 +17,7 @@ class _RegisterPageState extends State<RegisterPage>
   final formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool _validate = false;
-  User user = User();
+  InlineObject user = InlineObject();
   RegisterScreenPresenter _presenter;
 
   _RegisterPageState() {
@@ -37,7 +36,6 @@ class _RegisterPageState extends State<RegisterPage>
 
   @override
   Widget build(BuildContext context) {
-    user.id = 1; //Default value
     //Data about the device the application is running on
     final data = MediaQuery.of(context);
 
@@ -72,8 +70,6 @@ class _RegisterPageState extends State<RegisterPage>
                 ),
               ),
               SizedBox(height: data.size.height / 30.00),
-              //Call IconCard Widget
-              new IconCard()
             ]));
   } //end builder
 
@@ -119,22 +115,6 @@ class _RegisterPageState extends State<RegisterPage>
           ),
         ),
         SizedBox(height: data.size.height / 90),
-        StreamBuilder<String>(
-          stream: bloc.displayName,
-          builder: (context, snapshot) => TextFormField(
-            onSaved: (String val) => this.user.displayName = val,
-            onChanged: bloc.displayNameChanged,
-            decoration: InputDecoration(
-                labelText: 'DISPLAY NAME ',
-                labelStyle: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey),
-                focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.green)),
-                errorText: snapshot.error),
-          ),
-        ),
         //Register button container
         SizedBox(height: data.size.height / 20.0),
         Container(
@@ -203,7 +183,8 @@ class _RegisterPageState extends State<RegisterPage>
   }
 
   @override
-  void onRegisterSuccess(User user) {
+  void onRegisterSuccess(InlineObject user) {
     _showSnackBar("Account successfully registered", Colors.green);
+    //TODO - nav to login page
   } //End widget
 } //end class

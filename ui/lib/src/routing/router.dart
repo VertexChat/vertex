@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:openapi/api.dart';
+import 'package:vertex_ui/src/pages/edit_channel/edit_channel.dart';
 import 'package:vertex_ui/src/pages/home/home_page.dart';
 import 'package:vertex_ui/src/pages/layout_template/landing_page.dart';
 import 'package:vertex_ui/src/pages/login/login_page.dart';
 import 'package:vertex_ui/src/pages/register/register_page.dart';
 import 'package:vertex_ui/src/pages/settings/settings_page.dart';
 import 'package:vertex_ui/src/pages/text_chat_page.dart';
-import 'package:vertex_ui/src/pages/voice_channel/voice_call.dart';
+import 'package:vertex_ui/src/pages/voice_channel/voice_call_page.dart';
 import 'package:vertex_ui/src/routing/route_names.dart';
-import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
 
 /// Switch statement that is used to return the page a user is trying to navigate to
 /// Global Routes
@@ -37,15 +38,17 @@ Route<dynamic> internalRoutes(RouteSettings settings) {
     case VoiceChannelRoute:
       Channel channel = settings.arguments;
       return _getPageRoute(VoiceCall(channel: channel), settings);
-      case LandingPageRoute:
+    case LandingPageRoute:
       return _getPageRoute(LandingPage(), settings);
+    case EditChannelRoute:
+      Channel channel = settings.arguments;
+      return _getPageRoute(EditChannel(channel: channel), settings);
     default:
       return _getPageRoute(LandingPage(), settings);
   } //End switch
 } //End function
 
+/// Returns a page which is a [Widget] and [RouteSettings]
 PageRoute _getPageRoute(Widget child, RouteSettings settings) {
   return MaterialPageRoute(builder: (context) => child, settings: settings);
 } //End function
-
-//TODO: Try implemented a different animation when switching pages

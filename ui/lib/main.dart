@@ -1,17 +1,22 @@
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:openapi/api.dart';
 import 'package:vertex_ui/locator.dart';
+import 'package:vertex_ui/src/enums/authentication_enum.dart';
+import 'package:vertex_ui/src/pages/home/home_page.dart';
 import 'package:vertex_ui/src/pages/layout_template/main_layout_template.dart';
 import 'package:vertex_ui/src/pages/login/login_page.dart';
 import 'package:vertex_ui/src/routing/route_names.dart';
 import 'package:vertex_ui/src/routing/router.dart';
-import 'package:vertex_ui/src/services/client_stubs/lib/api.dart';
+import 'package:vertex_ui/src/services/authentication.dart';
 import 'package:vertex_ui/src/services/navigation_service.dart';
 
-/// Call to run App Root
+/// Main Class
 void main() {
   // Run application start this class first
-  setupLocator();
+  setupLocator(); // Register Services with [GetIt]
+//  NotificationService notificationService = new NotificationService();
+//  notificationService.connect();
   runApp(UI());
 }
 
@@ -25,22 +30,23 @@ class _UIState extends State<UI> {
   //Variables
   bool offline = false;
   Brightness brightness;
-  var api = AuthApi();
-  Widget _defaultRoute = new LoginPage();
+  var api = AccountApi();
+  String _defaultRoute = LoginRoute;
 
   @override
   Widget build(BuildContext context) {
     bool _result = api.isLoggedIn;
-    // if the user is logged in allow them access the home page
-    //if (_result) _defaultRoute = new VertexHomePage();
+//     if the user is logged in allow them access the home page
+    if (_result) _defaultRoute = HomeRoute;
 
     /// MaterialApp is the base Widget for your Flutter Application
     /// Gives us access to routing, context, and meta info functionality.
     return new DynamicTheme(
       defaultBrightness: Brightness.dark,
-      data: (brightness) => ThemeData(
-        brightness: brightness,
-      ),
+      data: (brightness) =>
+          ThemeData(
+            brightness: brightness,
+          ),
       themedWidgetBuilder: (context, theme) {
         return MaterialApp(
           title: 'Vertex',
@@ -55,7 +61,7 @@ class _UIState extends State<UI> {
           // The child view return from the router
           navigatorKey: locatorGlobal<NavigationService>().navigatorKey,
           onGenerateRoute: generateRoute,
-          initialRoute: HomeRoute,
+          initialRoute: _defaultRoute,
         );
       },
     );
