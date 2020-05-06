@@ -96,7 +96,7 @@ class _VideoCallPageState extends State<VideoCallPage> {
           case SignalingState.CallStateRinging:
           case SignalingState.ConnectionClosed:
           case SignalingState.ConnectionError:
-          this.setState(() => _connection = false);
+            this.setState(() => _connection = false);
             break;
           case SignalingState.ConnectionConnecting:
             this.setState(() => _isConnecting = true);
@@ -147,7 +147,9 @@ class _VideoCallPageState extends State<VideoCallPage> {
   /// which forwards its onto the remote peer and replays it to the local peer
   /// closing all connections.
   _hangUp() {
-    if (_signaling != null) _signaling.bye();
+    if (_signaling != null) {
+      _signaling.bye();
+    }
   }
 
   /// Function to change change
@@ -187,14 +189,14 @@ class _VideoCallPageState extends State<VideoCallPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       self
-                          ? IconButton(
+                          ? Container()
+                          : IconButton(
                               icon: const Icon(Icons.phone),
                               //Invite id to audio call;
                               onPressed: () => _invitePeer(peer['id'], false),
                               // TODO
                               tooltip: 'Voice Call',
                             )
-                          : Container()
                     ])),
             subtitle: Text('User ID: ' + peer['id']),
           ),
@@ -212,29 +214,32 @@ class _VideoCallPageState extends State<VideoCallPage> {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: _inCalling
             ? SizedBox(
-                width: 200.0,
-                child: new Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      FloatingActionButton(
-                        child: const Icon(Icons.switch_camera),
-                        onPressed: _switchCamera,
-                      ),
-                      FloatingActionButton(
-                        onPressed: _hangUp,
-                        tooltip: 'Hangup',
-                        child: new Icon(Icons.call_end),
-                        backgroundColor: Colors.pink,
-                      ),
-                      FloatingActionButton(
-                        child: const Icon(Icons.mic_off),
-                        onPressed: _muteMic(true),
-                      ),
-                      FloatingActionButton(
-                        child: const Icon(Icons.mic),
-                        onPressed: _muteMic(false),
-                      )
-                    ]))
+                width: 600,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: new Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        FloatingActionButton(
+                          child: const Icon(Icons.switch_camera),
+                          onPressed: _switchCamera,
+                        ),
+                        FloatingActionButton(
+                          onPressed: _hangUp,
+                          tooltip: 'Hangup',
+                          child: new Icon(Icons.call_end),
+                          backgroundColor: Colors.pink,
+                        ),
+                        FloatingActionButton(
+                          child: const Icon(Icons.mic_off),
+                          onPressed: _muteMic(true),
+                        ),
+                        FloatingActionButton(
+                          child: const Icon(Icons.mic),
+                          onPressed: _muteMic(false),
+                        )
+                      ]),
+                ))
             : null,
         body: _inCalling
             ? OrientationBuilder(builder: (context, orientation) {

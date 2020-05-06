@@ -91,7 +91,7 @@ class _TextChatScreenState extends State<TextChatScreen>
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 ChannelNameWidget(channel: channel),
-                ChannelNavigationOptionsWidget(channel: channel),
+                ChannelNavigationOptionsWidget(channel: channel, isVoiceChannel: false),
               ],
             ),
             //Heading

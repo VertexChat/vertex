@@ -66,11 +66,18 @@ class ChannelsViewModel extends BaseModel {
   /// to be sent onto the database
   Future addChannel(Channel channel) async {
     setState(ViewState.Busy);
+    String channelName = channel.name;
     //POST new channel
     try {
       await _api
           .createChannel(channel)
           .then((value) => getChannels()); //Get channels
+
+//      for (channel in _channels){
+//        if(channelName == channel.name){
+//          _api.
+//        }
+//      }
 
       setState(ViewState.Idle); // update state
     } catch (ApiException) {

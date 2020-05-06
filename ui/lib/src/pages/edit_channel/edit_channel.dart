@@ -42,7 +42,7 @@ class _EditChannelState extends State<EditChannel> {
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: Colors.white)),
-              ChannelNavigationOptionsWidget(channel: channel),
+              ChannelNavigationOptionsWidget(channel: channel, isVoiceChannel: true),
             ],
           ),
         ),

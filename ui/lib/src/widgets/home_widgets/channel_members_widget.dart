@@ -47,7 +47,7 @@ class _ChannelMembersWidgetState extends State<ChannelMembersWidget> {
   BaseView<ChannelMembersViewModel> buildBaseView(BuildContext context) {
     return BaseView<ChannelMembersViewModel>(
       onModelReady: (model) =>
-          model.getChannelMembers(widget.channel.id).catchError((onError) {
+          model.getChannelMembers(channel.id).catchError((onError) {
         showDialog(
             context: context,
             child: onError == ApiException
@@ -82,6 +82,7 @@ class _ChannelMembersWidgetState extends State<ChannelMembersWidget> {
 
   /// Widget Builds a list of Cards with information about members /[User]s of a [Channel].
   Widget _channelMembersListView(membersList) {
+
     return Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
       Container(
         height: 400.0, // Change as per your requirement
@@ -118,13 +119,13 @@ class _ChannelMembersWidgetState extends State<ChannelMembersWidget> {
           child: Icon(FontAwesomeIcons.user, color: Colors.white),
         ),
         title: Text(
-          membersData.name,
+          membersData.username,
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         //TODO - CB - Review this,
         // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
         trailing: IconButton(
-            onPressed: () => removeUser(channel.id, membersData.userId),
+            onPressed: () => removeUser(channel.id, membersData.id),
             hoverColor: Colors.red,
             icon: Icon(FontAwesomeIcons.userSlash,
                 color: Colors.white, size: 20.0)));

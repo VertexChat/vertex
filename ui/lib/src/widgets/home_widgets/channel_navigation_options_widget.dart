@@ -15,9 +15,11 @@ class ChannelNavigationOptionsWidget extends StatelessWidget {
   const ChannelNavigationOptionsWidget({
     Key key,
     @required this.channel,
+    @required this.isVoiceChannel,
   }) : super(key: key);
 
   final Channel channel;
+  final bool isVoiceChannel;
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +27,13 @@ class ChannelNavigationOptionsWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        IconButton(
-            icon: Icon(FontAwesomeIcons.userFriends),
-            onPressed: () => showDialog(
-                context: context,
-                child: ChannelMembersWidget(channel: channel))),
+        isVoiceChannel
+            ? Container()
+            : IconButton(
+                icon: Icon(FontAwesomeIcons.userFriends),
+                onPressed: () => showDialog(
+                    context: context,
+                    child: ChannelMembersWidget(channel: channel))),
         // Button to navigate to edit channel page
         SizedBox(width: 25),
         // Button to navigate to landing page

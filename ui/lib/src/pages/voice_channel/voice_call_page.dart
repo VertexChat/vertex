@@ -139,7 +139,9 @@ class _VoiceCallState extends State<VoiceCall> {
   } //End function
 
   _hangUp() {
-    if (_signaling != null) _signaling.bye();
+    if (_signaling != null) {
+      _signaling.bye();
+    }
   }
 
   _muteMic(bool mute) {
@@ -221,7 +223,7 @@ class _VoiceCallState extends State<VoiceCall> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               ChannelNameWidget(channel: channel),
-              ChannelNavigationOptionsWidget(channel: channel),
+              ChannelNavigationOptionsWidget(channel: channel, isVoiceChannel: true,),
             ],
           ),
           _inCalling
