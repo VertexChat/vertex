@@ -34,7 +34,6 @@ class MessageViewModel extends BaseModel {
 
   /// Future function to make a call to the API to get all [Message]s
   Future getMessages(int channelId) async {
-    setState(ViewState.Busy);
     try {
       var message = await _api.getMessages(channelId);
       _messages = message;

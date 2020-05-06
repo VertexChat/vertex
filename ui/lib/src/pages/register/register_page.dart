@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 import 'package:vertex_ui/src/blocs/registration_bloc.dart';
 import 'package:vertex_ui/src/pages/register/register_screen_presenter.dart';
-import 'package:vertex_ui/src/widgets/login_register_widgets/icon_card.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -71,8 +70,6 @@ class _RegisterPageState extends State<RegisterPage>
                 ),
               ),
               SizedBox(height: data.size.height / 30.00),
-              //Call IconCard Widget
-              new IconCard()
             ]));
   } //end builder
 

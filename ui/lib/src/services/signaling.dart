@@ -1,31 +1,22 @@
-import 'dart:convert';
 import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter_webrtc/webrtc.dart';
-import 'package:vertex_ui/src/services/random_string.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vertex_ui/locator.dart';
+import 'package:vertex_ui/src/enums/signaling_state_enum.dart';
+import 'package:vertex_ui/src/routing/route_names.dart';
+import 'package:vertex_ui/src/services/navigation_service.dart';
 
-import '../../utils/device_info.dart'
-    if (dart.library.js) '../../utils/device_info_web.dart';
-
-import '../../utils/websocket.dart'
-    if (dart.library.js) '../../utils/websocket_web.dart';
-
-/// Enum for different states
-enum SignalingState {
-  CallStateNew, // New call
-  CallStateRinging, // Ringing
-  CallStateInvite, //Invite to call
-  CallStateConnected, // Connected to call
-  CallStateBye, // End call 'bye'
-  ConnectionOpen, // Open call
-  ConnectionClosed, // Connection closed
-  ConnectionError, // Connection error
-}
+import '../utils/device_info.dart'
+    if (dart.library.js) '../utils/device_info_web.dart';
+import '../utils/websocket.dart'
+    if (dart.library.js) '../utils/websocket_web.dart';
 
 /// https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Connectivity
 
-/*
- * callbacks for Signaling API.
- */
+///callbacks for Signaling API.
+///
 typedef void SignalingStateCallback(SignalingState state);
 typedef void StreamStateCallback(MediaStream stream);
 typedef void OtherEventCallback(dynamic event);
@@ -35,36 +26,32 @@ typedef void DataChannelCallback(RTCDataChannel dc);
 
 class Signaling {
   // Variables
-  String _selfId = randomNumeric(6); // Random Number is generated for id
+  JsonDecoder decoder = new JsonDecoder();
+  JsonEncoder encoder = new JsonEncoder();
+  SharedPreferences _userDetails;
   SimpleWebSocket _socket; // WebSocket
+  List<dynamic> peers;
+  String _username;
+  String _selfId; // Random Number is generated for id
   var _sessionId;
-  var _host;
   var _port = 8086;
+  var _host;
 
   /// Provides methods to connect to a remote peer, maintain and monitor the
   /// connection, and close the connection once it's no longer needed.
   var _peerConnections = new Map<String, RTCPeerConnection>();
 
-  // The RTCDataChannel interface represents a network channel which can be used
-  // for bidirectional peer-to-peer transfers of arbitrary data. Every data channel
-  // is associated with an RTCPeerConnection, and each peer connection can have up
-  // to a theoretical maximum of 65,534 data channels (the actual limit may vary
-  // from browser to browser).
-  var _dataChannels = new Map<String, RTCDataChannel>();
-
   /// Users in the channel
   var _remoteCandidates = [];
 
   // Local client stream
-  MediaStream _localStream;
-
   // Remote user stream
+  MediaStream _localStream;
   List<MediaStream> _remoteStreams;
 
   // State Change callback
-  SignalingStateCallback onStateChange;
-
   // Local state callback
+  SignalingStateCallback onStateChange;
   StreamStateCallback onLocalStream;
 
   // Remote state callback
@@ -87,6 +74,9 @@ class Signaling {
     ]
   };
 
+  /// this will no longer be needed by chrome
+  /// eventually (supposedly), but is necessary
+  /// for now to get firefox to talk to chrome */
   final Map<String, dynamic> _config = {
     'mandatory': {},
     'optional': [
@@ -103,11 +93,10 @@ class Signaling {
     'optional': [],
   };
 
-  // False for audio and video
-  final Map<String, dynamic> _dc_constraints = {
+  final Map<String, dynamic> _voice_constraints = {
     'mandatory': {
-      'OfferToReceiveAudio': false,
-      'OfferToReceiveVideo': false,
+      'OfferToReceiveAudio': true,
+      'OfferToReceiveVideo': false, // No video
     },
     'optional': [],
   };
@@ -115,18 +104,14 @@ class Signaling {
   //Constructor
   Signaling(this._host);
 
-  close() {
+  /// Function that mutes the [_localStream] mic.
+  void muteMic(bool mute) {
     if (_localStream != null) {
-      _localStream.dispose();
-      _localStream = null;
+      _localStream.getAudioTracks()[0].setMicrophoneMute(mute);
     }
-
-    _peerConnections.forEach((key, pc) {
-      pc.close();
-    });
-    if (_socket != null) _socket.close();
   }
 
+  /// Function that changes the [_localStream] camera.
   void switchCamera() {
     if (_localStream != null) {
       _localStream.getVideoTracks()[0].switchCamera();
@@ -146,33 +131,83 @@ class Signaling {
     _createPeerConnection(peerId, media, useScreen).then((pc) {
       //Add peer to list of peer connections
       _peerConnections[peerId] = pc;
-
-      // Start a data channel is media options is data:
-      if (media == 'data') _createDataChannel(peerId, pc);
-
       // Create an offer to the peer
       _createOffer(peerId, pc, media);
     });
   } //End invite
 
-  void bye() {
-    _send('bye', {
-      'session_id': this._sessionId,
-      'from': this._selfId,
-    });
-  }
+  /// Function for connection to the signaling server.
+  /// instances of [SimpleWebSocket] is created that connects to the server.
+  /// [_socket] events are and states are updated to notify the application
+  /// of events taking place. [SignalingState]
+  void connect() async {
+    //Variables
+    _userDetails = await SharedPreferences.getInstance();
+    var url = 'https://$_host:$_port/ws';
 
-  /// Function which handles incoming messages from the websocket
+    // Set connecting state
+    this.onStateChange(SignalingState.ConnectionConnecting);
+
+    _socket = SimpleWebSocket(url);
+
+    /// Grab user details from [SharedPreferences]
+    /// User id and username. ID are unique, by the minor chance [SharedPreferences]
+    /// does not handle user details correct the user with be return to [LoginRoute]
+    if (_selfId == _userDetails.getInt('id').toString()) {
+      locatorGlobal<NavigationService>().navigateTo(LoginRoute);
+    } else {
+      _selfId = _userDetails.getInt('id').toString();
+      _username = _userDetails.getString('username');
+    }
+    print('connect to $url');
+
+    // Send data about myself on connection to signaling server
+    _socket.onOpen = () async {
+      print('onOpen');
+      this?.onStateChange(SignalingState.ConnectionOpen);
+      this?.onStateChange(SignalingState.FetchingData);
+
+      //Needs to give time for the server to remove the old connection
+      await new Future.delayed(const Duration(seconds: 2));
+
+      _send('new', {
+        'device_name': DeviceInfo.label,
+        'id': _selfId,
+        'username': _username,
+        'user_agent': DeviceInfo.userAgent
+      });
+    };
+
+    _socket.onMessage = (message) {
+      this?.onStateChange(SignalingState.ReceivedData);
+      print(message);
+      this.onMessage(decoder.convert(message));
+    };
+
+    _socket.onClose = (int code, String reason) {
+      print('Closed by server [$code => $reason]!');
+      if (this.onStateChange != null) {
+        this.onStateChange(SignalingState.ConnectionClosed);
+      }
+    };
+    await _socket.connect();
+  } //End connect function
+
+  /// Function which handles all incoming messages from the [_socket].
+  /// Messages are processed by there type which is an event.
+  /// The cases will process the data updating local state or replying to the signalling
+  /// server.
   void onMessage(message) async {
+    //Variables
     Map<String, dynamic> mapData = message;
-    // List of peers returned from server including myself
     var data = mapData['data']; // Data from message
+    List<dynamic> peers;
+
     switch (mapData['type']) {
       // Type from message
       case 'peers':
         {
-          List<dynamic> peers = data;
-          // print("inside peer, printing peer data  " + data);
+          peers = data; //Update list of peers
           if (this.onPeersUpdate != null) {
             Map<String, dynamic> event = new Map<String, dynamic>();
             event['self'] = _selfId;
@@ -215,17 +250,13 @@ class Signaling {
         {
           var id = data['id'];
           var description = data['description'];
-
-          print('insdie answer' + id);
           var pc = _peerConnections[id];
+
           if (pc != null) {
             await pc.setRemoteDescription(new RTCSessionDescription(
                 description['sdp'], description['type']));
           }
         }
-        break;
-      case 'add_peer':
-
         break;
       case 'candidate':
         {
@@ -248,7 +279,6 @@ class Signaling {
         {
           var id = data;
           var pc = _peerConnections.remove(id);
-          _dataChannels.remove(id);
 
           if (_localStream != null) {
             _localStream.dispose();
@@ -281,21 +311,10 @@ class Signaling {
             _peerConnections.remove(to);
           }
 
-          var dc = _dataChannels[to];
-          if (dc != null) {
-            dc.close();
-            _dataChannels.remove(to);
-          }
-
           this._sessionId = null;
           if (this.onStateChange != null) {
             this.onStateChange(SignalingState.CallStateBye);
           }
-        }
-        break;
-      case 'keepalive':
-        {
-          print('keepalive response!');
         }
         break;
       default:
@@ -303,45 +322,30 @@ class Signaling {
     }
   }
 
-  void connect() async {
-    var url = 'https://$_host:$_port/ws';
-    _socket = SimpleWebSocket(url);
+  /// Function looks after closing [_localStream] and closing [_peerConnections] streams
+  /// the socket is closed along with the stream.
+  close() {
+    if (_localStream != null) {
+      _localStream.dispose();
+      _localStream = null;
+    }
 
-    print('connect to $url');
+    _peerConnections.forEach((key, pc) {
+      pc.close();
+    });
+    if (_socket != null) _socket.close();
+  }
 
-    // Send data about myself on connection to signaling server
-    _socket.onOpen = () {
-      print('onOpen');
-      this?.onStateChange(SignalingState.ConnectionOpen);
-      _send('new', {
-        'name': DeviceInfo.label,
-        'id': _selfId,
-        'user_agent': DeviceInfo.userAgent
-      });
-    };
-
-    _socket.onMessage = (message) {
-      print('Recivied data: ' + message);
-      JsonDecoder decoder = new JsonDecoder();
-      this.onMessage(decoder.convert(message));
-    };
-
-    _socket.onClose = (int code, String reason) {
-      print('Closed by server [$code => $reason]!');
-      if (this.onStateChange != null) {
-        this.onStateChange(SignalingState.ConnectionClosed);
-      }
-    };
-    await _socket.connect();
-  } //End connect function
-
+  /// Fruition creates and returns a [MediaStream]. Depending on the
+  /// [media] type it will return the constraints needed for that media type.
   Future<MediaStream> createStream(media, userScreen) async {
-    final Map<String, dynamic> mediaConstraints = {
+    //Variables
+    Map<String, dynamic> mediaConstraints;
+    final Map<String, dynamic> mediaConstraintsVideo = {
       'audio': true,
       'video': {
         'mandatory': {
-          'minWidth':
-              '640', // Provide your own width, height and frame rate here
+          'minWidth': '640',
           'minHeight': '480',
           'minFrameRate': '30',
         },
@@ -350,12 +354,23 @@ class Signaling {
       }
     };
 
+    /// Voice Call media constrains, only audio enable.
+    final Map<String, dynamic> mediaConstraintsVoice = {
+      'audio': true,
+      'video': false
+    };
+
+    /// Returns the constrains needed depending on the media type
+    if (media == 'voice') {
+      mediaConstraints = mediaConstraintsVoice;
+    } else {
+      mediaConstraints = mediaConstraintsVideo;
+    }
+
+    /// Get media stream
     MediaStream stream = userScreen
         ? await navigator.getDisplayMedia(mediaConstraints)
         : await navigator.getUserMedia(mediaConstraints);
-
-    //https://stackoverflow.com/questions/35512314/how-to-mute-unmute-mic-in-webrtc
-    stream.getAudioTracks()[0].enabled = true;
 
     if (this.onLocalStream != null) {
       this.onLocalStream(stream);
@@ -363,6 +378,13 @@ class Signaling {
     return stream;
   }
 
+  /// Function creates a peer connection
+  /// [RTCPeerConnection] is used to create the connection object and return it.
+  /// On creation the connection will send ice candidate information to the signalling
+  /// server which then the server will pass them onto the [to] id which is the remote peer.
+  /// [id] peer_id
+  /// [media] is media type. Voice, data or video
+  /// [userScreen] to be added but it would enable a user share screens
   _createPeerConnection(id, media, userScreen) async {
     if (media != 'data') _localStream = await createStream(media, userScreen);
 
@@ -398,37 +420,22 @@ class Signaling {
         return (it.id == stream.id);
       });
     };
-
-    pc.onDataChannel = (channel) {
-      _addDataChannel(id, channel);
-    };
     return pc;
   } //End peer connection
 
-  _addDataChannel(id, RTCDataChannel channel) {
-    channel.onDataChannelState = (e) {};
-    channel.onMessage = (RTCDataChannelMessage data) {
-      if (this.onDataChannelMessage != null)
-        this.onDataChannelMessage(channel, data);
-    };
-    _dataChannels[id] = channel;
-
-    if (this.onDataChannel != null) this.onDataChannel(channel);
-  }
-
-  _createDataChannel(id, RTCPeerConnection pc, {label: 'fileTransfer'}) async {
-    RTCDataChannelInit dataChannelDict = new RTCDataChannelInit();
-    RTCDataChannel channel = await pc.createDataChannel(label, dataChannelDict);
-    _addDataChannel(id, channel);
-  } //End function
-
-  // Function to Create a peer connection with a remote user
+  /// Function to create a offer to a peer using [RTCSessionDescription]
+  /// The function will check what [media] type is passed and that will determine
+  /// what constrains to use. Either [_voice_constraints] or [_constraints].
+  /// A local description is set and then the offer is sent onto the remote peer with the
+  /// description information.
+  /// [id] peer id
+  /// [pc] peer connection
+  /// [media] media type
   _createOffer(String id, RTCPeerConnection pc, String media) async {
     try {
-      // This interface describes one end of a connection by creating an offer
-      // with constrains passed of what type of connection it is:
       RTCSessionDescription s = await pc
-          .createOffer(media == 'data' ? _dc_constraints : _constraints);
+          .createOffer(media == 'voice' ? _voice_constraints : _constraints);
+
       // Update local description
       pc.setLocalDescription(s);
 
@@ -445,11 +452,18 @@ class Signaling {
     }
   } //End _createOffer function
 
+  /// Function that creates a session and send an answer event to the remote peer
+  /// The function will check what [media] type is passed and that will determine
+  /// what constrains to use. Either [_voice_constraints] or [_constraints].
+  /// A local description is set and them the offer is sent onto the remote peer.
+  /// [id] peer id
+  /// [pc] peer connection
+  /// [media] media type
   _createAnswer(String id, RTCPeerConnection pc, media) async {
     try {
       // Create a session
       RTCSessionDescription s = await pc
-          .createAnswer(media == 'data' ? _dc_constraints : _constraints);
+          .createAnswer(media == 'voice' ? _voice_constraints : _constraints);
       pc.setLocalDescription(s);
 
       _send('answer', {
@@ -463,11 +477,24 @@ class Signaling {
     }
   } //End function
 
+  /// Function is used to send a bye event to the signalling server
+  /// The server will then forward to the remote peer and replay it to the local user.
+  /// [_sessionId] is made up from the local and remote peer id.
+  void bye() {
+    _send('bye', {
+      'session_id': this._sessionId,
+      'from': this._selfId,
+    });
+  }
+
+  /// Function is used to create a JSON object from the map of data that
+  /// is passed onto the [_socket] to send to the signalling server.
+  /// [event] event type i.e 'new', 'answer' etc..
+  /// [data] data to go with that type, like ids and session descriptions.
   _send(event, data) {
     var request = new Map();
     request["type"] = event; // Event type
     request["data"] = data; // Data with event type
-    JsonEncoder encoder = new JsonEncoder();
     _socket.send(encoder.convert(request));
   } //End function
 } //End class

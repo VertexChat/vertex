@@ -21,7 +21,6 @@ class LoginScreenPresenter {
   /// can be used though out the application while logged in.
   /// TODO - Look into removing on logout.
   doLogin(InlineObject login) {
-    print(login);
     api.login(login).then((value) async {
       _userList = await userApi.getUsers();
       final userDetails = await SharedPreferences.getInstance();
@@ -36,8 +35,6 @@ class LoginScreenPresenter {
 
       if (temp != null) {
         // Set details
-        print(temp[0].id);
-        print(temp[0].username);
         userDetails.setInt('id', temp[0].id);
         userDetails.setString('username', temp[0].username);
       }

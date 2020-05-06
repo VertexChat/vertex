@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:html';
 
+import 'package:vertex_ui/src/services/notification_service.dart';
+
 /// Web WebSocket class, this class is called when the application is running on a
 /// web browser client. The reasons for this is because Flutter Web is still in a beta
 /// and the dart:html package is required.
@@ -25,7 +27,29 @@ class SimpleWebSocket {
     _url = _url.replaceAll('https:', 'wss:');
   }
 
+  /// Connect function to connect to a web socket server
   connect() async {
+    try {
+      _socket = WebSocket(_url);
+      _socket.onOpen.listen((e) {
+        this?.onOpen();
+      });
+
+      _socket.onMessage.listen((e) {
+        this?.onMessage(e.data);
+      });
+
+      _socket.onClose.listen((e) {
+        this?.onClose(e.code, e.reason);
+      });
+    } catch (e) {
+      this?.onClose(e.code, e.reason);
+    } //End try catch
+  }
+
+  /// Connect function to connect to a web socket server and keep to connection alive
+  /// it will reconnect if it disconnect. This is designed to work with the [NotificationService]
+  connectAndKeepAlive() async {
     reconnectScheduled = false;
     try {
       _socket = WebSocket(_url);
@@ -49,8 +73,8 @@ class SimpleWebSocket {
 
   void scheduleReconnect() {
     if (!reconnectScheduled) {
-      new Timer(
-          new Duration(milliseconds: 1000 * retrySeconds), () => connect());
+      new Timer(new Duration(milliseconds: 1000 * retrySeconds),
+          () => connectAndKeepAlive());
     }
     reconnectScheduled = true;
   } //End function

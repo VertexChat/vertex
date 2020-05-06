@@ -45,7 +45,7 @@ class NotificationService {
       //print('Closed by server [$code => $reason]!');
     };
 
-    await _socket.connect();
+    await _socket.connectAndKeepAlive();
   } //End connect function
 
   void onMessage(message) async {

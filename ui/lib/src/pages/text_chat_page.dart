@@ -27,11 +27,13 @@ class _TextChatScreenState extends State<TextChatScreen>
   ScrollController listScrollController = new ScrollController();
   final FocusNode focusNode = new FocusNode();
   AnimationController animationController;
-  List<Message> localMessageList;
-  final Channel channel;
+  List<Message> localMessageList = [];
   SharedPreferences userDetails;
-  int userId = 102;
+  var userApi = UserApi();
+  final Channel channel;
+  int userId;
   String username;
+  String messageFromUser = " ";
 
   _TextChatScreenState({this.channel});
 
@@ -45,8 +47,6 @@ class _TextChatScreenState extends State<TextChatScreen>
     userDetails = await SharedPreferences.getInstance();
     userId = userDetails.getInt('id');
     username = userDetails.getString('username');
-
-    print(username);
   }
 
   /// This [Widget] uses the [BaseView] class which converts this [StatelessWidget]
@@ -63,7 +63,7 @@ class _TextChatScreenState extends State<TextChatScreen>
   BaseView<MessageViewModel> buildBaseView(BuildContext context) {
     return BaseView<MessageViewModel>(
       onModelReady: (model) =>
-          model.getMessages(channel.id).catchError((onError) {
+           model.getMessages(channel.id).catchError((onError) {
         showDialog(
             context: context,
             child: onError == ApiException
@@ -176,9 +176,7 @@ class _TextChatScreenState extends State<TextChatScreen>
 
       listScrollController.animateTo(0.0,
           duration: Duration(milliseconds: 300), curve: Curves.easeOut);
-    } else {
-//      Fluttertoast.showToast(msg: 'Nothing to send');
-    }
+    } else {}
   }
 
   /// Widget to build UI message elements with their content inside them
@@ -189,7 +187,7 @@ class _TextChatScreenState extends State<TextChatScreen>
         children: <Widget>[
           Container(
             padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
-            width: 200.0,
+            width: 240.0,
             child: Text(
               message.content,
               style: TextStyle(color: Colors.green),
@@ -224,7 +222,7 @@ class _TextChatScreenState extends State<TextChatScreen>
                   padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
                   width: 200.0,
                   decoration: BoxDecoration(
-                      color: Colors.red,
+                      color: Colors.black26,
                       borderRadius: BorderRadius.circular(8.0)),
                   margin: EdgeInsets.only(left: 10.0),
                 )
@@ -235,13 +233,8 @@ class _TextChatScreenState extends State<TextChatScreen>
                 ? Container(
                     child: Row(
                       children: <Widget>[
-                        Text(username,
-                            style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 12.0,
-                                fontStyle: FontStyle.italic)),
                         SizedBox(
-                          width: 85,
+                          width: 110,
                         ),
                         Text(
                           DateFormat('dd MMM kk:mm').format(
@@ -266,7 +259,7 @@ class _TextChatScreenState extends State<TextChatScreen>
   }
 
   /// Function is used to check if the current message in the index is the
-  /// last message. This is to help UI elements place text containers
+  /// last message on left. This is to help UI elements place text containers
   bool isLastMessageLeft(int index) {
     if ((index > 0 &&
             localMessageList != null &&

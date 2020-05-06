@@ -7,7 +7,7 @@ import 'package:vertex_ui/src/pages/login/login_page.dart';
 import 'package:vertex_ui/src/pages/register/register_page.dart';
 import 'package:vertex_ui/src/pages/settings/settings_page.dart';
 import 'package:vertex_ui/src/pages/text_chat_page.dart';
-import 'package:vertex_ui/src/pages/voice_channel/voice_call.dart';
+import 'package:vertex_ui/src/pages/voice_channel/voice_call_page.dart';
 import 'package:vertex_ui/src/routing/route_names.dart';
 
 /// Switch statement that is used to return the page a user is trying to navigate to

@@ -26,14 +26,27 @@ class SimpleWebSocket {
   SimpleWebSocket(this._url);
 
   connect() async {
+    try {
+      _socket = await _connectForSelfSignedCert(_url);
+      this?.onOpen();
+
+      _socket.listen((data) {
+        this?.onMessage(data);
+      }, onDone: () {
+        this?.onClose(_socket.closeCode, _socket.closeReason);
+      });
+    } catch (e) {
+      this.onClose(500, e.toString());
+    }
+  }
+
+  /// Connect function to connect to a web socket server and keep to connection alive
+  /// it will reconnect if it disconnect. This is designed to work with the [NotificationService]
+  connectAndKeepAlive() async {
     reconnectScheduled = true;
     try {
-      print("INSIDE MOBILE WEBSOCKET");
-//      if (kIsWeb) {
-//        print('isWeb');
       _socket = await _connectForSelfSignedCert(_url);
-//      } else
-      //_socket = await WebSocket.connect(_url);
+
       this?.onOpen();
 
       _socket.listen((data) {
@@ -50,8 +63,8 @@ class SimpleWebSocket {
 
   void scheduleReconnect() {
     if (!reconnectScheduled) {
-      new Timer(
-          new Duration(milliseconds: 1000 * retrySeconds), () => connect());
+      new Timer(new Duration(milliseconds: 1000 * retrySeconds),
+          () => connectAndKeepAlive());
     }
     reconnectScheduled = true;
   } //End function
@@ -59,7 +72,7 @@ class SimpleWebSocket {
   send(data) {
     if (_socket != null) {
       _socket.add(data);
-      print('send: $data');
+//      print('send: $data');
     }
   }
 
@@ -69,7 +82,6 @@ class SimpleWebSocket {
 
   // https://stackoverflow.com/questions/53721745/dart-upgrade-client-socket-to-websocket
   Future<WebSocket> _connectForSelfSignedCert(url) async {
-    print("PRINTING URL " + url);
 
     try {
       Random r = new Random();

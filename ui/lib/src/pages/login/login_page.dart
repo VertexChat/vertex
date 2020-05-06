@@ -2,10 +2,10 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 import 'package:vertex_ui/src/blocs/login_bloc.dart';
+import 'package:vertex_ui/src/enums/authentication_enum.dart';
 import 'package:vertex_ui/src/pages/register/register_page.dart';
 import 'package:vertex_ui/src/routing/route_names.dart';
 import 'package:vertex_ui/src/services/authentication.dart';
-import 'package:vertex_ui/src/widgets/login_register_widgets/icon_card.dart';
 import 'login_screen_presenter.dart';
 
 class LoginPage extends StatefulWidget {
@@ -96,25 +96,7 @@ class _LoginPageState extends State<LoginPage>
                 child: formUi(),
               ),
             ),
-            //"Connect with" with text container
-            //SizedBox(height: data.size.height / 1.0),
-            Container(
-                //https://github.com/flutter/flutter/issues/10156
-                padding: EdgeInsets.only(
-                    top: 10.0, left: 20.0, right: 20.0, bottom: 10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      'or connect with',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Montserrat'),
-                    ),
-                  ],
-                )),
             //Call IconCard Widget
-            new IconCard()
           ],
         ));
   } //end widget builder
@@ -209,7 +191,7 @@ class _LoginPageState extends State<LoginPage>
               stream: bloc.submitCheck,
               builder: (context, snapshot) => RaisedButton(
                 color: Colors.green,
-                onPressed: snapshot.hasData ? () => _submit() : null,
+                onPressed: () => _submit(),
                 child: Center(
                   child: Text(
                     'LOGIN',

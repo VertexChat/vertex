@@ -1,7 +1,5 @@
 import 'package:openapi/api.dart';
-
-//Enum
-enum AuthState { LOGGED_IN, LOGGED_OUT }
+import 'package:vertex_ui/src/enums/authentication_enum.dart';
 
 /// abstracted class that another class can implemented to subscribe to AuthState
 abstract class AuthStateListener {
