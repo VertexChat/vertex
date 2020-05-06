@@ -1,6 +1,6 @@
 # Vertex
 
-### [Have a look](vertex.chat)
+### [Have a look](https://vertex.chat)
 
 Vertex is a self-hosted chat application based on WebRTC and is built with Flutter for the front end and Python for the backend.
 
