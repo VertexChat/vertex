@@ -50,6 +50,7 @@ class _NewChannelDialogState extends State<NewChannelDialog> {
                 ListTile(
                   leading: const Icon(Icons.create),
                   title: new TextFormField(
+
                     decoration: new InputDecoration(hintText: "Channel Name"),
                     // ignore: missing_return
                     validator: (value) {
@@ -91,23 +92,17 @@ class _NewChannelDialogState extends State<NewChannelDialog> {
                         onPressed: () =>
                             Navigator.of(context, rootNavigator: true)
                                 .pop('dialog'),
+                        color: Colors.black26,
                       ),
                       RaisedButton(
-                        child: Text("CREATE"),
+                        child: Text("CREATE", style: TextStyle(color: Colors.white, ),),
                         onPressed: () {
                           if (_key.currentState.validate())
                             _key.currentState.save();
-
-                          //TODO - CB - Unhardcode the id
-                          channel.id = 109;
-                          // For testing --
-                          print('Printing the channel data.');
-                          print('Name: ${channel.name}');
-                          print('Type: ${channel.type}');
-                          print('ID: ${channel.id}');
-
+                          channel.id = 0;
                           postNewChannel(channel);
                         },
+                        color: Colors.black26,
                       )
                     ],
                   ),

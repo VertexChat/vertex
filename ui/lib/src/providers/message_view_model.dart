@@ -10,7 +10,6 @@ import 'package:vertex_ui/src/widgets/home_widgets/channel_members_widget.dart';
 /// [notifyListeners]. When listing widgets are notified using [setState]
 /// they will rebuild rendering the new data.
 ///
-/// TODO - Tidy
 /// Each view has it's own model that extends the [ChangeNotifier].
 /// Each view only has 2 states. Idle and Busy. Any other piece of UI contained
 /// in a view, that requires logic and state / UI updates will have it's own model

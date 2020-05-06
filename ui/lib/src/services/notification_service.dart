@@ -26,7 +26,7 @@ class NotificationService {
   NotificationService();
 
   void connect() async {
-    var url = 'ws://$_host:$_port';
+    var url = 'wss://$_host:$_port';
     _socket = SimpleWebSocket(url);
 
     print('Connect to $url');

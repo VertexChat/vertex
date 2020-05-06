@@ -11,13 +11,11 @@ import 'package:vertex_ui/src/services/navigation_service.dart';
 
 GetIt locatorGlobal = GetIt.instance;
 
-//TODO - This may be messy, need to check this out more
 void setupLocator() {
   //Register Navigation Services
   locatorGlobal.registerLazySingleton(() => NavigationService());
   locatorGlobal.registerLazySingleton(() => NavigationServiceHome());
   // Register Provider State Management Services
-  //TODO - Test these with Listening widget as it may break them
   locatorGlobal.registerLazySingleton(() => ChannelsViewModel());
   locatorGlobal.registerLazySingleton(() => ChannelMembersViewModel());
   locatorGlobal.registerLazySingleton(() => MessageViewModel());

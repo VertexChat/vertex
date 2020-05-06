@@ -143,7 +143,7 @@ class Signaling {
   void connect() async {
     //Variables
     _userDetails = await SharedPreferences.getInstance();
-    var url = 'https://$_host:$_port/ws';
+    var url = 'https://$_host/ws';
 
     // Set connecting state
     this.onStateChange(SignalingState.ConnectionConnecting);

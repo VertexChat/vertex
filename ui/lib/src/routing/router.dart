@@ -52,5 +52,3 @@ Route<dynamic> internalRoutes(RouteSettings settings) {
 PageRoute _getPageRoute(Widget child, RouteSettings settings) {
   return MaterialPageRoute(builder: (context) => child, settings: settings);
 } //End function
-
-//TODO: Try implemented a different animation when switching pages

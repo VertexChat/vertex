@@ -8,7 +8,7 @@ import 'package:vertex_ui/src/widgets/home_widgets/channel_members_widget.dart';
 
 /// Class that builds and returns a custom navigation [Widget]
 /// A [Channel] object is required for this widget.
-/// [NavigationServiceHome] is used to allow for navigation between
+/// [NavigationServiceHome] is used to allow   for navigation between
 /// [LandingPageRoute] & [EditChannelRoute]
 
 class ChannelNavigationOptionsWidget extends StatelessWidget {

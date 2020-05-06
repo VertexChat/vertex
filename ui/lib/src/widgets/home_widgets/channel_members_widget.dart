@@ -82,11 +82,10 @@ class _ChannelMembersWidgetState extends State<ChannelMembersWidget> {
 
   /// Widget Builds a list of Cards with information about members /[User]s of a [Channel].
   Widget _channelMembersListView(membersList) {
-
     return Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
       Container(
-        height: 400.0, // Change as per your requirement
-        width: 300.0, // C
+        height: 300.0,
+        width: 300.0,
         child: ListView.builder(
             shrinkWrap: true,
             padding: const EdgeInsets.all(8),
@@ -119,7 +118,7 @@ class _ChannelMembersWidgetState extends State<ChannelMembersWidget> {
           child: Icon(FontAwesomeIcons.user, color: Colors.white),
         ),
         title: Text(
-          membersData.username,
+          membersData.name,
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         //TODO - CB - Review this,

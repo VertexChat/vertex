@@ -22,7 +22,7 @@ class _VoiceCallState extends State<VoiceCall> {
   //Member Variables
   RTCVideoRenderer _localRenderer = new RTCVideoRenderer();
   RTCVideoRenderer _remoteRenderer = new RTCVideoRenderer();
-  final String serverIP = "63.35.234.33"; //Hardcoded for now
+  final String serverIP = "vertex.chat"; //Hardcoded for now
   SharedPreferences userDetails;
   Signaling _signaling;
   bool _fetchingData = false;

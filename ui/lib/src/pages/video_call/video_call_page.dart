@@ -13,7 +13,7 @@ class VideoCallPage extends StatefulWidget {
 
   @override
   _VideoCallPageState createState() =>
-      _VideoCallPageState(serverIP: "63.35.234.33");
+      _VideoCallPageState(serverIP: "vertex.chat");
 } //End class
 
 /// Stateless class

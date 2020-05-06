@@ -28,7 +28,7 @@ class LoginScreenPresenter {
       //Check list of objects for object with field .username = to login.user,
       // the user name used to login.
       List<User> temp = _userList
-          .where((user) => user.username
+          .where((user) => user.name
               .toLowerCase()
               .contains(login.username.toLowerCase()))
           .toList();
@@ -36,7 +36,7 @@ class LoginScreenPresenter {
       if (temp != null) {
         // Set details
         userDetails.setInt('id', temp[0].id);
-        userDetails.setString('username', temp[0].username);
+        userDetails.setString('username', temp[0].name);
       }
       _view.onLoginSuccess(value);
     }).catchError((Object error) {
