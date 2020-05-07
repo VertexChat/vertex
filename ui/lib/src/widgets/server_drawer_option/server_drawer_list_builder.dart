@@ -103,8 +103,7 @@ class ServerDrawerListBuilder extends StatelessWidget {
                         // Return Voice Channel information to VoiceCall() Page
                         ? locatorGlobal<NavigationServiceHome>().navigateTo(
                             VoiceChannelRoute,
-                            arguments: channelData[
-                                index]) // Pass channel data to VoiceCall
+                            arguments: channelData[index]) // Pass channel data to VoiceCall
                         // Return Message Channel information to TextChatPage()
                         : locatorGlobal<NavigationServiceHome>().navigateTo(
                             MessageRoute,
