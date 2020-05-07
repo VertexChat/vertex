@@ -12,7 +12,8 @@ import 'package:vertex_ui/src/pages/home/home_view_web.dart';
 class VertexHomePage extends StatefulWidget {
   //Variables
   final String title;
-  final Settings settings; //TODO: Load from file in main.dart
+  final Settings settings;
+
   /// Home page of application.
   /// Fields in Widget subclass always marked final
   VertexHomePage({Key key, this.title, this.settings}) : super(key: key);

@@ -15,7 +15,7 @@ class Validators {
   // Validate username:
   var validateUsername = StreamTransformer<String, String>.fromHandlers(
       handleData: (username, sink) {
-      String pattern = r'(^[a-zA-Z0-9]*$)';
+    String pattern = r'(^[a-zA-Z0-9]*$)';
     RegExp regExp = new RegExp(pattern);
     if (username.length == 0)
       sink.addError("Username is Required");

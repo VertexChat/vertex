@@ -76,12 +76,62 @@ class _ChannelMembersWidgetState extends State<ChannelMembersWidget> {
             Navigator.of(context).pop();
           },
         ),
+        new FlatButton(
+            onPressed: () =>
+                showDialog(context: context, child: _addMemberDialog(context)),
+            child: Text("Add Member"))
       ],
     );
   }
 
+  Widget _addMemberDialog(context) {
+    return AlertDialog(
+      title: Text("Select a user to add"),
+      content: _usersListView(),
+      actions: <Widget>[
+        // usually buttons at the bottom of the dialog
+        new FlatButton(
+          child: new Text("Close"),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _usersListView() {
+    List<User> _userList =
+        locatorGlobal<ChannelMembersViewModel>().allUsersList;
+
+    return Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+      Container(
+        height: 300.0,
+        width: 300.0,
+        child: ListView.builder(
+            shrinkWrap: true,
+            padding: const EdgeInsets.all(8),
+            itemCount: _userList.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Center(
+                child: Card(
+                  elevation: 8.0,
+                  margin:
+                      new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+                  child: Container(
+                    decoration: BoxDecoration(color: Colors.black26),
+                    child: _listListTitle(_userList[index], true),
+                  ),
+                ),
+              );
+            }),
+      ),
+    ]);
+  }
+
   /// Widget Builds a list of Cards with information about members /[User]s of a [Channel].
   Widget _channelMembersListView(membersList) {
+    print(membersList);
     return Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
       Container(
         height: 300.0,
@@ -98,7 +148,7 @@ class _ChannelMembersWidgetState extends State<ChannelMembersWidget> {
                       new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
                   child: Container(
                     decoration: BoxDecoration(color: Colors.black26),
-                    child: _listListTitle(membersList[index]),
+                    child: _listListTitle(membersList[index], false),
                   ),
                 ),
               );
@@ -107,7 +157,7 @@ class _ChannelMembersWidgetState extends State<ChannelMembersWidget> {
     ]);
   }
 
-  Widget _listListTitle(membersData) {
+  Widget _listListTitle(listData, bool add) {
     return ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
         leading: Container(
@@ -118,19 +168,38 @@ class _ChannelMembersWidgetState extends State<ChannelMembersWidget> {
           child: Icon(FontAwesomeIcons.user, color: Colors.white),
         ),
         title: Text(
-          membersData.name,
+          listData.name,
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         //TODO - CB - Review this,
         // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
-        trailing: IconButton(
-            onPressed: () => removeUser(channel.id, membersData.id),
-            hoverColor: Colors.red,
-            icon: Icon(FontAwesomeIcons.userSlash,
-                color: Colors.white, size: 20.0)));
+        trailing: add
+            ? IconButton(
+                onPressed: () => addUserToChannel(channel.id, listData),
+                hoverColor: Colors.lightGreenAccent,
+                icon: Icon(FontAwesomeIcons.userPlus,
+                    color: Colors.white, size: 20.0))
+            : IconButton(
+                onPressed: () => removeUser(channel.id, listData.id),
+                hoverColor: Colors.red,
+                icon: Icon(FontAwesomeIcons.userSlash,
+                    color: Colors.white, size: 20.0)));
   }
 
-  /// Function makes a remove request to the [ChannelsViewModel]
+  /// Function makes a add request to the [ChannelMembersViewModel]
+  /// where that will handle making the HTTP reset and update the
+  /// state of the Listens
+  void addUserToChannel(int channelId, User user) {
+    locatorGlobal<ChannelMembersViewModel>()
+        .addMember(channelId, user)
+        .catchError((onError) => showDialog(
+            context: context,
+            child: ApiExceptionAlertDialog(
+              apiException: onError,
+            )));
+  }
+
+  /// Function makes a remove request to the [ChannelMembersViewModel]
   /// where that will handle making the HTTP reset and update the
   /// state of the Listens
   void removeUser(int channelId, int userId) {

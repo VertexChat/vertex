@@ -66,7 +66,6 @@ class NotificationService {
           break;
         }
       default:
-        //TODO - CB Complete this
         _send('Error');
     }
   }

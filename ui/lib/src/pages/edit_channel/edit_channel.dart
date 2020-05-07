@@ -22,6 +22,7 @@ class EditChannel extends StatefulWidget {
 
 class _EditChannelState extends State<EditChannel> {
   //Member Variables
+  static final _key = GlobalKey<FormState>();
   final Channel channel;
 
   _EditChannelState({Key key, this.channel});
@@ -42,7 +43,8 @@ class _EditChannelState extends State<EditChannel> {
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: Colors.white)),
-              ChannelNavigationOptionsWidget(channel: channel, isVoiceChannel: true),
+              ChannelNavigationOptionsWidget(
+                  channel: channel, isVoiceChannel: true),
             ],
           ),
         ),
@@ -60,28 +62,59 @@ class _EditChannelState extends State<EditChannel> {
                       Divider(),
                       Text("CHANNEL NAME"),
                       SizedBox(height: 10),
-                      TextFormField(
-                        decoration: InputDecoration(
-                          labelText: channel.name,
-                          labelStyle: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.green),
+                      Form(
+                        key: _key,
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            labelText: channel.name,
+                            labelStyle: TextStyle(
+                                fontFamily: 'Montserrat',
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.green),
+                            ),
                           ),
+                          // ignore: missing_return
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please a channel name';
+                            }
+                          },
+                          onSaved: (value) =>
+                              setState(() => this.channel.name = value),
                         ),
                       ),
                       SizedBox(height: 15),
-                      RaisedButton(
-                        color: Colors.black26,
-                        child: Text(
-                          "Delete Channel",
-                          style: TextStyle(
-                              color: Colors.red, fontWeight: FontWeight.bold),
-                        ),
-                        onPressed: () => _showWarningDialog(),
-                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          RaisedButton(
+                            color: Colors.black26,
+                            child: Text(
+                              "Delete Channel",
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            onPressed: () => _showWarningDialog(),
+                          ),
+                          RaisedButton(
+                            child: Text(
+                              "UPDATE",
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                            onPressed: () {
+                              if (_key.currentState.validate())
+                                _key.currentState.save();
+                              updatedChannel(channel.id, channel);
+                            },
+                            color: Colors.black26,
+                          )
+                        ],
+                      )
                     ],
                   ),
                 ),
@@ -128,9 +161,24 @@ class _EditChannelState extends State<EditChannel> {
     );
   } //end _showErrorDialog
 
+  /// Function makes a update return to [ChannelsViewModel]
+  /// where that will handle making the HTTP request and update the
+  /// state of the Listens.User is navigated back to the [LandingPageRoute]
+  //  /// Should an error occur and [AlertDialog] will display he error to the user
+  void updatedChannel(int channelId, Channel channel) {
+    locatorGlobal<ChannelsViewModel>()
+        .updateChannel(channelId, channel)
+        .then((value) =>
+            locatorGlobal<NavigationServiceHome>().navigateTo(LandingPageRoute))
+        .catchError((error) => showDialog(
+            context: context,
+            child: ApiExceptionAlertDialog(apiException: error)));
+  }
+
   /// Function makes a delete request to the [ChannelsViewModel]
-  /// where that will handle making the HTTP reset and update the
-  /// state of the Listens
+  /// where that will handle making the HTTP request and update the
+  /// state of the Listens. User is navigated back to the [LandingPageRoute]
+  /// Should an error occur and [AlertDialog] will display he error to the user
   void deleteChannel(int channelId) {
     locatorGlobal<ChannelsViewModel>()
         .deleteChannel(channelId)

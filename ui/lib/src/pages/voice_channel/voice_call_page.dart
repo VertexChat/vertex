@@ -183,7 +183,6 @@ class _VoiceCallState extends State<VoiceCall> {
                               //Invite id to audio call;
                               onPressed: () =>
                                   _invitePeer(context, peer['id'], false),
-                              // TODO
                               tooltip: 'Voice Call',
                             )
                     ])),
@@ -223,7 +222,10 @@ class _VoiceCallState extends State<VoiceCall> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               ChannelNameWidget(channel: channel),
-              ChannelNavigationOptionsWidget(channel: channel, isVoiceChannel: true,),
+              ChannelNavigationOptionsWidget(
+                channel: channel,
+                isVoiceChannel: true,
+              ),
             ],
           ),
           _inCalling

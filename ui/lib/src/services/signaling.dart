@@ -15,7 +15,7 @@ import '../utils/websocket.dart'
 
 /// https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Connectivity
 
-///callbacks for Signaling API.
+///Callbacks for Signaling API.
 ///
 typedef void SignalingStateCallback(SignalingState state);
 typedef void StreamStateCallback(MediaStream stream);
@@ -93,7 +93,7 @@ class Signaling {
     'optional': [],
   };
 
-  final Map<String, dynamic> _voice_constraints = {
+  final Map<String, dynamic> _voiceConstraints = {
     'mandatory': {
       'OfferToReceiveAudio': true,
       'OfferToReceiveVideo': false, // No video
@@ -425,7 +425,7 @@ class Signaling {
 
   /// Function to create a offer to a peer using [RTCSessionDescription]
   /// The function will check what [media] type is passed and that will determine
-  /// what constrains to use. Either [_voice_constraints] or [_constraints].
+  /// what constrains to use. Either [_voiceConstraints] or [_constraints].
   /// A local description is set and then the offer is sent onto the remote peer with the
   /// description information.
   /// [id] peer id
@@ -434,7 +434,7 @@ class Signaling {
   _createOffer(String id, RTCPeerConnection pc, String media) async {
     try {
       RTCSessionDescription s = await pc
-          .createOffer(media == 'voice' ? _voice_constraints : _constraints);
+          .createOffer(media == 'voice' ? _voiceConstraints : _constraints);
 
       // Update local description
       pc.setLocalDescription(s);
@@ -454,7 +454,7 @@ class Signaling {
 
   /// Function that creates a session and send an answer event to the remote peer
   /// The function will check what [media] type is passed and that will determine
-  /// what constrains to use. Either [_voice_constraints] or [_constraints].
+  /// what constrains to use. Either [_voiceConstraints] or [_constraints].
   /// A local description is set and them the offer is sent onto the remote peer.
   /// [id] peer id
   /// [pc] peer connection
@@ -463,7 +463,7 @@ class Signaling {
     try {
       // Create a session
       RTCSessionDescription s = await pc
-          .createAnswer(media == 'voice' ? _voice_constraints : _constraints);
+          .createAnswer(media == 'voice' ? _voiceConstraints : _constraints);
       pc.setLocalDescription(s);
 
       _send('answer', {

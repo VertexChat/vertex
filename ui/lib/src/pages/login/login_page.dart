@@ -1,19 +1,25 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
+import 'package:vertex_ui/locator.dart';
 import 'package:vertex_ui/src/blocs/login_bloc.dart';
 import 'package:vertex_ui/src/enums/authentication_enum.dart';
 import 'package:vertex_ui/src/pages/register/register_page.dart';
 import 'package:vertex_ui/src/routing/route_names.dart';
 import 'package:vertex_ui/src/services/authentication.dart';
+import 'package:vertex_ui/src/services/navigation_service.dart';
+
 import 'login_screen_presenter.dart';
+
+/// This class builds the UI for logging into the application.
+/// The class implements [LoginScreenContract] which will
+/// manage making the post request and updating the view depending on the outcome.
+/// [AuthStateListener] is also implemented to updates state if a user is successfully
+/// logged in.
 
 class LoginPage extends StatefulWidget {
   //Member Variables
   final String pageTitle;
-
-  /// Home page of application.
-  /// Fields in Widget subclass always marked final
   LoginPage({Key key, this.pageTitle}) : super(key: key);
 
   @override
@@ -23,13 +29,12 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage>
     implements LoginScreenContract, AuthStateListener {
   //Member Variables
-  BuildContext _ctx;
-  bool rememberMe = false;
-  final formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  bool _validate = false;
+  final formKey = GlobalKey<FormState>();
   InlineObject _login = InlineObject();
   LoginScreenPresenter _presenter;
+  bool rememberMe = false;
+  bool _validate = false;
 
   //Constructor
   _LoginPageState() {
@@ -48,8 +53,6 @@ class _LoginPageState extends State<LoginPage>
 
   @override
   Widget build(BuildContext mainContext) {
-    // Init with the context from this widget
-    _ctx = context;
     //Data about the device the application is running on
     final data = MediaQuery.of(mainContext);
 
@@ -170,7 +173,6 @@ class _LoginPageState extends State<LoginPage>
                     title: Text("Remember me"),
                     value: rememberMe,
                     onChanged: (bool value) {
-                      //TODO:
                       setState(() => rememberMe = value);
                     },
                     controlAffinity: ListTileControlAffinity.leading,
@@ -205,7 +207,7 @@ class _LoginPageState extends State<LoginPage>
             ),
           ),
         ),
-        SizedBox(height: data.size.height / 40.0),
+        SizedBox(height: data.size.height / 30.0),
         //Main register container
         Container(
           height: data.size.height / 20.0,
@@ -262,6 +264,6 @@ class _LoginPageState extends State<LoginPage>
   @override
   void onAuthStateChanged(AuthState state) {
     if (state == AuthState.LOGGED_IN)
-      Navigator.of(_ctx).pushReplacementNamed(HomeRoute);
+      locatorGlobal<NavigationService>().navigateTo(HomeRoute);
   } //End onLogin function
 } //end class

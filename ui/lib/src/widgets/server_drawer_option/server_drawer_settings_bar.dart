@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 /// Drawer settings class that returns a widget with buttons that allow
 /// the user to mute there mic, headset or navigate into settings
-/// TODO: Complete settings integration
 
 class ServerDrawerSettingsBar extends StatelessWidget {
   @override
@@ -17,7 +16,10 @@ class ServerDrawerSettingsBar extends StatelessWidget {
               BottomNavigationBarItem(
                 icon: IconButton(
                   onPressed: null, //TODO: Implement navigation to settings page
-                  icon: Icon(Icons.mic, color: Colors.lightGreenAccent,),
+                  icon: Icon(
+                    Icons.mic,
+                    color: Colors.lightGreenAccent,
+                  ),
                 ),
                 title: Text(''),
               ),

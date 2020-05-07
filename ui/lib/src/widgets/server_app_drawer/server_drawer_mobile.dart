@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'server_drawer.dart';
 
-
 /// Class that will return the the drawer in the correct view for mobile
 
 class ServerDrawerMobile extends StatelessWidget {
@@ -14,8 +13,7 @@ class ServerDrawerMobile extends StatelessWidget {
     return Container(
       width: orientation == Orientation.portrait ? 250 : 250,
       decoration: BoxDecoration(color: Colors.black),
-      child: Column(
-          children: ServerDrawer.getDrawerOptions()),
+      child: Column(children: ServerDrawer.getDrawerOptions()),
     );
-  }//End Builder
-}//End class
+  } //End Builder
+} //End class

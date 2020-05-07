@@ -22,7 +22,7 @@ dependencies:
 
   openapi:
     git: https://github.com/VertexChat/norton-api-client.git
-    #path: /home/cathal/norton-api-client
+
 
   shared_preferences: ^0.5.7
 

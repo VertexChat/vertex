@@ -9,13 +9,17 @@ class TextWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              AutoSizeText(text, style: Theme.of(context).textTheme.title, minFontSize: 11.0,),
-            ],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          AutoSizeText(
+            text,
+            style: Theme.of(context).textTheme.title,
+            minFontSize: 11.0,
           ),
+        ],
+      ),
     );
-  }//End builder
-}//End class
+  } //End builder
+} //End class

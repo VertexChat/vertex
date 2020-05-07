@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'server_drawer.dart';
 
-// TODO: Not Worried about this for awhile yet
 class ServerDrawerWebPortrait extends StatelessWidget {
   const ServerDrawerWebPortrait({Key key}) : super(key: key);
 
@@ -15,8 +14,8 @@ class ServerDrawerWebPortrait extends StatelessWidget {
         children: ServerDrawer.getDrawerOptions(),
       ),
     );
-  }//End builder
-}//End class
+  } //End builder
+} //End class
 
 // PRIMARY CLASS FOR WEB VIEW ==================================================
 class ServerDrawerWebLandscape extends StatelessWidget {

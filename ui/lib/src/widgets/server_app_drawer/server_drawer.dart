@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:vertex_ui/src/widgets/server_drawer_option/heading_widget.dart';
 import 'package:vertex_ui/src/widgets/server_drawer_option/server_drawer_list_builder.dart';
-import 'package:vertex_ui/src/widgets/server_drawer_option/server_drawer_settings_bar.dart';
+
 import 'server_drawer_mobile.dart';
 import 'server_drawer_web.dart';
 
@@ -32,11 +32,14 @@ class ServerDrawer extends StatelessWidget {
     return [
       // Elements that are displayed within the app drawer
       // Currently hard coded until server hock in
-      kIsWeb ? Container() : SizedBox(height: 30,),
+      kIsWeb
+          ? Container()
+          : SizedBox(
+              height: 30,
+            ),
       HeadingWidget(headingText: 'Vetex'),
       ServerDrawerListBuilder(),
       SizedBox(height: 50),
-      ServerDrawerSettingsBar(),
     ];
   } //End function =
 } //End class

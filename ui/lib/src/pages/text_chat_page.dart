@@ -63,7 +63,7 @@ class _TextChatScreenState extends State<TextChatScreen>
   BaseView<MessageViewModel> buildBaseView(BuildContext context) {
     return BaseView<MessageViewModel>(
       onModelReady: (model) =>
-           model.getMessages(channel.id).catchError((onError) {
+          model.getMessages(channel.id).catchError((onError) {
         showDialog(
             context: context,
             child: onError == ApiException
@@ -91,7 +91,8 @@ class _TextChatScreenState extends State<TextChatScreen>
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 ChannelNameWidget(channel: channel),
-                ChannelNavigationOptionsWidget(channel: channel, isVoiceChannel: false),
+                ChannelNavigationOptionsWidget(
+                    channel: channel, isVoiceChannel: false),
               ],
             ),
             //Heading

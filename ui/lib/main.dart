@@ -1,17 +1,20 @@
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:openapi/api.dart';
 import 'package:vertex_ui/locator.dart';
-import 'package:vertex_ui/src/enums/authentication_enum.dart';
-import 'package:vertex_ui/src/pages/home/home_page.dart';
 import 'package:vertex_ui/src/pages/layout_template/main_layout_template.dart';
-import 'package:vertex_ui/src/pages/login/login_page.dart';
 import 'package:vertex_ui/src/routing/route_names.dart';
 import 'package:vertex_ui/src/routing/router.dart';
-import 'package:vertex_ui/src/services/authentication.dart';
 import 'package:vertex_ui/src/services/navigation_service.dart';
 
-/// Main Class
+/// Authors
+/// Cathal Butler
+/// Morgan Reilly
+
+/// Main Class that registers services using [GetIt]
+/// and start the application
+
 void main() {
   // Run application start this class first
   setupLocator(); // Register Services with [GetIt]
@@ -43,10 +46,9 @@ class _UIState extends State<UI> {
     /// Gives us access to routing, context, and meta info functionality.
     return new DynamicTheme(
       defaultBrightness: Brightness.dark,
-      data: (brightness) =>
-          ThemeData(
-            brightness: brightness,
-          ),
+      data: (brightness) => ThemeData(
+        brightness: brightness,
+      ),
       themedWidgetBuilder: (context, theme) {
         return MaterialApp(
           title: 'Vertex',

@@ -12,7 +12,6 @@ abstract class AuthStateListener {
 /// Ref: https://stackoverflow.com/questions/12649573/how-do-you-build-a-singleton-in-dart
 /// Observer/Subscriber Pattern
 
-
 class AuthStateProvider {
   //Variables
   static final AuthStateProvider _instance = new AuthStateProvider.internal();
@@ -50,4 +49,3 @@ class AuthStateProvider {
     _subscribers.forEach((AuthStateListener s) => s.onAuthStateChanged(state));
   }
 } //End class
-

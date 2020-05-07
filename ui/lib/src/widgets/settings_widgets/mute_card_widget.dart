@@ -11,6 +11,7 @@ class MuteCard extends StatelessWidget {
 
   /// Widget for either input mute or output mute
   final Widget audioMuteToggle;
+
   /// String heading for it either being input mute or output mute
   final String muteSourceTypeHeading;
 
