@@ -7,7 +7,8 @@ class DropBoxCard extends StatefulWidget {
 
   DropBoxCard(this._dropBoxInput, this._dropBoxOption);
   @override
-  _DropBoxCardState createState() => _DropBoxCardState(this._dropBoxInput, this._dropBoxOption);
+  _DropBoxCardState createState() =>
+      _DropBoxCardState(this._dropBoxInput, this._dropBoxOption);
 }
 
 class _DropBoxCardState extends State<DropBoxCard> {
@@ -85,9 +86,7 @@ class _DropBoxCardState extends State<DropBoxCard> {
       ),
       body: Center(
         child: ListView(
-          children: <Widget>[
-            audioInputDropBox
-          ],
+          children: <Widget>[audioInputDropBox],
         ),
       ),
     );

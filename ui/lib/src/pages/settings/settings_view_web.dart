@@ -24,7 +24,6 @@ class _SettingsViewWeb extends State<SettingsViewWeb> {
   // Values just needed to be initialised to remove errors throw
   bool _audioInputIsMute = false;
   bool _audioOutputIsMute = false;
-  bool _theme; // Light --> true /  Dark --> false
   String _loggedInUser;
 
   List<String> _defaultAudioInput = [
@@ -44,8 +43,6 @@ class _SettingsViewWeb extends State<SettingsViewWeb> {
     'Internal Webcam',
     'External Webcam'
   ];
-
-  List<bool> _themeIsSelected = [true, false];
 
   /// -- Init State --
   @override

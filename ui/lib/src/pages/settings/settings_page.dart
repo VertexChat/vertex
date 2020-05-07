@@ -32,5 +32,5 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       desktop: SettingsViewWeb(),
     );
-  }//End builder
-}//End class
+  } //End builder
+} //End class

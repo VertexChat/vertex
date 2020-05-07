@@ -1,8 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
+import 'package:vertex_ui/locator.dart';
 import 'package:vertex_ui/src/blocs/registration_bloc.dart';
 import 'package:vertex_ui/src/pages/register/register_screen_presenter.dart';
+import 'package:vertex_ui/src/routing/route_names.dart';
+import 'package:vertex_ui/src/services/navigation_service.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -29,7 +32,6 @@ class _RegisterPageState extends State<RegisterPage>
     if (form.validate()) {
       //setState(() => _isLoading = true);
       form.save();
-      print(user.toString());
       _presenter.doRegister(user);
     }
   } //End function
@@ -128,7 +130,7 @@ class _RegisterPageState extends State<RegisterPage>
                 stream: bloc.submitCheck,
                 builder: (context, snapshot) => RaisedButton(
                   color: Colors.green,
-                  onPressed: snapshot.hasData ? () => _submit() : null,
+                  onPressed: () => _submit(),
                   child: Center(
                     child: Text(
                       'REGISTER',
@@ -183,8 +185,10 @@ class _RegisterPageState extends State<RegisterPage>
   }
 
   @override
-  void onRegisterSuccess(InlineObject user) {
-    _showSnackBar("Account successfully registered", Colors.green);
-    //TODO - nav to login page
+  void onRegisterSuccess(InlineObject user) async {
+    _showSnackBar("Account successfully registered, returning to login page...",
+        Colors.green);
+    await new Future.delayed(const Duration(seconds: 3));
+    locatorGlobal<NavigationService>().navigateTo(LoginRoute);
   } //End widget
 } //end class

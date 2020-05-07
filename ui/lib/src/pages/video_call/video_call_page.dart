@@ -194,7 +194,6 @@ class _VideoCallPageState extends State<VideoCallPage> {
                               icon: const Icon(Icons.phone),
                               //Invite id to audio call;
                               onPressed: () => _invitePeer(peer['id'], false),
-                              // TODO
                               tooltip: 'Voice Call',
                             )
                     ])),

@@ -45,7 +45,6 @@ class ChannelsViewModel extends BaseModel {
   /// Dart throws a [ClientException] so that needs to be caught.
   /// No connection at all seems to only throw this exception.
   /// The rest are caught correctly using [ApiException]
-  /// TODO - CB - Review this.
   Future getChannels() async {
     setState(ViewState.Busy);
     try {
@@ -66,19 +65,11 @@ class ChannelsViewModel extends BaseModel {
   /// to be sent onto the database
   Future addChannel(Channel channel) async {
     setState(ViewState.Busy);
-    String channelName = channel.name;
     //POST new channel
     try {
       await _api
           .createChannel(channel)
           .then((value) => getChannels()); //Get channels
-
-//      for (channel in _channels){
-//        if(channelName == channel.name){
-//          _api.
-//        }
-//      }
-
       setState(ViewState.Idle); // update state
     } catch (ApiException) {
       setState(ViewState.Idle);
@@ -91,6 +82,18 @@ class ChannelsViewModel extends BaseModel {
     setState(ViewState.Busy);
     try {
       await _api.deleteChannel(channelId).then((value) => getChannels());
+      setState(ViewState.Idle);
+    } catch (ApiException) {
+      setState(ViewState.Idle);
+      throw ApiException;
+    }
+  }
+
+  /// Function to ake a api request to update a channel by its id
+  Future updateChannel(int channelId, Channel channel) async {
+    setState(ViewState.Busy);
+    try {
+      await _api.updateChannel(channelId, channel);
       setState(ViewState.Idle);
     } catch (ApiException) {
       setState(ViewState.Idle);

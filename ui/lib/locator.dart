@@ -19,4 +19,4 @@ void setupLocator() {
   locatorGlobal.registerLazySingleton(() => ChannelsViewModel());
   locatorGlobal.registerLazySingleton(() => ChannelMembersViewModel());
   locatorGlobal.registerLazySingleton(() => MessageViewModel());
-}//End
+} //End

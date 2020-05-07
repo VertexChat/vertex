@@ -24,7 +24,6 @@ class _SettingsViewMobilePortrait extends State<SettingsViewMobilePortrait> {
   String _videoInput;
   bool _audioInputIsMute = false;
   bool _audioOutputIsMute = false;
-  bool _theme; // Light --> true /  Dark --> false
   String _loggedInUser;
 
   List<String> _defaultAudioInput = [
@@ -60,7 +59,6 @@ class _SettingsViewMobilePortrait extends State<SettingsViewMobilePortrait> {
     super.dispose();
   }
 
-  // TODO: Nothing to do with brightness.. should be theme
   void changeBrightness() {
     DynamicTheme.of(context).setBrightness(
         Theme.of(context).brightness == Brightness.dark
@@ -102,7 +100,6 @@ class _SettingsViewMobilePortrait extends State<SettingsViewMobilePortrait> {
 
   /// -- Audio Input --
   /// DropBox Display
-  /// TODO: Manipulate for systems hardware
   /// Cant be extracted due to state being updated during the life of this widget in the tree
   Widget get audioInputDropBox {
     return Container(

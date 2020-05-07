@@ -27,6 +27,7 @@ class HomeLayoutTemplate extends StatelessWidget {
             child: Navigator(
               /// Navigation key used from NavigationServiceHome class
               key: locatorGlobal<NavigationServiceHome>().navigatorKey,
+
               /// internalRoutes
               onGenerateRoute: internalRoutes,
               initialRoute: LandingPageRoute,

@@ -27,8 +27,14 @@ import 'package:vertex_ui/src/widgets/home_widgets/channel_members_widget.dart';
 class ChannelMembersViewModel extends BaseModel {
   // Variables
   final _api = ChannelApi(); //Access to api
+  final _apiUser = UserApi();
+
   //Members of a channel
   List<User> _channelMembers;
+
+  List<User> _allUsersList;
+
+  List<User> get allUsersList => _allUsersList;
 
   List<User> get channelMembers => _channelMembers;
 
@@ -37,11 +43,22 @@ class ChannelMembersViewModel extends BaseModel {
   Future getChannelMembers(int channelId) async {
     setState(ViewState.Busy);
     try {
-      var membersData = await _api.getChannelMembers(channelId);
-      _channelMembers = membersData;
+      var members = await _api.getChannelMembers(channelId);
+      _channelMembers = members;
+      // Load all users on member check as a user may want to add a new user
+      getUsers();
       setState(ViewState.Idle);
     } catch (ApiException) {
       setState(ViewState.Idle);
+      throw ApiException;
+    }
+  }
+
+  Future getUsers() async {
+    try {
+      var users = await _apiUser.getUsers();
+      _allUsersList = users;
+    } catch (ApiException) {
       throw ApiException;
     }
   }
@@ -50,7 +67,8 @@ class ChannelMembersViewModel extends BaseModel {
   Future removeMember(int channelId, int userId) async {
     setState(ViewState.Busy);
     try {
-      await _api.removeChannelMember(channelId, userId)
+      await _api
+          .removeChannelMember(channelId, userId)
           .then((value) => getChannelMembers(channelId));
       setState(ViewState.Idle);
     } catch (ApiException) {
@@ -59,4 +77,12 @@ class ChannelMembersViewModel extends BaseModel {
     }
   }
 
+  /// Function to add user to a channel
+  Future addMember(int channelId, User user) async {
+    try {
+      await _api.addUserToChannel(channelId, user);
+    } catch (ApiException) {
+      throw ApiException;
+    }
+  }
 }
