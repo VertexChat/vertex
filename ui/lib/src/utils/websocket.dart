@@ -75,7 +75,10 @@ class SimpleWebSocket {
   }
 
   close() {
-    _socket.close();
+    if (_socket == null){
+      print('Socket it null');
+    }else
+      _socket.close();
   }
 
   // https://stackoverflow.com/questions/53721745/dart-upgrade-client-socket-to-websocket

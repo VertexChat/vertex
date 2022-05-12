@@ -18,7 +18,7 @@ class _RegisterPageState extends State<RegisterPage>
   // Create a global key that uniquely identifies the Form widget
   // and allows validation of the form.
   final formKey = GlobalKey<FormState>();
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldMessengerState> _scaffoldKey = new GlobalKey<ScaffoldMessengerState>();
   bool _validate = false;
   InlineObject user = InlineObject();
   RegisterScreenPresenter _presenter;

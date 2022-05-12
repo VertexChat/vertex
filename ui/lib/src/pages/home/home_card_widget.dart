@@ -22,7 +22,7 @@ class HomeCardWidget extends StatelessWidget {
                     child: Column(
                       children: <Widget>[
                         Icon(
-                          FontAwesomeIcons.smile,
+                          FontAwesomeIcons.faceSmile,
                         ),
                         Text(
                           "Friends",

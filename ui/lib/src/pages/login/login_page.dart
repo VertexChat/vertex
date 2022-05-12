@@ -29,7 +29,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage>
     implements LoginScreenContract, AuthStateListener {
   //Member Variables
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldMessengerState> _scaffoldKey = new GlobalKey<ScaffoldMessengerState>();
   final formKey = GlobalKey<FormState>();
   InlineObject _login = InlineObject();
   LoginScreenPresenter _presenter;

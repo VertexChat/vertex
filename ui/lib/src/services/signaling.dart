@@ -334,7 +334,8 @@ class Signaling {
     _peerConnections.forEach((key, pc) {
       pc.close();
     });
-    if (_socket != null) _socket.close();
+    if (_socket != null)
+      _socket.close();
   }
 
   /// Fruition creates and returns a [MediaStream]. Depending on the

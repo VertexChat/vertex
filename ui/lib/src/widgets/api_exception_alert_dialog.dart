@@ -14,6 +14,7 @@ class ApiExceptionAlertDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     Map<String, dynamic> parsedError =
         json.decode(apiException.message.toString());
 

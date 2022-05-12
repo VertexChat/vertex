@@ -282,8 +282,11 @@ class _VideoCallPageState extends State<VideoCallPage> {
                           return _buildRow(_peers[i]);
                         })
                     : Center(
-                        child: Text(
-                            "Unable to connect to server. Please refresh to try again or contact support"),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                              "Unable to connect to server. Please refresh to try again or contact support"),
+                        ),
                       ));
   } //end Widget build
 } //End class

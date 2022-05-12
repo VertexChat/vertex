@@ -30,7 +30,7 @@ class ChannelNavigationOptionsWidget extends StatelessWidget {
         isVoiceChannel
             ? Container()
             : IconButton(
-                icon: Icon(FontAwesomeIcons.userFriends),
+                icon: Icon(FontAwesomeIcons.userGroup),
                 onPressed: () => showDialog(
                     context: context,
                     builder:  (BuildContext content) =>
@@ -39,12 +39,12 @@ class ChannelNavigationOptionsWidget extends StatelessWidget {
         SizedBox(width: 25),
         // Button to navigate to landing page
         IconButton(
-            icon: Icon(FontAwesomeIcons.home),
+            icon: Icon(FontAwesomeIcons.house),
             onPressed: () => locatorGlobal<NavigationServiceHome>()
                 .navigateTo(LandingPageRoute)),
         SizedBox(width: 25),
         IconButton(
-            icon: Icon(FontAwesomeIcons.cog),
+            icon: Icon(FontAwesomeIcons.gear),
             onPressed: () => locatorGlobal<NavigationServiceHome>()
                 .navigateTo(EditChannelRoute, arguments: channel)),
       ],
