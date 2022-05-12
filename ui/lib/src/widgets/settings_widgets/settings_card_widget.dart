@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'text_widget.dart';
 
@@ -31,7 +32,7 @@ class SettingsCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              TextWidget(settingsTypeHeading),
+              AutoSizeText(settingsTypeHeading),
               optionsDropdownBox,
             ],
           ),
