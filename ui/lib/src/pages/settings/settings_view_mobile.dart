@@ -1,4 +1,4 @@
-import 'package:dynamic_theme/dynamic_theme.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -60,10 +60,10 @@ class _SettingsViewMobilePortrait extends State<SettingsViewMobilePortrait> {
   }
 
   void changeBrightness() {
-    DynamicTheme.of(context).setBrightness(
-        Theme.of(context).brightness == Brightness.dark
-            ? Brightness.light
-            : Brightness.dark);
+    // ThemeData.of(context).setBrightness(
+    //     Theme.of(context).brightness == Brightness.dark
+    //         ? Brightness.light
+    //         : Brightness.dark);
   }
 
   // https://codingwithjoe.com/flutter-saving-and-restoring-with-sharedpreferences/
@@ -188,7 +188,7 @@ class _SettingsViewMobilePortrait extends State<SettingsViewMobilePortrait> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              TextWidget("Sensitivity"),
+              AutoSizeText("Sensitivity"),
               audioInputSensitivitySliderCard
             ],
           ),
@@ -206,7 +206,7 @@ class _SettingsViewMobilePortrait extends State<SettingsViewMobilePortrait> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               audioInputSensitivitySlider,
-              TextWidget(_audioInputSensitivity.floor().toString()),
+              AutoSizeText(_audioInputSensitivity.floor().toString()),
             ],
           ),
         ),
@@ -420,13 +420,13 @@ class _SettingsViewMobilePortrait extends State<SettingsViewMobilePortrait> {
                   ),
                   // Audio Output Settings
                   audioInputSensitivityCard,
-                  MuteCard(
-                    audioMuteToggle: audioInputIsMuteToggle,
-                    muteSourceTypeHeading: "Mute Audio Input",
+                  SettingsCard(
+                    optionsDropdownBox: audioInputIsMuteToggle,
+                    settingsTypeHeading: "Mute Audio Input",
                   ),
-                  MuteCard(
-                    audioMuteToggle: audioOutputIsMuteToggle,
-                    muteSourceTypeHeading: "Mute Audio Output",
+                  SettingsCard(
+                    optionsDropdownBox: audioOutputIsMuteToggle,
+                    settingsTypeHeading: "Mute Audio Output",
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),

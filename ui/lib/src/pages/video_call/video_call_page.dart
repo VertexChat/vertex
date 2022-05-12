@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_webrtc/webrtc.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:vertex_ui/src/enums/signaling_state_enum.dart';
 import 'package:vertex_ui/src/services/signaling.dart';
 

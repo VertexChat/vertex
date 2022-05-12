@@ -57,7 +57,7 @@ class _LoginPageState extends State<LoginPage>
     final data = MediaQuery.of(mainContext);
 
     return new Scaffold(
-        resizeToAvoidBottomPadding: false,
+        resizeToAvoidBottomInset: false,
         key: _scaffoldKey,
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,7 +95,8 @@ class _LoginPageState extends State<LoginPage>
               padding: EdgeInsets.only(top: 5.0, left: 20.0, right: 20.0),
               child: new Form(
                 key: formKey,
-                autovalidate: _validate,
+                //TODO - Fix this
+                // autovalidate: _validate,
                 child: formUi(),
               ),
             ),

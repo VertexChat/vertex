@@ -172,7 +172,8 @@ class _EditChannelState extends State<EditChannel> {
             locatorGlobal<NavigationServiceHome>().navigateTo(LandingPageRoute))
         .catchError((error) => showDialog(
             context: context,
-            child: ApiExceptionAlertDialog(apiException: error)));
+            builder:  (BuildContext content) =>
+                ApiExceptionAlertDialog(apiException: error)));
   }
 
   /// Function makes a delete request to the [ChannelsViewModel]
@@ -189,7 +190,8 @@ class _EditChannelState extends State<EditChannel> {
         .catchError((error) {
       showDialog(
           context: context,
-          child: ApiExceptionAlertDialog(apiException: error));
+          builder: (BuildContext content) =>
+              ApiExceptionAlertDialog(apiException: error));
     });
   }
 } //End class

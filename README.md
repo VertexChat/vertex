@@ -1,16 +1,14 @@
 # Vertex
 
-### [Have a look](https://vertex.chat)
-
 Vertex is a self-hosted chat application based on WebRTC and is built with Flutter for the front end and Python for the backend.
 
 ### Requirements
 
-`Flutter 1.15.22 • channel dev`
-`Dart 2.8.0`
+`Flutter 3.0.0 • Stable Channel`
+`Dart 2.17.0`
 
 ### Development & Testing
-This project was developed and tested using
+This project was developed and tested using:
 
 ### IDE
 * [Android Studio 3.6.3](https://developer.android.com/studio)

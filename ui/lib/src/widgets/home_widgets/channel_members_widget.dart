@@ -50,7 +50,7 @@ class _ChannelMembersWidgetState extends State<ChannelMembersWidget> {
           model.getChannelMembers(channel.id).catchError((onError) {
         showDialog(
             context: context,
-            child: onError == ApiException
+            builder: (BuildContext content) => onError == ApiException
                 ? ApiExceptionAlertDialog(apiException: onError)
                 : ExceptionAlertDialog(exception: onError));
       }), //Get channels
@@ -77,8 +77,9 @@ class _ChannelMembersWidgetState extends State<ChannelMembersWidget> {
           },
         ),
         new FlatButton(
-            onPressed: () =>
-                showDialog(context: context, child: _addMemberDialog(context)),
+            onPressed: () => showDialog(
+                context: context,
+                builder: (BuildContext content) => _addMemberDialog(context)),
             child: Text("Add Member"))
       ],
     );
@@ -194,7 +195,8 @@ class _ChannelMembersWidgetState extends State<ChannelMembersWidget> {
         .addMember(channelId, user)
         .catchError((onError) => showDialog(
             context: context,
-            child: ApiExceptionAlertDialog(
+            builder:  (BuildContext content) =>
+                ApiExceptionAlertDialog(
               apiException: onError,
             )));
   }
@@ -207,7 +209,8 @@ class _ChannelMembersWidgetState extends State<ChannelMembersWidget> {
         .removeMember(channelId, userId)
         .catchError((onError) => showDialog(
             context: context,
-            child: ApiExceptionAlertDialog(
+            builder:  (BuildContext content) =>
+                ApiExceptionAlertDialog(
               apiException: onError,
             )));
   } //End removeUser
