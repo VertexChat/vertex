@@ -128,7 +128,8 @@ class _NewChannelDialogState extends State<NewChannelDialog> {
         .catchError((error) {
       showDialog(
           context: context,
-          child: ApiExceptionAlertDialog(apiException: error));
+          builder:  (BuildContext content) =>
+              ApiExceptionAlertDialog(apiException: error));
     });
   } //End function
 } //End class

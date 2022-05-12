@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter_webrtc/webrtc.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vertex_ui/locator.dart';
 import 'package:vertex_ui/src/enums/signaling_state_enum.dart';
@@ -107,7 +107,8 @@ class Signaling {
   /// Function that mutes the [_localStream] mic.
   void muteMic(bool mute) {
     if (_localStream != null) {
-      _localStream.getAudioTracks()[0].setMicrophoneMute(mute);
+      //TODO - Fix this
+      // _localStream.getAudioTracks()[0].setMicrophoneMute(mute);
     }
   }
 
@@ -397,7 +398,7 @@ class Signaling {
         'to': id,
         'id': _selfId,
         'candidate': {
-          'sdpMLineIndex': candidate.sdpMlineIndex,
+          'sdpMLineIndex': candidate.sdpMLineIndex,
           'sdpMid': candidate.sdpMid,
           'candidate': candidate.candidate,
         },

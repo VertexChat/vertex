@@ -66,7 +66,8 @@ class _TextChatScreenState extends State<TextChatScreen>
           model.getMessages(channel.id).catchError((onError) {
         showDialog(
             context: context,
-            child: onError == ApiException
+            builder:  (BuildContext content) =>
+            onError == ApiException
                 ? ApiExceptionAlertDialog(apiException: onError)
                 : ExceptionAlertDialog(exception: onError));
       }), //Get channels
@@ -171,7 +172,8 @@ class _TextChatScreenState extends State<TextChatScreen>
           .sendMessage(channel.id, message)
           .catchError((onError) => showDialog(
               context: context,
-              child: ApiExceptionAlertDialog(
+              builder:  (BuildContext content) =>
+                  ApiExceptionAlertDialog(
                 apiException: onError,
               )));
 

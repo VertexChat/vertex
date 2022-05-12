@@ -1,4 +1,3 @@
-import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:openapi/api.dart';
@@ -38,19 +37,14 @@ class _UIState extends State<UI> {
 
   @override
   Widget build(BuildContext context) {
-    bool _result = api.isLoggedIn;
+    // bool _result = api.isLoggedIn;
 //     if the user is logged in allow them access the home page
-    if (_result) _defaultRoute = HomeRoute;
+//     if (_result) _defaultRoute = HomeRoute;
+    _defaultRoute = HomeRoute;
 
     /// MaterialApp is the base Widget for your Flutter Application
     /// Gives us access to routing, context, and meta info functionality.
-    return new DynamicTheme(
-      defaultBrightness: Brightness.dark,
-      data: (brightness) => ThemeData(
-        brightness: brightness,
-      ),
-      themedWidgetBuilder: (context, theme) {
-        return MaterialApp(
+    return MaterialApp(
           title: 'Vertex',
           theme: ThemeData(brightness: Brightness.dark),
           //home: _defaultRoute,
@@ -65,7 +59,5 @@ class _UIState extends State<UI> {
           onGenerateRoute: generateRoute,
           initialRoute: _defaultRoute,
         );
-      },
-    );
   }
 } //End class

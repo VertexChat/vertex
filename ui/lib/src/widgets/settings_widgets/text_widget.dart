@@ -15,7 +15,7 @@ class TextWidget extends StatelessWidget {
         children: <Widget>[
           AutoSizeText(
             text,
-            style: Theme.of(context).textTheme.title,
+            style: Theme.of(context).textTheme.headline1,
             minFontSize: 11.0,
           ),
         ],

@@ -33,7 +33,8 @@ class ChannelNavigationOptionsWidget extends StatelessWidget {
                 icon: Icon(FontAwesomeIcons.userFriends),
                 onPressed: () => showDialog(
                     context: context,
-                    child: ChannelMembersWidget(channel: channel))),
+                    builder:  (BuildContext content) =>
+                        ChannelMembersWidget(channel: channel))),
         // Button to navigate to edit channel page
         SizedBox(width: 25),
         // Button to navigate to landing page

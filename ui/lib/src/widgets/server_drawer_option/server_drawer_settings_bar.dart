@@ -21,21 +21,21 @@ class ServerDrawerSettingsBar extends StatelessWidget {
                     color: Colors.lightGreenAccent,
                   ),
                 ),
-                title: Text(''),
+                // label: ''
               ),
               BottomNavigationBarItem(
                 icon: IconButton(
                   onPressed: null, //TODO: Implement navigation to settings page
                   icon: Icon(Icons.headset),
                 ),
-                title: Text(''),
+                // title: Text(''),
               ),
               BottomNavigationBarItem(
                 icon: IconButton(
                   onPressed: null, //TODO: Implement navigation to settings page
                   icon: Icon(Icons.settings),
                 ),
-                title: Text(''),
+                // title: Text(''),
               ),
             ]),
       ),

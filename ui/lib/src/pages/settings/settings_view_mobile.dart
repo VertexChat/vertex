@@ -1,4 +1,3 @@
-import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -60,10 +59,10 @@ class _SettingsViewMobilePortrait extends State<SettingsViewMobilePortrait> {
   }
 
   void changeBrightness() {
-    DynamicTheme.of(context).setBrightness(
-        Theme.of(context).brightness == Brightness.dark
-            ? Brightness.light
-            : Brightness.dark);
+    // ThemeData.of(context).setBrightness(
+    //     Theme.of(context).brightness == Brightness.dark
+    //         ? Brightness.light
+    //         : Brightness.dark);
   }
 
   // https://codingwithjoe.com/flutter-saving-and-restoring-with-sharedpreferences/

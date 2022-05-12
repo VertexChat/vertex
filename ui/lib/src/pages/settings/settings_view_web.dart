@@ -1,4 +1,3 @@
-import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -59,10 +58,10 @@ class _SettingsViewWeb extends State<SettingsViewWeb> {
 
   // TODO: Nothing to do with brightness.. should be theme
   void changeBrightness() {
-    DynamicTheme.of(context).setBrightness(
-        Theme.of(context).brightness == Brightness.dark
-            ? Brightness.light
-            : Brightness.dark);
+    // DynamicTheme.of(context).setBrightness(
+    //     Theme.of(context).brightness == Brightness.dark
+    //         ? Brightness.light
+    //         : Brightness.dark);
   }
 
   // https://codingwithjoe.com/flutter-saving-and-restoring-with-sharedpreferences/
