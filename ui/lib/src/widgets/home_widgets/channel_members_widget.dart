@@ -70,13 +70,13 @@ class _ChannelMembersWidgetState extends State<ChannelMembersWidget> {
       content: _channelMembersListView(membersList),
       actions: <Widget>[
         // usually buttons at the bottom of the dialog
-        new FlatButton(
+        new TextButton(
           child: new Text("Close"),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
-        new FlatButton(
+        new TextButton(
             onPressed: () => showDialog(
                 context: context,
                 builder: (BuildContext content) => _addMemberDialog(context)),
@@ -91,7 +91,7 @@ class _ChannelMembersWidgetState extends State<ChannelMembersWidget> {
       content: _usersListView(),
       actions: <Widget>[
         // usually buttons at the bottom of the dialog
-        new FlatButton(
+        new TextButton(
           child: new Text("Close"),
           onPressed: () {
             Navigator.of(context).pop();

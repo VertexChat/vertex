@@ -19,9 +19,11 @@ class UserDetails extends StatelessWidget {
             leading: Icon(FontAwesomeIcons.user, size: 44.0),
             title: Text(userName,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-            trailing: RaisedButton(
+            trailing: ElevatedButton(
               child: Text("Logout"),
-              color: Colors.red,
+              style: ElevatedButton.styleFrom(
+                primary: Colors.red
+              ),
               onPressed: () => null,
             ),
           ),

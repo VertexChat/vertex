@@ -192,8 +192,10 @@ class _LoginPageState extends State<LoginPage>
             elevation: 5.0,
             child: StreamBuilder<bool>(
               stream: bloc.submitCheck,
-              builder: (context, snapshot) => RaisedButton(
-                color: Colors.green,
+              builder: (context, snapshot) => ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.green
+                ),
                 onPressed: () => _submit(),
                 child: Center(
                   child: Text(

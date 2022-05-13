@@ -129,8 +129,10 @@ class _RegisterPageState extends State<RegisterPage>
               elevation: 7.0,
               child: StreamBuilder<bool>(
                 stream: bloc.submitCheck,
-                builder: (context, snapshot) => RaisedButton(
-                  color: Colors.green,
+                builder: (context, snapshot) => ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary:  Colors.green,
+                  ),
                   onPressed: () => _submit(),
                   child: Center(
                     child: Text(

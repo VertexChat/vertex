@@ -41,10 +41,7 @@ class _NewChannelDialogState extends State<NewChannelDialog> {
               children: <Widget>[
                 Text(
                   'CREATE A NEW CHANNEL',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 22),
+                  style: Theme.of(context).textTheme.headline1,
                 ),
                 SizedBox(height: 30),
                 ListTile(
@@ -86,19 +83,15 @@ class _NewChannelDialogState extends State<NewChannelDialog> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
-                      RaisedButton(
+                      ElevatedButton(
                         child: Text('Cancel'),
                         onPressed: () =>
                             Navigator.of(context, rootNavigator: true)
                                 .pop('dialog'),
-                        color: Colors.black26,
                       ),
-                      RaisedButton(
+                      ElevatedButton(
                         child: Text(
-                          "CREATE",
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
+                          "Create",
                         ),
                         onPressed: () {
                           if (_key.currentState.validate())
@@ -106,7 +99,6 @@ class _NewChannelDialogState extends State<NewChannelDialog> {
                           channel.id = 0;
                           postNewChannel(channel);
                         },
-                        color: Colors.black26,
                       )
                     ],
                   ),

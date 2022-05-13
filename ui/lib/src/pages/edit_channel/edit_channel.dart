@@ -39,10 +39,7 @@ class _EditChannelState extends State<EditChannel> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text("CHANNEL OVERVIEW",
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white)),
+                  style: Theme.of(context).textTheme.headline2),
               ChannelNavigationOptionsWidget(
                   channel: channel, isVoiceChannel: true),
             ],
@@ -89,29 +86,23 @@ class _EditChannelState extends State<EditChannel> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          RaisedButton(
-                            color: Colors.black26,
+                          ElevatedButton(
                             child: Text(
                               "Delete Channel",
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.bold),
-                            ),
+                              style: Theme.of(context).textTheme.headline3),
                             onPressed: () => _showWarningDialog(),
                           ),
-                          RaisedButton(
+                          ElevatedButton(
                             child: Text(
                               "UPDATE",
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
+                              style: Theme.of(context).textTheme.headline2,
+
                             ),
                             onPressed: () {
                               if (_key.currentState.validate())
                                 _key.currentState.save();
                               updatedChannel(channel.id, channel);
                             },
-                            color: Colors.black26,
                           )
                         ],
                       )
@@ -133,25 +124,24 @@ class _EditChannelState extends State<EditChannel> {
         // return object of type Dialog
         return AlertDialog(
           title: new Text("Delete Channel",
-              style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+              style: Theme.of(context).textTheme.headline3,),
           content: new Text(
               "Are you sure you want to delete '${channel.name}'? This cannot be undone."),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
-            new FlatButton(
-              padding: EdgeInsets.all(8.0),
-              child: new Text("Close"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: new TextButton(
+                child: new Text("Close"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
             ),
-            new FlatButton(
-              padding: EdgeInsets.all(8.0),
-              color: Colors.red,
+            new TextButton(
               child: new Text(
                 "Delete Channel",
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style: Theme.of(context).textTheme.headline2,
               ),
               onPressed: () => deleteChannel(channel.id),
             ),

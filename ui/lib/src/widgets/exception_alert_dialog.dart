@@ -12,11 +12,11 @@ class ExceptionAlertDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: new Text("Expection"),
+      title: new Text("Exception"),
       content: new Text(exception.toString()),
       actions: <Widget>[
         // usually buttons at the bottom of the dialog
-        new FlatButton(
+        new TextButton(
           child: new Text("Close"),
           onPressed: () {
             Navigator.of(context).pop();

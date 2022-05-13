@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:vertex_ui/src/widgets/settings_widgets/mute_card_widget.dart';
 import 'package:vertex_ui/src/widgets/settings_widgets/settings_card_widget.dart';
 import 'package:vertex_ui/src/widgets/settings_widgets/user_details_widget.dart';
 import 'package:vertex_ui/src/widgets/settings_widgets/text_widget.dart';
@@ -354,7 +353,7 @@ class _SettingsViewWeb extends State<SettingsViewWeb> {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     "VOICE SETTINGS",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.bodyText2
                   ),
                 ),
                 Row(
@@ -383,13 +382,13 @@ class _SettingsViewWeb extends State<SettingsViewWeb> {
                     optionsDropdownBox: videoInputDropBox,
                     settingsTypeHeading: "Webcam Device"),
                 // Audio Mute Settings output & input
-                MuteCard(
-                  audioMuteToggle: audioInputIsMuteToggle,
-                  muteSourceTypeHeading: "Mute Audio Input",
+                SettingsCard(
+                  optionsDropdownBox: audioInputIsMuteToggle,
+                  settingsTypeHeading: "Mute Audio Input",
                 ),
-                MuteCard(
-                  audioMuteToggle: audioOutputIsMuteToggle,
-                  muteSourceTypeHeading: "Mute Audio Output",
+                SettingsCard(
+                  optionsDropdownBox: audioOutputIsMuteToggle,
+                  settingsTypeHeading: "Mute Audio Output",
                 )
               ],
             ),

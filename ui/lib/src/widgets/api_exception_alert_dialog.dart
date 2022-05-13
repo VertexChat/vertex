@@ -23,7 +23,7 @@ class ApiExceptionAlertDialog extends StatelessWidget {
       content: new Text(parsedError['messages']),
       actions: <Widget>[
         // usually buttons at the bottom of the dialog
-        new FlatButton(
+        new TextButton(
           child: new Text("Close"),
           onPressed: () {
             Navigator.of(context).pop();

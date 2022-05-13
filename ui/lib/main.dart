@@ -46,7 +46,43 @@ class _UIState extends State<UI> {
     /// Gives us access to routing, context, and meta info functionality.
     return MaterialApp(
           title: 'Vertex',
-          theme: ThemeData(brightness: Brightness.dark),
+          theme: ThemeData(
+              brightness: Brightness.dark,
+            textTheme: const TextTheme(
+              headline1: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+              headline2: TextStyle(
+                color: Colors.white, fontSize: 18,
+              ),
+              headline3: TextStyle(
+                color: Colors.red, fontWeight: FontWeight.bold,
+              ),
+              bodyText1: TextStyle(
+                color: Colors.white,
+                fontSize: 11,
+                fontWeight: FontWeight.bold
+              ),
+            ),
+
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                  primary:  Colors.black26,
+                  padding: EdgeInsets.all(8.0),
+              )
+            ),
+
+            elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ElevatedButton.styleFrom(
+                  primary:  Colors.black26,
+                  padding: EdgeInsets.all(8.0),
+
+              )
+            )
+
+          ),
           //home: _defaultRoute,
           debugShowCheckedModeBanner: false,
           // Build that will also handle routing for us as its built into flutter

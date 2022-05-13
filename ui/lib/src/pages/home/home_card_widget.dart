@@ -26,46 +26,28 @@ class HomeCardWidget extends StatelessWidget {
                         ),
                         Text(
                           "Friends",
-                          style: TextStyle(
-                              fontSize: 11, fontWeight: FontWeight.bold),
+                          style: Theme.of(context).textTheme.bodyText1
                         ),
                       ],
                     ),
                   ),
                   // Friend query heading
-                  RaisedButton(
-                    padding: EdgeInsets.all(8.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(10.0),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElevatedButton(
+                      onPressed: () => null,
+                      child: Text("Online"),
                     ),
-                    color: Colors.black12,
-                    onPressed: () => null,
-                    child: Text("Online"),
                   ),
-                  RaisedButton(
-                    padding: EdgeInsets.all(8.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(10.0),
-                    ),
-                    color: Colors.black12,
+                  ElevatedButton(
                     onPressed: () => null,
                     child: Text("Pending"),
                   ),
-                  RaisedButton(
-                    padding: EdgeInsets.all(8.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(10.0),
-                    ),
-                    color: Colors.black12,
+                  ElevatedButton(
                     onPressed: () => null,
                     child: Text("Blocked"),
                   ),
-                  RaisedButton(
-                    padding: EdgeInsets.all(8.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(10.0),
-                    ),
-                    color: Colors.green,
+                  ElevatedButton(
                     onPressed: () => null,
                     child: Text("Add Friend"),
                   )

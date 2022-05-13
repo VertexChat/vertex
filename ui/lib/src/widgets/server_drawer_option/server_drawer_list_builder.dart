@@ -31,7 +31,7 @@ class ServerDrawerListBuilder extends StatelessWidget {
   /// be used to display either a volume_up icon for voice channels or a message
   /// icon for text channels.
   ///
-  /// The [RaisedButton] onPressed event will [NavigationServiceHome] with the help
+  /// The [ElevatedButton] onPressed event will [NavigationServiceHome] with the help
   /// of a [locatorGlobal] provider to navigate to [VoiceChannelRoute] or [MessageRoute]
   ListView _channelsListView(channelData) {
     return ListView.separated(
@@ -61,8 +61,7 @@ class ServerDrawerListBuilder extends StatelessWidget {
         // Display channels in container
         return Container(
             height: 40,
-            child: RaisedButton(
-                color: Colors.black26,
+            child: ElevatedButton(
                 child: Row(
                   children: <Widget>[
                     Padding(
