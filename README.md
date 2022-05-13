@@ -3,9 +3,19 @@
 Vertex is a self-hosted chat application based on WebRTC and is built with Flutter for the front end and Python for the backend.
 
 ### Requirements
+[Flutter 3.0.0 • Stable Channel](https://docs.flutter.dev/get-started/install)
 
-`Flutter 3.0.0 • Stable Channel`
-`Dart 2.17.0`
+[Backend Server](https://github.com/VertexChat/norton)
+
+[WebRTC Signalling Server](https://github.com/VertexChat/webrtc-signalling-server)
+
+### How to run
+To list devices you can run the application on with Flutter run:<br>
+* `flutter devices`<br>
+
+Followed by then
+
+* `flutter run -d <device name>`
 
 ### Development & Testing
 This project was developed and tested using:

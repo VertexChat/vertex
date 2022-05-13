@@ -1,6 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'text_widget.dart';
 
 /// Widget that will create a card widget to display audio options for input device
 /// or output devices depending on the parameters passed

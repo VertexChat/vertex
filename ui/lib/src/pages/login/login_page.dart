@@ -29,7 +29,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage>
     implements LoginScreenContract, AuthStateListener {
   //Member Variables
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldMessengerState> _scaffoldKey = new GlobalKey<ScaffoldMessengerState>();
   final formKey = GlobalKey<FormState>();
   InlineObject _login = InlineObject();
   LoginScreenPresenter _presenter;
@@ -192,8 +192,10 @@ class _LoginPageState extends State<LoginPage>
             elevation: 5.0,
             child: StreamBuilder<bool>(
               stream: bloc.submitCheck,
-              builder: (context, snapshot) => RaisedButton(
-                color: Colors.green,
+              builder: (context, snapshot) => ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.green
+                ),
                 onPressed: () => _submit(),
                 child: Center(
                   child: Text(

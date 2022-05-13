@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vertex_ui/src/pages/layout_template/home_layout_template.dart';
 import 'package:vertex_ui/src/widgets/main_app_widgets/app_navigation_bar.dart';

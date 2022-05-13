@@ -3,10 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vertex_ui/src/pages/settings/app_info.dart';
-import 'package:vertex_ui/src/widgets/settings_widgets/mute_card_widget.dart';
 import 'package:vertex_ui/src/widgets/settings_widgets/settings_card_widget.dart';
 import 'package:vertex_ui/src/widgets/settings_widgets/user_details_widget.dart';
-import 'package:vertex_ui/src/widgets/settings_widgets/text_widget.dart';
 
 ///  Main Settings view for mobile device
 class SettingsViewMobilePortrait extends StatefulWidget {

@@ -18,7 +18,7 @@ class _RegisterPageState extends State<RegisterPage>
   // Create a global key that uniquely identifies the Form widget
   // and allows validation of the form.
   final formKey = GlobalKey<FormState>();
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldMessengerState> _scaffoldKey = new GlobalKey<ScaffoldMessengerState>();
   bool _validate = false;
   InlineObject user = InlineObject();
   RegisterScreenPresenter _presenter;
@@ -129,8 +129,10 @@ class _RegisterPageState extends State<RegisterPage>
               elevation: 7.0,
               child: StreamBuilder<bool>(
                 stream: bloc.submitCheck,
-                builder: (context, snapshot) => RaisedButton(
-                  color: Colors.green,
+                builder: (context, snapshot) => ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary:  Colors.green,
+                  ),
                   onPressed: () => _submit(),
                   child: Center(
                     child: Text(

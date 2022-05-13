@@ -14,6 +14,7 @@ class ApiExceptionAlertDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     Map<String, dynamic> parsedError =
         json.decode(apiException.message.toString());
 
@@ -22,7 +23,7 @@ class ApiExceptionAlertDialog extends StatelessWidget {
       content: new Text(parsedError['messages']),
       actions: <Widget>[
         // usually buttons at the bottom of the dialog
-        new FlatButton(
+        new TextButton(
           child: new Text("Close"),
           onPressed: () {
             Navigator.of(context).pop();
