@@ -46,8 +46,8 @@ class ServerDrawerListBuilder extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               AutoSizeText(
-                "CHANNELS",
-                //data[index].listName,
+                //"CHANNELS",
+                channelData[index].listName,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 12,
