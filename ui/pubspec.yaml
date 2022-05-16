@@ -23,7 +23,6 @@ dependencies:
   openapi:
     git: https://github.com/VertexChat/norton-api-client.git
 
-
   shared_preferences: ^2.0.15
 
   # The following adds the Cupertino Icons font to your application.
